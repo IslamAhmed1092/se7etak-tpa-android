@@ -12,6 +12,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/settingsToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@android:color/transparent">
+
+                <LinearLayout
+                    android:id="@+id/ll_app_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/ib_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="9dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        app:tint="@color/purple_dark" />
+
+                    <TextView
+                        android:id="@+id/tv_app_bar_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginStart="19dp"
+                        android:layout_marginEnd="19dp"
+                        android:layout_weight="1.0"
+                        android:text="Create an account"
+                        android:textColor="@color/purple_dark"
+                        android:textSize="30sp" />
+
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_login"
             android:layout_width="match_parent"
@@ -19,7 +75,7 @@
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
             style="@style/MaterialCardView">
 
             <LinearLayout
@@ -41,10 +97,10 @@
                         android:id="@+id/et_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Name"
+                        android:hint="@string/name"
                         android:maxLines="1"
                         android:inputType="text"
-                        style="@style/TextInputEditText" />
+                        style="@style/TextInputEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +115,7 @@
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email"
+                        android:hint="@string/email"
                         android:maxLines="1"
                         android:inputType="textEmailAddress"
                         style="@style/TextInputEditText" />
@@ -78,7 +134,7 @@
                         android:textSize="18sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:maxLines="1"
                         android:inputType="textPassword"
                         style="@style/TextInputEditText" />
@@ -96,7 +152,7 @@
                         android:textSize="18.0sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Confirm Password"
+                        android:hint="@string/confirm_password"
                         android:maxLines="1"
                         android:inputType="textPassword"
                         style="@style/TextInputEditText" />
@@ -113,7 +169,7 @@
                         android:id="@+id/et_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Mobile Number"
+                        android:hint="@string/mobile_number"
                         android:maxLines="1"
                         android:inputType="phone"
                         style="@style/TextInputEditText" />
@@ -131,7 +187,7 @@
                         android:id="@+id/et_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Se7etak Membership ID"
+                        android:hint="@string/se7etak_membership_id"
                         android:maxLines="1"
                         android:inputType="number"
                         style="@style/TextInputEditText" />
@@ -143,13 +199,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dip"
-                    android:text="Sign Up"
-                    android:backgroundTint="#ff291f6c"
+                    android:text="@string/sign_up"
+                    android:backgroundTint="@color/purple_dark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/il_password"
                     style="@style/ContainedButton"/>
-
 
             </LinearLayout>
 
@@ -170,13 +225,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="already have an account?" />
+                android:text="@string/have_an_account" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_create_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="@string/login"
                 android:fontFamily="@font/runda_medium"
                 style="@style/TextButton" />
 

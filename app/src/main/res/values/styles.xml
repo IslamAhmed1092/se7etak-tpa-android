@@ -2,7 +2,7 @@
 <resources>
     <style name="TextButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textSize">14.0sp</item>
-        <item name="android:textColor">#ff291f6c</item>
+        <item name="android:textColor">@color/purple_dark</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingStart">20dp</item>
@@ -19,7 +19,7 @@
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:paddingEnd">20dp</item>
-        <item name="backgroundTint">#ff291f6c</item>
+        <item name="backgroundTint">@color/purple_dark</item>
         <item name="cornerRadius">20dp</item>
         <item name="minWidth">0dp</item>
         <item name="textAllCaps">false</item>
