@@ -10,12 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Se7etakTPA" >
         <activity
-            android:name=".SignupActivity"
-            android:exported="true"
-            android:theme="@style/NoActionBar"/>
-        <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
