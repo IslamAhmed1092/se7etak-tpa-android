@@ -25,10 +25,22 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="TextInputLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:padding">0.0dip</item>
+        <item name="background">@android:color/transparent</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxStrokeColor">#59cfcfcf</item>
+        <item name="boxStrokeWidth">0.5dp</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
     <style name="TextInputEditText">
         <item name="android:padding">8dp</item>
         <item name="android:maxLength">100</item>
-        <item name="android:textAlignment">viewStart</item>
     </style>
 
     <style name="MaterialCardView" parent="@style/Widget.MaterialComponents.CardView">

@@ -26,5 +26,15 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signupFragment_to_mobileVerificationFragment"
+            app:destination="@id/mobileVerificationFragment"
+            app:popUpTo="@id/mobileVerificationFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/mobileVerificationFragment"
+        android:name="com.example.se7etak_tpa.MobileVerificationFragment"
+        android:label="fragment_mobile_verification"
+        tools:layout="@layout/fragment_mobile_verification" />
 </navigation>

@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:scrollbars="none"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    tools:background="@drawable/gradient_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipToPadding="false">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:elevation="0dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,9 +28,9 @@
                 android:id="@+id/settingsToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                android:background="@android:color/transparent">
+                app:contentInsetStart="0dp">
 
                 <LinearLayout
                     android:id="@+id/ll_app_bar"
@@ -39,13 +41,12 @@
 
                     <TextView
                         android:id="@+id/tv_app_bar_title"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_marginStart="19dp"
                         android:layout_marginEnd="19dp"
-                        android:layout_weight="1.0"
+                        android:gravity="center"
                         android:text="@string/create_account_title"
                         android:textColor="@color/purple_dark"
                         android:textSize="30sp" />
@@ -59,22 +60,22 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_login"
+            style="@style/MaterialCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            style="@style/MaterialCardView">
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/il_name"
@@ -82,14 +83,14 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:textSize="18sp"
                         android:id="@+id/et_name"
+                        style="@style/TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:hint="@string/name"
-                        android:maxLines="1"
                         android:inputType="text"
-                        style="@style/TextInputEditText"/>
+                        android:maxLines="1"
+                        android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,14 +101,14 @@
                     android:layout_marginTop="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:textSize="18sp"
                         android:id="@+id/et_email"
+                        style="@style/TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:hint="@string/email"
-                        android:maxLines="1"
                         android:inputType="textEmailAddress"
-                        style="@style/TextInputEditText" />
+                        android:maxLines="1"
+                        android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,13 +121,13 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password"
-                        android:textSize="18sp"
+                        style="@style/TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:hint="@string/password"
-                        android:maxLines="1"
                         android:inputType="textPassword"
-                        style="@style/TextInputEditText" />
+                        android:maxLines="1"
+                        android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -138,13 +139,13 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_confirm_password"
-                        android:textSize="18sp"
+                        style="@style/TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:hint="@string/confirm_password"
-                        android:maxLines="1"
                         android:inputType="textPassword"
-                        style="@style/TextInputEditText" />
+                        android:maxLines="1"
+                        android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -154,14 +155,14 @@
                     android:layout_marginTop="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:textSize="18sp"
                         android:id="@+id/et_mobile"
+                        style="@style/TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:hint="@string/mobile_number"
-                        android:maxLines="1"
                         android:inputType="phone"
-                        style="@style/TextInputEditText" />
+                        android:maxLines="1"
+                        android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,28 +173,28 @@
                     android:layout_marginTop="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:textSize="18sp"
                         android:id="@+id/et_id"
+                        style="@style/TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:hint="@string/se7etak_membership_id"
-                        android:maxLines="1"
                         android:inputType="number"
-                        style="@style/TextInputEditText" />
+                        android:maxLines="1"
+                        android:textSize="18sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_signup"
+                    style="@style/ContainedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dip"
-                    android:text="@string/sign_up"
+                    android:layout_marginTop="25dp"
                     android:backgroundTint="@color/purple_dark"
+                    android:text="@string/sign_up"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/il_password"
-                    style="@style/ContainedButton"/>
+                    app:layout_constraintTop_toBottomOf="@id/il_password" />
 
             </LinearLayout>
 
@@ -201,12 +202,12 @@
 
 
         <LinearLayout
-            android:gravity="center"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50.0dip"
-            android:layout_marginEnd="50.0dip"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_login">
@@ -218,11 +219,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_login"
+                style="@style/TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login"
                 android:fontFamily="@font/runda_medium"
-                style="@style/TextButton" />
+                android:text="@string/login" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

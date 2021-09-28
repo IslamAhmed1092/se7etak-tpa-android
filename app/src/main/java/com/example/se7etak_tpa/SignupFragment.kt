@@ -26,6 +26,12 @@ class SignupFragment : Fragment() {
             val action = SignupFragmentDirections.actionSignupFragmentToLoginFragment()
             findNavController().navigate(action)
         }
+
+        val signupButton = view.findViewById<Button>(R.id.btn_signup)
+        signupButton.setOnClickListener {
+            val action = SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
+            findNavController().navigate(action)
+        }
     }
 
 }
