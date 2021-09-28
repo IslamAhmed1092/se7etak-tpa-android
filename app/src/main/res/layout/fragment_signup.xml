@@ -1,230 +1,237 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbars="none"
-    tools:background="@drawable/gradient_background">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        tools:background="@drawable/gradient_background">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:elevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:clipToPadding="false">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/settingsToolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp">
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:elevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/ll_app_bar"
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/settingsToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp">
 
-                    <TextView
-                        android:id="@+id/tv_app_bar_title"
+                    <LinearLayout
+                        android:id="@+id/ll_app_bar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="19dp"
-                        android:layout_marginEnd="19dp"
-                        android:gravity="center"
-                        android:text="@string/create_account_title"
-                        android:textColor="@color/purple_dark"
-                        android:textSize="30sp" />
+                        android:layout_marginTop="24dp"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:id="@+id/tv_app_bar_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="19dp"
+                            android:layout_marginEnd="19dp"
+                            android:gravity="center"
+                            android:text="@string/create_account_title"
+                            android:textColor="@color/purple_dark"
+                            android:textSize="30sp" />
+
+
+                    </LinearLayout>
+
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_login"
+                style="@style/MaterialCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/il_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_name"
+                            style="@style/TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="@string/name"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textSize="18sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/il_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_email"
+                            style="@style/TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1"
+                            android:textSize="18sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/il_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_password"
+                            style="@style/TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textSize="18sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/il_confirm_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_confirm_password"
+                            style="@style/TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="@string/confirm_password"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textSize="18sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/il_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_mobile"
+                            style="@style/TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="@string/mobile_number"
+                            android:inputType="phone"
+                            android:maxLines="1"
+                            android:textSize="18sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/il_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_id"
+                            style="@style/TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="@string/se7etak_membership_id"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textSize="18sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_signup"
+                        style="@style/ContainedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:backgroundTint="@color/purple_dark"
+                        android:text="@string/sign_up"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/il_password" />
 
                 </LinearLayout>
 
-            </com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_login"
-            style="@style/MaterialCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="vertical">
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_login">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/il_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_name"
-                        style="@style/TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:hint="@string/name"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/il_email"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_email"
-                        style="@style/TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:hint="@string/email"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/il_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:endIconMode="password_toggle">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_password"
-                        style="@style/TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:textSize="18sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/il_confirm_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:endIconMode="password_toggle">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_confirm_password"
-                        style="@style/TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:hint="@string/confirm_password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:textSize="18sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/il_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_mobile"
-                        style="@style/TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:hint="@string/mobile_number"
-                        android:inputType="phone"
-                        android:maxLines="1"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/il_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_id"
-                        style="@style/TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:hint="@string/se7etak_membership_id"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:textSize="18sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:text="@string/have_an_account" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_signup"
-                    style="@style/ContainedButton"
-                    android:layout_width="match_parent"
+                    android:id="@+id/btn_login"
+                    style="@style/TextButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:backgroundTint="@color/purple_dark"
-                    android:text="@string/sign_up"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/il_password" />
+                    android:fontFamily="@font/runda_medium"
+                    android:text="@string/login" />
 
             </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_login">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/have_an_account" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_login"
-                style="@style/TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/runda_medium"
-                android:text="@string/login" />
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
