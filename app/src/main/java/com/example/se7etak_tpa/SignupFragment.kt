@@ -34,11 +34,12 @@ class SignupFragment : Fragment() {
         binding.btnSignup.setOnClickListener {
             checkAllFields()
 
-            if (!isAnyErrorExist()) {
+//            if (!isAnyErrorExist()) {
+                signupViewModel.setPhone(binding.etMobile.text?.toString())
                 val action =
                     SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
                 findNavController().navigate(action)
-            }
+//            }
         }
 
         binding.etName.setOnFocusChangeListener { _, hasFocus ->

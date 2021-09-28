@@ -5,6 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.se7etak_tpa.SignupViewModel" />
     </data>
 
     <ScrollView
@@ -25,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
                 android:gravity="center"
                 android:text="@string/mobile_verification_title"
                 android:textColor="@color/purple_dark"
@@ -70,8 +74,9 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="16dp"
                         android:gravity="center"
-                        android:text="@string/verification_text"
-                        android:textSize="16sp" />
+                        android:text="@{@string/verification_text(viewModel.phone)}"
+                        android:textSize="16sp"
+                        tools:text="@string/test_verification_text" />
 
                     <TextView
                         android:id="@+id/tv_enter_code"
@@ -99,6 +104,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
                             android:gravity="center"
+                            android:imeOptions="actionDone"
                             android:inputType="number"
                             android:maxLength="4"
                             android:singleLine="true"
@@ -114,8 +120,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
-                        android:text="@{@string/code_expire_text(5,2)}"
-                        tools:text="code expires in 5:00"/>
+                        android:text="@{@string/code_expire_text(viewModel.timerMinutes,viewModel.timerSeconds)}"
+                        tools:text="code expires in 5:00" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -141,17 +147,28 @@
 
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_confirm"
-                        style="@style/ContainedButton"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:backgroundTint="@color/purple_dark"
-                        android:text="@string/confirm"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/il_password" />
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_confirm"
+                            style="@style/ContainedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="24dp"
+                            android:backgroundTint="@{viewModel.timerFinished? @color/disabled_button_color: @color/purple_dark}"
+                            android:enabled="@{!viewModel.timerFinished}"
+                            android:text="@string/confirm"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:backgroundTint="@color/purple_dark" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
 
