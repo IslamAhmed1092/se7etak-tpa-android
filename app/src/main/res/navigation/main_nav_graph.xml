@@ -15,6 +15,11 @@
             app:destination="@id/signupFragment"
             app:popUpTo="@id/signupFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_mapsActivity"
+            app:destination="@id/mapsActivity"
+            app:popUpTo="@id/mapsActivity"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
@@ -43,4 +48,9 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <activity
+        android:id="@+id/mapsActivity"
+        android:name="com.example.se7etak_tpa.MapsActivity"
+        android:label="activity_maps"
+        tools:layout="@layout/activity_maps" />
 </navigation>
