@@ -62,8 +62,14 @@ class SignupViewModel: ViewModel() {
     fun validatePhone(inputPhone: String?) =
         !inputPhone.isNullOrEmpty() && inputPhone[0] == '0' && inputPhone.length == 11
 
-    fun validatePassword(inputPassword: String?) =
-        !inputPassword.isNullOrEmpty() && inputPassword.length >= 8
+    fun validatePassword(inputPassword: String?): Boolean{
+        inputPassword?.let {
+            val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
+            val passwordMatcher = Regex(passwordPattern)
+
+            return passwordMatcher.find(inputPassword) != null
+        } ?: return false
+    }
 
     fun validateConfirmPassword(inputPassword: String?, inputConfirmPassword: String?)
         = !inputPassword.isNullOrEmpty() && !inputPassword.isNullOrEmpty()

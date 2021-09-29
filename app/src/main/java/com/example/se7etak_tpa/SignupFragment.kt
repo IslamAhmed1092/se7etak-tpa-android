@@ -29,6 +29,9 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = signupViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         binding.btnLogin.setOnClickListener {
             val action = SignupFragmentDirections.actionSignupFragmentToLoginFragment()
             findNavController().navigate(action)
@@ -49,13 +52,13 @@ class SignupFragment : Fragment() {
         }
 
         val errorAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("ERROR")
+            .setTitle("ERROR!")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
         signupViewModel.status.observe(viewLifecycleOwner, Observer {
             if (it == SignupStatus.LOADING) {
-                Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
             } else if (it == SignupStatus.DONE) {
                 Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
 //                val action =
@@ -98,6 +101,7 @@ class SignupFragment : Fragment() {
                 binding.ilPassword.isErrorEnabled = false
             } else {
                 checkPassword()
+                if(!binding.etConfirmPassword.text?.toString().isNullOrEmpty()) checkConfirmPassword()
             }
         }
 
@@ -105,7 +109,8 @@ class SignupFragment : Fragment() {
             if (hasFocus) {
                 binding.ilConfirmPassword.isErrorEnabled = false
             } else {
-                if(!binding.etPassword.text?.toString().isNullOrEmpty()) checkConfirmPassword()
+                if(!binding.etPassword.text?.toString().isNullOrEmpty()
+                    && !binding.etConfirmPassword.text?.toString().isNullOrEmpty()) checkConfirmPassword()
             }
         }
 
@@ -126,12 +131,10 @@ class SignupFragment : Fragment() {
         }
 
         binding.etId.setOnEditorActionListener { _, id, _ ->
-            if(id == EditorInfo.IME_ACTION_DONE){
+            if(id == EditorInfo.IME_ACTION_DONE) {
                 binding.btnSignup.performClick()
-                true
-            } else {
-                false
             }
+            false
         }
 
     }
@@ -180,7 +183,7 @@ class SignupFragment : Fragment() {
     private fun checkPassword() {
         if (!signupViewModel.validatePassword(binding.etPassword.text?.toString())) {
             binding.ilPassword.isErrorEnabled = true
-            binding.ilPassword.error = "password should be at least 8 chars"
+            binding.ilPassword.error = getString(R.string.password_rules)
         } else {
             binding.ilPassword.isErrorEnabled = false
         }
