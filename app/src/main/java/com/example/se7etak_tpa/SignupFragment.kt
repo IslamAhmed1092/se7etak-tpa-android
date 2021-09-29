@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SignupFragment : Fragment() {
 
@@ -47,6 +48,11 @@ class SignupFragment : Fragment() {
             }
         }
 
+        val errorAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("ERROR")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
         signupViewModel.status.observe(viewLifecycleOwner, Observer {
             if (it == SignupStatus.LOADING) {
                 Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
@@ -57,7 +63,17 @@ class SignupFragment : Fragment() {
 //                findNavController().navigate(action)
 
             } else {
-                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                if (signupViewModel.errorMessage.contains("email", true)) {
+                    binding.ilEmail.isErrorEnabled = true
+                    binding.ilEmail.error = signupViewModel.errorMessage
+                } else if (signupViewModel.errorMessage.contains("PhoneNumber", true)) {
+                    binding.ilMobile.isErrorEnabled = true
+                    binding.ilMobile.error = signupViewModel.errorMessage
+                } else if (signupViewModel.errorMessage.contains("id", true)) {
+                    binding.ilId.isErrorEnabled = true
+                    binding.ilId.error = signupViewModel.errorMessage
+                }
             }
         })
 

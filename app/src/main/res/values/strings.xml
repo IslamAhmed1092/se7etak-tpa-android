@@ -4,7 +4,7 @@
     <string name="email">Email <font color='#FF0000'>*</font></string>
     <string name="password">Password <font color='#FF0000'>*</font></string>
     <string name="confirm_password">Confirm Password <font color='#FF0000'>*</font></string>
-    <string name="mobile_number">Mobile Number <font color='#FF0000'>*</font></string>
+    <string name="mobile_number">Phone Number <font color='#FF0000'>*</font></string>
     <string name="se7etak_membership_id">Se7etak Membership ID <font color='#FF0000'>*</font></string>
     <string name="sign_up">Sign Up</string>
     <string name="have_an_account">already have an account?</string>

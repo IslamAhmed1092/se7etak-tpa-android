@@ -20,14 +20,17 @@ const val TAG = "SignupViewModel"
 
 class SignupViewModel: ViewModel() {
 
+    private val _status = MutableLiveData<SignupStatus>()
+    val status: LiveData<SignupStatus> get() = _status
+
+    private var _errorMessage: String = ""
+    val errorMessage: String get() = _errorMessage
+
     private val _phone = MutableLiveData<String>()
     val phone: LiveData<String> get() = _phone
 
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> get() = _email
-
-    private val _status = MutableLiveData<SignupStatus>()
-    val status: LiveData<SignupStatus> get() = _status
 
     private val _timerMinutes = MutableLiveData(0)
     val timerMinutes: LiveData<Int> get() = _timerMinutes
@@ -84,13 +87,14 @@ class SignupViewModel: ViewModel() {
                     _status.value = SignupStatus.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else {
+                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{}").optString("message")
                     _status.value = SignupStatus.ERROR
-                    val errMessage = JSONObject(response.errorBody()?.string() ?:"{}").optString("message")
-                    Log.i("TAG", "onResponse ${response.code()}: ${errMessage}" )
+                    Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
                 }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                _errorMessage = "Please check your internet connection and try again"
                 _status.value = SignupStatus.ERROR
                 Log.i(TAG, "onFailure: ${t.message}")
             }
