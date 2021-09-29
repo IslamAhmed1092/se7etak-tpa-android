@@ -106,11 +106,11 @@
                             android:gravity="center"
                             android:imeOptions="actionDone"
                             android:inputType="number"
-                            android:maxLength="4"
+                            android:maxLength="6"
                             android:singleLine="true"
                             android:textColor="@color/purple_dark"
                             android:textSize="32sp"
-                            tools:text="1234" />
+                            tools:text="123456" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

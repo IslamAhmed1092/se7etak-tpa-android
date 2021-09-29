@@ -3,7 +3,7 @@ package com.example.se7etak_tpa.network
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val BASE_URL = "base url here"
+private const val BASE_URL = "http://kerols3489-001-site1.btempurl.com/api/Account/"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())

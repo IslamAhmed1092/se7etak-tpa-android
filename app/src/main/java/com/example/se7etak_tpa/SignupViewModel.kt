@@ -1,14 +1,33 @@
 package com.example.se7etak_tpa
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.se7etak_tpa.network.Api
+import com.google.gson.JsonObject
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+enum class SignupStatus { LOADING, ERROR, DONE }
+
+const val TAG = "SignupViewModel"
 
 class SignupViewModel: ViewModel() {
 
     private val _phone = MutableLiveData<String>()
     val phone: LiveData<String> get() = _phone
+
+    private val _email = MutableLiveData<String>()
+    val email: LiveData<String> get() = _email
+
+    private val _status = MutableLiveData<SignupStatus>()
+    val status: LiveData<SignupStatus> get() = _status
 
     private val _timerMinutes = MutableLiveData(0)
     val timerMinutes: LiveData<Int> get() = _timerMinutes
@@ -20,7 +39,7 @@ class SignupViewModel: ViewModel() {
     val timerFinished: LiveData<Boolean> get() = _timerFinished
 
     fun setPhone(inputPhone: String?) {
-        _phone.value = inputPhone
+        _phone.value = inputPhone!!
     }
 
     fun setTimer(millis: Long) {
@@ -47,9 +66,43 @@ class SignupViewModel: ViewModel() {
         = !inputPassword.isNullOrEmpty() && !inputPassword.isNullOrEmpty()
             && inputPassword == inputConfirmPassword
 
-    fun validateID(inputID: String?) = !inputID.isNullOrEmpty()
+    fun validateID(inputID: String?) = !inputID.isNullOrEmpty() && inputID.length == 6
+
+    fun signup(name: String, email: String, password: String, number: String, id: String) {
+
+        val user = mapOf<String, String>("se7etakID" to id, "name" to name, "email" to email,
+            "phoneNumber" to number, "password" to password)
+
+        val callResponse = Api.retrofitService.register(user)
+        _status.value = SignupStatus.LOADING
+        callResponse.enqueue(object : Callback<JsonObject> {
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.code() == 200) {
+                    _phone.value = number
+                    _email.value = email
+                    _status.value = SignupStatus.DONE
+                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else {
+                    _status.value = SignupStatus.ERROR
+                    val errMessage = JSONObject(response.errorBody()?.string() ?:"{}").optString("message")
+                    Log.i("TAG", "onResponse ${response.code()}: ${errMessage}" )
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                _status.value = SignupStatus.ERROR
+                Log.i(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+
+    }
 
     fun isCodeCorrect(code: String?): Boolean {
-        return !code.isNullOrEmpty() && code == "1234"
+        return !code.isNullOrEmpty() && code == "123456"
     }
+
+
+
 }

@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 
@@ -34,13 +36,30 @@ class SignupFragment : Fragment() {
         binding.btnSignup.setOnClickListener {
             checkAllFields()
 
-//            if (!isAnyErrorExist()) {
-                signupViewModel.setPhone(binding.etMobile.text?.toString())
-                val action =
-                    SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
-                findNavController().navigate(action)
-//            }
+            if (!isAnyErrorExist()) {
+                signupViewModel.signup(
+                    binding.etName.text.toString(),
+                    binding.etEmail.text.toString(),
+                    binding.etPassword.text.toString(),
+                    binding.etMobile.text.toString(),
+                    binding.etId.text.toString()
+                )
+            }
         }
+
+        signupViewModel.status.observe(viewLifecycleOwner, Observer {
+            if (it == SignupStatus.LOADING) {
+                Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
+            } else if (it == SignupStatus.DONE) {
+                Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
+//                val action =
+//                    SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
+//                findNavController().navigate(action)
+
+            } else {
+                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+            }
+        })
 
         binding.etName.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
