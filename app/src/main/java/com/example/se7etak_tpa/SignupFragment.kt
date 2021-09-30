@@ -32,6 +32,8 @@ class SignupFragment : Fragment() {
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        signupViewModel.resetSignupData()
+
         binding.btnLogin.setOnClickListener {
             val action = SignupFragmentDirections.actionSignupFragmentToLoginFragment()
             findNavController().navigate(action)
