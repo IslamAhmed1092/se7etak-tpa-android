@@ -212,8 +212,9 @@ class SignupViewModel: ViewModel() {
         }
 
         fun loadUserData(context: Context): User {
+            val emptyJson = "{\"email\":\"\",\"id\":\"\",\"name\":\"\",\"phoneNumber\":\"\",\"token\":\"\"}"
             val pref = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
-            return Gson().fromJson(pref.getString("USER", ""), User::class.java)
+            return Gson().fromJson(pref.getString("USER", emptyJson), User::class.java)
         }
     }
 }

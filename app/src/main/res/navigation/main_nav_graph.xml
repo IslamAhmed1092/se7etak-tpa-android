@@ -42,5 +42,14 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_homeActivity"
+            app:destination="@id/homeActivity"
+            app:popUpTo="@id/homeActivity"
+            app:popUpToInclusive="true" />
     </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.example.se7etak_tpa.HomeActivity"
+        android:label="HomeActivity" />
 </navigation>
