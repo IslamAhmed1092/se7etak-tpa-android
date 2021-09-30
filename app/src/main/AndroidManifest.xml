@@ -36,7 +36,8 @@
         <activity
             android:name=".HomeActivity"
             android:exported="true"
-            android:label="@string/title_activity_home">
+            android:label="@string/title_activity_home"
+            android:theme="@style/NoActionBar">
         </activity>
         <activity
             android:name=".MainActivity"

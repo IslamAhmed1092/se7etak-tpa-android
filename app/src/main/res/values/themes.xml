@@ -3,7 +3,7 @@
     <style name="Theme.Se7etakTPA" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ff291f6c</item>
-        <item name="colorPrimaryVariant">#ff000040</item>
+        <item name="colorPrimaryVariant">#ff291f6c</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
