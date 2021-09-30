@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.se7etak_tpa.home_ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/navigation_request_approval"
+        android:name="com.example.se7etak_tpa.home_ui.notifications.RequestApprovalFragment"
+        android:label="@string/title_request_approval"
+        tools:layout="@layout/fragment_request_approval"/>
+    <fragment
+        android:id="@+id/navigation_request_reimbursement"
+        android:name="com.example.se7etak_tpa.home_ui.notifications.RequestReimbursementFragment"
+        android:label="@string/title_request_reimbursement"
+        tools:layout="@layout/fragment_request_reimbursement"/>
+    <fragment
+        android:id="@+id/navigation_check_network"
+        android:name="com.example.se7etak_tpa.home_ui.check_network.CheckNetworkFragment"
+        android:label="@string/title_check_network"
+        tools:layout="@layout/fragment_check_network" />
+
+</navigation>

@@ -31,11 +31,6 @@ class LoginFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        val mapButton = view.findViewById<Button>(R.id.btn_map)
-        mapButton.setOnClickListener {
-            val action = LoginFragmentDirections.actionLoginFragmentToMapsActivity()
-            findNavController().navigate(action)
-        }
 
     }
 }

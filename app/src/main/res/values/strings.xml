@@ -21,4 +21,11 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="password_rules">password must be at least 8 characters including at least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.</string>
     <string name="password_google_maps_keyrules">password must be at least 8 characters including at least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_request_approval">Request Approval</string>
+    <string name="title_request_reimbursement">Request Reimbursement</string>
+    <string name="title_check_network">Check Network</string>
 </resources>

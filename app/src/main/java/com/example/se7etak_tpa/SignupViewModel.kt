@@ -94,7 +94,7 @@ class SignupViewModel: ViewModel() {
 
     fun signup(name: String, email: String, password: String, number: String, id: String) {
 
-        val userParams = mapOf<String, String>("se7etakID" to id, "name" to name, "email" to email,
+        val userParams = mapOf("se7etakID" to id, "name" to name, "email" to email,
             "phoneNumber" to number, "password" to password)
 
         val callResponse = Api.retrofitService.register(userParams)
