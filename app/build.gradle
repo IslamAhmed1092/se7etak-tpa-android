@@ -34,6 +34,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding true
     }
 }
 
@@ -65,4 +66,7 @@ dependencies {
 
     // smart spinner
     implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
+
+    // Google maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 }
