@@ -4,19 +4,20 @@
     <string name="email">Email <font color='#FF0000'>*</font></string>
     <string name="password">Password <font color='#FF0000'>*</font></string>
     <string name="confirm_password">Confirm Password <font color='#FF0000'>*</font></string>
-    <string name="mobile_number">Mobile Number <font color='#FF0000'>*</font></string>
+    <string name="mobile_number">Phone Number <font color='#FF0000'>*</font></string>
     <string name="se7etak_membership_id">Se7etak Membership ID <font color='#FF0000'>*</font></string>
     <string name="sign_up">Sign Up</string>
     <string name="have_an_account">already have an account?</string>
     <string name="login">Login</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_account_title">Create an account</string>
-    <string name="verification_text">We\'ve sent an SMS with verification code to your phone <b>01113586932</b></string>
+    <string name="verification_text">We\'ve sent an SMS with verification code to your phone <b>%s</b></string>
+    <string name="test_verification_text">We\'ve sent an SMS with verification code to your phone <b>01113586932</b></string>
     <string name="code_expire_text">code expires in %d:%02d</string>
     <string name="mobile_verification_title">Mobile Verification</string>
     <string name="enter_code">Enter Code</string>
     <string name="didn_t_get_code">didn\'t get the code?</string>
     <string name="send_again">Send Again</string>
     <string name="confirm">Confirm</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="password_rules">password must be at least 8 characters including at least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.</string>
 </resources>

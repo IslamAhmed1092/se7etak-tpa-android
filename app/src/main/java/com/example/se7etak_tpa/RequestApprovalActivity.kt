@@ -34,7 +34,7 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
         )
         findViewById<Button>(R.id.request_approval_submit_button).setOnClickListener(this)
 
-        val list = arrayListOf<String>("Hassan", "Ajj", "bgadf", "dfsd")
+        val list = arrayListOf<String>("AAA", "ABC", "BDC", "dfsd")
 
         val providerTypeSpinner =
             findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_type_spinner)

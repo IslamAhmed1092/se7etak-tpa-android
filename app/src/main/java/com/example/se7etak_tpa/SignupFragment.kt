@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SignupFragment : Fragment() {
 
@@ -26,6 +29,11 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = signupViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        signupViewModel.resetSignupData()
+
         binding.btnLogin.setOnClickListener {
             val action = SignupFragmentDirections.actionSignupFragmentToLoginFragment()
             findNavController().navigate(action)
@@ -35,11 +43,42 @@ class SignupFragment : Fragment() {
             checkAllFields()
 
             if (!isAnyErrorExist()) {
+                signupViewModel.signup(
+                    binding.etName.text.toString(),
+                    binding.etEmail.text.toString(),
+                    binding.etPassword.text.toString(),
+                    binding.etMobile.text.toString(),
+                    binding.etId.text.toString()
+                )
+            }
+        }
+
+        val errorAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("ERROR!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+        signupViewModel.signupStatus.observe(viewLifecycleOwner, {
+            if (it == StatusObject.DONE) {
+                Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
                 val action =
                     SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
                 findNavController().navigate(action)
+
+            } else if (it == StatusObject.ERROR){
+                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                if (signupViewModel.errorMessage.contains("email", true)) {
+                    binding.ilEmail.isErrorEnabled = true
+                    binding.ilEmail.error = signupViewModel.errorMessage
+                } else if (signupViewModel.errorMessage.contains("PhoneNumber", true)) {
+                    binding.ilMobile.isErrorEnabled = true
+                    binding.ilMobile.error = signupViewModel.errorMessage
+                } else if (signupViewModel.errorMessage.contains("id", true)) {
+                    binding.ilId.isErrorEnabled = true
+                    binding.ilId.error = signupViewModel.errorMessage
+                }
             }
-        }
+        })
 
         binding.etName.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -62,6 +101,7 @@ class SignupFragment : Fragment() {
                 binding.ilPassword.isErrorEnabled = false
             } else {
                 checkPassword()
+                if(!binding.etConfirmPassword.text?.toString().isNullOrEmpty()) checkConfirmPassword()
             }
         }
 
@@ -69,7 +109,8 @@ class SignupFragment : Fragment() {
             if (hasFocus) {
                 binding.ilConfirmPassword.isErrorEnabled = false
             } else {
-                if(!binding.etPassword.text?.toString().isNullOrEmpty()) checkConfirmPassword()
+                if(!binding.etPassword.text?.toString().isNullOrEmpty()
+                    && !binding.etConfirmPassword.text?.toString().isNullOrEmpty()) checkConfirmPassword()
             }
         }
 
@@ -90,12 +131,10 @@ class SignupFragment : Fragment() {
         }
 
         binding.etId.setOnEditorActionListener { _, id, _ ->
-            if(id == EditorInfo.IME_ACTION_DONE){
+            if(id == EditorInfo.IME_ACTION_DONE) {
                 binding.btnSignup.performClick()
-                true
-            } else {
-                false
             }
+            false
         }
 
     }
@@ -144,7 +183,7 @@ class SignupFragment : Fragment() {
     private fun checkPassword() {
         if (!signupViewModel.validatePassword(binding.etPassword.text?.toString())) {
             binding.ilPassword.isErrorEnabled = true
-            binding.ilPassword.error = "password should be at least 8 chars"
+            binding.ilPassword.error = getString(R.string.password_rules)
         } else {
             binding.ilPassword.isErrorEnabled = false
         }

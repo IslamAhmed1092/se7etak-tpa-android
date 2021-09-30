@@ -4,7 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data></data>
+    <data>
+        <import type="com.example.se7etak_tpa.StatusObject"/>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.example.se7etak_tpa.SignupViewModel" />
+    </data>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -195,15 +201,37 @@
                             android:textSize="18sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_signup"
-                        style="@style/ContainedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_marginTop="25dp"
-                        android:backgroundTint="@color/purple_dark"
-                        android:text="@string/sign_up" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_signup"
+                            style="@style/ContainedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/purple_dark"
+                            android:text="@{(viewModel.signupStatus != StatusObject.LOADING)? @string/sign_up: ``}"
+                            android:enabled="@{viewModel.signupStatus != StatusObject.LOADING}"
+                            tools:text="@string/sign_up"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <ProgressBar
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:visibility="@{(viewModel.signupStatus != StatusObject.LOADING)? View.GONE : View.VISIBLE}"
+                            tools:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:indeterminateTint="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
 
