@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.se7etak_tpa.SignupStatus"/>
+        <import type="com.example.se7etak_tpa.StatusObject"/>
         <import type="android.view.View"/>
         <variable
             name="viewModel"
@@ -212,8 +212,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/purple_dark"
-                            android:text="@{(viewModel.status != SignupStatus.LOADING)? @string/sign_up: ``}"
-                            android:enabled="@{viewModel.status != SignupStatus.LOADING}"
+                            android:text="@{(viewModel.signupStatus != StatusObject.LOADING)? @string/sign_up: ``}"
+                            android:enabled="@{viewModel.signupStatus != StatusObject.LOADING}"
                             tools:text="@string/sign_up"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -223,7 +223,7 @@
                         <ProgressBar
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:visibility="@{(viewModel.status != SignupStatus.LOADING)? View.GONE : View.VISIBLE}"
+                            android:visibility="@{(viewModel.signupStatus != StatusObject.LOADING)? View.GONE : View.VISIBLE}"
                             tools:visibility="gone"
                             app:layout_constraintTop_toTopOf="parent"
                             android:indeterminateTint="@android:color/white"

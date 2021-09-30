@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.example.se7etak_tpa.StatusObject"/>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.example.se7etak_tpa.SignupViewModel" />
@@ -84,7 +86,8 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="24dp"
                         android:gravity="center"
-                        android:text="@string/enter_code"
+                        android:text="@{viewModel.code}"
+                        tools:text="123456"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -139,6 +142,7 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_send_again"
                             style="@style/TextButton"
+                            android:enabled="@{viewModel.verificationStatus != StatusObject.LOADING}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/runda_medium"
@@ -148,6 +152,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
+                        android:layout_marginTop="24dp"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.button.MaterialButton
@@ -156,16 +161,27 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="24dp"
                             android:backgroundTint="@{viewModel.timerFinished? @color/disabled_button_color: @color/purple_dark}"
-                            android:enabled="@{!viewModel.timerFinished}"
-                            android:text="@string/confirm"
+                            android:enabled="@{!viewModel.timerFinished &amp;&amp; (viewModel.verificationStatus != StatusObject.LOADING)}"
+                            android:text="@{(viewModel.verificationStatus != StatusObject.LOADING)? @string/confirm: ``}"
+                            tools:text="@string/confirm"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:backgroundTint="@color/purple_dark" />
 
+
+                        <ProgressBar
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:visibility="@{(viewModel.verificationStatus != StatusObject.LOADING)? View.GONE : View.VISIBLE}"
+                            tools:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:indeterminateTint="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

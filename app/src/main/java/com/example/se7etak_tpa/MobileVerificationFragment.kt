@@ -77,27 +77,28 @@ class MobileVerificationFragment : Fragment() {
 
         val failedAlertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Failed")
-            .setMessage("Code isn't correct, please try again.")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
 
         binding.btnConfirm.setOnClickListener {
-            if(signupViewModel.isCodeCorrect(binding.etCode.text.toString())) {
-                Toast.makeText(context, "Code is correct", Toast.LENGTH_LONG).show()
-            } else {
-                    failedAlertDialog.show()
-            }
-
+            signupViewModel.verifyCode(binding.etCode.text?.toString())
         }
+
+        signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
+            if (it == StatusObject.DONE) {
+                Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_LONG).show()
+            } else if (it == StatusObject.ERROR){
+                failedAlertDialog.setMessage(signupViewModel.errorMessage).show()
+            }
+        })
+
 
         binding.etCode.setOnEditorActionListener { _, id, _ ->
             if(id == EditorInfo.IME_ACTION_DONE){
                 binding.btnConfirm.performClick()
-                true
-            } else {
-                false
             }
+            false
         }
     }
 

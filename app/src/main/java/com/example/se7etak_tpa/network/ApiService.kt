@@ -18,5 +18,9 @@ interface ApiService {
         @Body user: Map<String, String>
     ): Call<JsonObject>
 
+    @POST("VerifyCode")
+    fun verifyCode(
+        @Body body: Map<String, String>
+    ): Call<JsonObject>
 }
 

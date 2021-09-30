@@ -5,23 +5,24 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.se7etak_tpa.network.Api
 import com.google.gson.JsonObject
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-enum class SignupStatus {INITIAL, LOADING, ERROR, DONE }
+enum class StatusObject {INITIAL, LOADING, ERROR, DONE }
 
 const val TAG = "SignupViewModel"
 
 class SignupViewModel: ViewModel() {
 
-    private val _status = MutableLiveData(SignupStatus.INITIAL)
-    val status: LiveData<SignupStatus> get() = _status
+    private val _signupStatus = MutableLiveData(StatusObject.INITIAL)
+    val signupStatus: LiveData<StatusObject> get() = _signupStatus
+
+    private val _verificationStatus = MutableLiveData(StatusObject.INITIAL)
+    val verificationStatus: LiveData<StatusObject> get() = _verificationStatus
 
     private var _errorMessage: String = ""
     val errorMessage: String get() = _errorMessage
@@ -31,6 +32,13 @@ class SignupViewModel: ViewModel() {
 
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> get() = _email
+
+    /**
+     * for debugging only
+     */
+    private val _code = MutableLiveData<String>()
+    val code: LiveData<String> get() = _code
+
 
     private val _timerMinutes = MutableLiveData(0)
     val timerMinutes: LiveData<Int> get() = _timerMinutes
@@ -83,25 +91,26 @@ class SignupViewModel: ViewModel() {
             "phoneNumber" to number, "password" to password)
 
         val callResponse = Api.retrofitService.register(user)
-        _status.value = SignupStatus.LOADING
+        _signupStatus.value = StatusObject.LOADING
         callResponse.enqueue(object : Callback<JsonObject> {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if(response.code() == 200) {
                     _phone.value = number
                     _email.value = email
-                    _status.value = SignupStatus.DONE
+                    _code.value = response.body()?.get("code")?.asString
+                    _signupStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else {
                     _errorMessage = JSONObject(response.errorBody()?.string() ?:"{}").optString("message")
-                    _status.value = SignupStatus.ERROR
+                    _signupStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
                 }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 _errorMessage = "Please check your internet connection and try again"
-                _status.value = SignupStatus.ERROR
+                _signupStatus.value = StatusObject.ERROR
                 Log.i(TAG, "onFailure: ${t.message}")
             }
 
@@ -109,12 +118,44 @@ class SignupViewModel: ViewModel() {
 
     }
 
-    fun isCodeCorrect(code: String?): Boolean {
-        return !code.isNullOrEmpty() && code == "123456"
+    fun verifyCode(code: String?){
+        if (code.isNullOrEmpty()) {
+            _errorMessage = "Code isn't correct, Please try again."
+            _verificationStatus.value = StatusObject.ERROR
+            return
+        }
+
+        val params = mapOf("email" to _email.value!!, "code" to code)
+
+        val callResponse = Api.retrofitService.verifyCode(params)
+        _verificationStatus.value = StatusObject.LOADING
+        callResponse.enqueue(object : Callback<JsonObject> {
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.code() == 200) {
+                    _verificationStatus.value = StatusObject.DONE
+                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else {
+                    _errorMessage = "Code isn't correct, Please try again."
+                    _verificationStatus.value = StatusObject.ERROR
+                    Log.i("TAG", "onResponse ${response.code()}: $_errorMessage" )
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                _errorMessage = "Please check your internet connection and try again"
+                _verificationStatus.value = StatusObject.ERROR
+                Log.i(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+
+
     }
 
     fun resetSignupData() {
-        _status.value = SignupStatus.INITIAL
+        _signupStatus.value = StatusObject.INITIAL
+        _verificationStatus.value = StatusObject.INITIAL
         _errorMessage = ""
         _phone.value = ""
         _email.value = ""
