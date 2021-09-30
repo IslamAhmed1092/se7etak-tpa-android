@@ -17,11 +17,10 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.UCropActivity
 import java.io.ByteArrayOutputStream
 import java.io.File
 import androidx.core.app.ActivityCompat.startActivityForResult
+import com.theartofdev.edmodo.cropper.CropImage
 
 
 object Utils {
@@ -63,15 +62,8 @@ object Utils {
 
     // perform circular crop using UCrop library.
     fun performCrop(uri: Uri?, cacheDir: File?, activity: Activity?) {
-        val tempCropped = File(cacheDir, "profileImage.png")
-        val destinationUri = Uri.fromFile(tempCropped)
-        val crop = UCrop.of(uri!!, destinationUri).withMaxResultSize(1080, 768)
-        val options = UCrop.Options()
-        //Set the gesture for cutting pictures
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.ALL)
-        options.setFreeStyleCropEnabled(true)
-        crop.withOptions(options)
-        crop.start(activity!!)
+        CropImage.activity(uri)
+            .start(activity!!);
     }
 
     fun chooseAttachement(context: Context) {

@@ -4,18 +4,21 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.core.graphics.component1
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.example.se7etak_tpa.Utils.Utils
-import com.yalantis.ucrop.UCrop
-import java.io.File
+import com.theartofdev.edmodo.cropper.CropImage
 import java.util.*
+import android.widget.AdapterView
+
+import android.widget.Toast
+
+
+import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+
 
 class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -30,6 +33,45 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
             this
         )
         findViewById<Button>(R.id.request_approval_submit_button).setOnClickListener(this)
+
+        val list = arrayListOf<String>("Hassan", "Ajj", "bgadf", "dfsd")
+
+        val providerTypeSpinner =
+            findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_type_spinner)
+        providerTypeSpinner.item = list
+
+        providerTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(this@RequestApprovalActivity, list!![position], Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+
+        val providerNameSpinner =
+            findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_name_spinner)
+        providerNameSpinner.item = list
+
+        providerNameSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(this@RequestApprovalActivity, list!![position], Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+
     }
 
 
@@ -44,19 +86,20 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
                     attachmentName = Utils.getFileName(this, uri)
                     addAttachment(uri)
                 }
-            } else if (requestCode == UCrop.REQUEST_CROP) {
-                addAttachment(UCrop.getOutput(data!!)!!)
-//                findViewById<CircleImageView>(R.id.sign_up_profile_image_view).setImageBitmap(ImageUtils.getBitmap(
-//                    UCrop.getOutput(data!!), contentResolver))
-            } else if (requestCode == UCrop.RESULT_ERROR) {
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                val result = CropImage.getActivityResult(data);
+                val resultUri = result.uri;
+                addAttachment(resultUri)
+
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "upload failed, try again!", Toast.LENGTH_SHORT).show()
-                Log.w(packageName, "OnActivityResult: UCrop.RESULT_ERROR", UCrop.getError(data!!))
+                Log.w(packageName, "OnActivityResult: UCrop.RESULT_ERROR")
             }
         } else super.onActivityResult(requestCode, resultCode, data)
 
     }
 
-    private fun addAttachment(uri: Uri){
+    private fun addAttachment(uri: Uri) {
         val attachment1View = findViewById<View>(R.id.request_approval_attachment1_view)
         val attachment2View = findViewById<View>(R.id.request_approval_attachment2_view)
 
@@ -80,8 +123,15 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.request_approval_add_attachment_image_button -> {
-                if (findViewById<View>(R.id.request_approval_attachment1_view).isVisible && findViewById<View>(R.id.request_approval_attachment2_view).isVisible)
-                    Toast.makeText(this, "You can't add more than two attachments!", Toast.LENGTH_SHORT).show()
+                if (findViewById<View>(R.id.request_approval_attachment1_view).isVisible && findViewById<View>(
+                        R.id.request_approval_attachment2_view
+                    ).isVisible
+                )
+                    Toast.makeText(
+                        this,
+                        "You can't add more than two attachments!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 else Utils.chooseAttachement(this)
             }
             R.id.request_approval_remove_attachment_image_button -> {
@@ -90,6 +140,7 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
             R.id.request_approval_submit_button -> {
 
             }
+
         }
     }
 }

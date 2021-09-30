@@ -58,4 +58,11 @@ dependencies {
     // Navigation libraries
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+
+
+    // crop photo library
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
+    // smart spinner
+    implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
 }

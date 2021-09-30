@@ -12,13 +12,24 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
+
+        </activity>
+        <activity android:name=".RequestApprovalActivity"
+            android:theme="@style/Theme.Se7etakTPA"
+            android:label="Request Activity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
     </application>
+
 
 </manifest>
