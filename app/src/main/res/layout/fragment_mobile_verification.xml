@@ -40,7 +40,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_mobile_verification"
                 style="@style/MaterialCardView"
@@ -75,7 +74,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="16dp"
                         android:gravity="center"
-                        android:text="@{@string/verification_text(viewModel.phone)}"
+                        android:text="@{@string/verification_text(viewModel.user.phoneNumber)}"
                         android:textSize="16sp"
                         tools:text="@string/test_verification_text" />
 
@@ -129,6 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:visibility="@{viewModel.hideSendAgainTimerFinished? View.VISIBLE:View.INVISIBLE}"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -190,6 +190,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <View
+                android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="48dp"

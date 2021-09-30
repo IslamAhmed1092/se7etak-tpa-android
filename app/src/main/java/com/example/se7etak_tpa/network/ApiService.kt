@@ -2,10 +2,7 @@ package com.example.se7etak_tpa.network
 
 import com.google.gson.JsonObject
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * here we add functions for api requests
@@ -14,13 +11,18 @@ import retrofit2.http.POST
 interface ApiService {
 
     @POST("Register")
-    fun register(
+    fun register (
         @Body user: Map<String, String>
     ): Call<JsonObject>
 
     @POST("VerifyCode")
-    fun verifyCode(
+    fun verifyCode (
         @Body body: Map<String, String>
+    ): Call<JsonObject>
+
+    @GET("SendCode")
+    fun sendCode (
+        @Query("email") email: String
     ): Call<JsonObject>
 }
 

@@ -1,6 +1,7 @@
 package com.example.se7etak_tpa
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -14,8 +15,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 
 class MobileVerificationFragment : Fragment() {
 
@@ -57,6 +60,12 @@ class MobileVerificationFragment : Fragment() {
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        val failedAlertDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Failed")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+
         val timer = object: CountDownTimer(300000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 signupViewModel.setTimer(millisUntilFinished)
@@ -68,18 +77,36 @@ class MobileVerificationFragment : Fragment() {
         }
         timer.start()
 
+
+        val hideSendAgainTimer = object: CountDownTimer(10000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                signupViewModel.setHideSendCodeTimerFinished(true)
+            }
+        }
+        hideSendAgainTimer.start()
+
+
         binding.btnSendAgain.setOnClickListener {
-            // call the api to send code
-            timer.cancel()
-            timer.start()
-            signupViewModel.setTimerFinished(false)
+            signupViewModel.sendCode()
+
         }
 
-        val failedAlertDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Failed")
-            .setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
+        signupViewModel.sendCodeStatus.observe(viewLifecycleOwner, {
+            if (it == StatusObject.DONE) {
+                timer.cancel()
+                timer.start()
+                signupViewModel.setTimerFinished(false)
+                hideSendAgainTimer.cancel()
+                hideSendAgainTimer.start()
+                signupViewModel.setHideSendCodeTimerFinished(false)
+            } else if (it == StatusObject.ERROR){
+                failedAlertDialog.setMessage("Please check your internet connection and try again").show()
             }
+        })
+
 
         binding.btnConfirm.setOnClickListener {
             signupViewModel.verifyCode(binding.etCode.text?.toString())
@@ -88,6 +115,7 @@ class MobileVerificationFragment : Fragment() {
         signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
                 Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_LONG).show()
+                SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
             } else if (it == StatusObject.ERROR){
                 failedAlertDialog.setMessage(signupViewModel.errorMessage).show()
             }
@@ -101,5 +129,7 @@ class MobileVerificationFragment : Fragment() {
             false
         }
     }
+
+
 
 }
