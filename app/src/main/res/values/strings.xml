@@ -9,8 +9,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="have_an_account">already have an account?</string>
     <string name="login">Login</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_account_title">Create an account</string>
     <string name="verification_text">We\'ve sent an SMS with verification code to your phone <b>%s</b></string>
     <string name="test_verification_text">We\'ve sent an SMS with verification code to your phone <b>01113586932</b></string>

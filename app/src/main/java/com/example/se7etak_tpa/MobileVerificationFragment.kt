@@ -31,6 +31,8 @@ class MobileVerificationFragment : Fragment() {
             .setTitle("Warning!")
             .setMessage("Do you want to return before verifying your phone number?")
             .setPositiveButton("RETURN") { _, _ ->
+                signupViewModel.resetSignupData()
+
                 val action = MobileVerificationFragmentDirections.actionMobileVerificationFragmentToLoginFragment()
                 findNavController().navigate(action)
             }

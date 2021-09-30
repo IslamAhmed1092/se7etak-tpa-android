@@ -57,15 +57,13 @@ class SignupFragment : Fragment() {
                 dialog.dismiss()
             }
         signupViewModel.status.observe(viewLifecycleOwner, Observer {
-            if (it == SignupStatus.LOADING) {
-//                Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
-            } else if (it == SignupStatus.DONE) {
-                Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
-//                val action =
-//                    SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
-//                findNavController().navigate(action)
+            if (it == SignupStatus.DONE) {
+                Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
+                val action =
+                    SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
+                findNavController().navigate(action)
 
-            } else {
+            } else if (it == SignupStatus.ERROR){
                 errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
                 if (signupViewModel.errorMessage.contains("email", true)) {
                     binding.ilEmail.isErrorEnabled = true

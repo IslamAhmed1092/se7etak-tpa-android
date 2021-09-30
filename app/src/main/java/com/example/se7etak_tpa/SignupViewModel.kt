@@ -14,13 +14,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-enum class SignupStatus { LOADING, ERROR, DONE }
+enum class SignupStatus {INITIAL, LOADING, ERROR, DONE }
 
 const val TAG = "SignupViewModel"
 
 class SignupViewModel: ViewModel() {
 
-    private val _status = MutableLiveData<SignupStatus>()
+    private val _status = MutableLiveData(SignupStatus.INITIAL)
     val status: LiveData<SignupStatus> get() = _status
 
     private var _errorMessage: String = ""
@@ -113,6 +113,14 @@ class SignupViewModel: ViewModel() {
         return !code.isNullOrEmpty() && code == "123456"
     }
 
-
+    fun resetSignupData() {
+        _status.value = SignupStatus.INITIAL
+        _errorMessage = ""
+        _phone.value = ""
+        _email.value = ""
+        _timerMinutes.value = 0
+        _timerSeconds.value = 0
+        _timerFinished.value = false
+    }
 
 }
