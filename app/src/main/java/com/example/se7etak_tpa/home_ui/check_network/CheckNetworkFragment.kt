@@ -3,6 +3,7 @@ package com.example.se7etak_tpa.home_ui.check_network
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -10,10 +11,15 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
 import com.google.android.gms.location.*
@@ -142,7 +148,26 @@ class CheckNetworkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_check_network, container, false)
+
+        activity?.window?.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window!!.decorView).isAppearanceLightStatusBars = true
+
+        binding.rvFilters.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+        binding.rvFilters.itemAnimator = DefaultItemAnimator()
+        binding.rvFilters.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)))
+        binding.rvFilters.adapter = FiltersListAdapter()
+
+        binding.rvFilters.setHasFixedSize(true)
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.window?.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window!!.decorView).isAppearanceLightStatusBars = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -164,9 +189,9 @@ class CheckNetworkFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        if(this::fusedLocationClient.isInitialized &&
-            this::locationCallback.isInitialized)
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window!!.decorView).isAppearanceLightStatusBars = false
     }
 
     /**
@@ -183,4 +208,6 @@ class CheckNetworkFragment : Fragment() {
             ((latitude - EGYPT_START_LAT) / (4 * h)).toLong()
         return column + row * NO_OF_COLUMNS
     }
+
+
 }

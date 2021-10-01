@@ -7,12 +7,16 @@
         <entry key="app/src/main/res/drawable-v24/ic_logo.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/background_circle.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/curved_button.xml" value="0.255859375" />
         <entry key="app/src/main/res/drawable/gradient_background.xml" value="0.23055555555555557" />
+        <entry key="app/src/main/res/drawable/ic_add_circle_outline.xml" value="0.255859375" />
         <entry key="app/src/main/res/drawable/ic_at_home.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.340625" />
+        <entry key="app/src/main/res/drawable/ic_clinic.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_error.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/ic_hospital.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_location.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_logout_line.xml" value="0.3411458333333333" />
@@ -21,6 +25,7 @@
         <entry key="app/src/main/res/drawable/ic_otp.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_se7etak_doctor.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/shadow.xml" value="0.255859375" />
         <entry key="app/src/main/res/font/font_family.xml" value="0.35885416666666664" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3203125" />
@@ -28,7 +33,9 @@
         <entry key="app/src/main/res/layout/activity_request_approval.xml" value="0.264" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.264" />
         <entry key="app/src/main/res/layout/app_bar_transparent.xml" value="0.3203125" />
-        <entry key="app/src/main/res/layout/fragment_check_network.xml" value="0.32083333333333336" />
+        <entry key="app/src/main/res/layout/attachment_custom_view.xml" value="0.32083333333333336" />
+        <entry key="app/src/main/res/layout/fragment_check_network.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_mobile_verification.xml" value="0.264" />
@@ -36,6 +43,7 @@
         <entry key="app/src/main/res/layout/fragment_request_approval.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_request_reimbursement.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.264" />
+        <entry key="app/src/main/res/layout/map_filter_item.xml" value="0.40092699884125144" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3203125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3146067415730337" />
       </map>
