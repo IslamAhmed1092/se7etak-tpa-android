@@ -1,11 +1,13 @@
 package com.example.se7etak_tpa
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -15,14 +17,19 @@ import java.util.*
 import android.widget.AdapterView
 
 import android.widget.Toast
-
+import androidx.core.view.isEmpty
 
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+import com.example.se7etak_tpa.Utils.GmailSender
+import com.google.android.material.textfield.TextInputEditText
+import java.lang.Exception
 
 
 class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
 
     private var attachmentName: String? = null
+    private var attachment1Uri: Uri? = null
+    private var attachment2Uri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,18 +86,23 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
         // get the image selected for Attachment.
         if (resultCode == RESULT_OK) {
             if (requestCode == Utils.RC_PHOTO_PICKER || requestCode == Utils.REQUEST_IMAGE_CAPTURE) {
-                attachmentName = Utils.getFileName(this, data?.data!!)
-                Utils.performCrop(Objects.requireNonNull(data)!!.data, cacheDir, this)
+                var uri = data?.data
+                if(requestCode == Utils.REQUEST_IMAGE_CAPTURE) uri = Utils.getImageUri(applicationContext, data?.extras?.get("data") as Bitmap)
+                attachmentName = Utils.getFileName(this, uri)
+                Utils.performCrop(uri, cacheDir, this)
             } else if (requestCode == Utils.RC_PDF_PICKER) { // pdf file
                 data?.data?.also { uri ->
+                    if(attachment1Uri == null) attachment2Uri = uri
+                    else attachment1Uri = uri
                     attachmentName = Utils.getFileName(this, uri)
                     addAttachment(uri)
                 }
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data);
                 val resultUri = result.uri;
+                if(attachment1Uri == null) attachment2Uri = resultUri
+                else attachment1Uri = resultUri
                 addAttachment(resultUri)
-
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "upload failed, try again!", Toast.LENGTH_SHORT).show()
                 Log.w(packageName, "OnActivityResult: UCrop.RESULT_ERROR")
@@ -123,10 +135,7 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.request_approval_add_attachment_image_button -> {
-                if (findViewById<View>(R.id.request_approval_attachment1_view).isVisible && findViewById<View>(
-                        R.id.request_approval_attachment2_view
-                    ).isVisible
-                )
+                if (attachment1Uri != null && attachment2Uri != null)
                     Toast.makeText(
                         this,
                         "You can't add more than two attachments!",
@@ -136,11 +145,57 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.request_approval_remove_attachment_image_button -> {
                 (view.parent as View).visibility = View.GONE
+                val removedFileName = ((view.parent as ViewGroup).getChildAt(0) as TextView).text
+                if(removedFileName == Utils.getFileName(this,attachment1Uri)){
+                    attachment1Uri = null
+                }else attachment2Uri = null
             }
             R.id.request_approval_submit_button -> {
+                if(validate()) {
+                    val providerType = findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_type_spinner).selectedItem
+                    val providerName = findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_name_spinner).selectedItem
+                    val comment = findViewById<TextInputEditText>(R.id.request_approval_comment_edit_text).text
 
+                    sendEmail()
+                }
             }
 
         }
     }
+
+    private fun sendEmail() {
+        try {
+            val email = GmailSender.init(
+                "se7etak.tpa.eva.pharma@gmail.com",
+                "password", "islamyousry16@gmail.com", "subj",
+                "body"
+            )
+            email.createEmailMessage()
+            email.sendEmail()
+
+        } catch (e: Exception) {
+            print(e.message)
+        }
+
+    }
+    
+    private fun validate():Boolean{
+        val providerTypeSpinner = findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_type_spinner)
+        val providerNameSpinner = findViewById<SmartMaterialSpinner<String>>(R.id.request_approval_provider_name_spinner)
+        var flag = true
+        if(attachment1Uri == null || attachment2Uri == null){
+            Toast.makeText(this, "Attachments must not be empty!", Toast.LENGTH_SHORT).show()
+            flag = false
+        }
+        if(providerTypeSpinner.selectedItem == null) {
+            providerTypeSpinner.errorText = "You must select an item!"
+            flag = false
+        }
+        if(providerNameSpinner.selectedItem == null){
+            providerNameSpinner.errorText = "You must select an item!"
+            flag = false
+        }
+        return flag
+    }
+
 }

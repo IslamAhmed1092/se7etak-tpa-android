@@ -45,6 +45,18 @@ object Utils {
         return bitmap
     }
 
+    fun getImageUri(context: Context, image: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            image,
+            "Image",
+            null
+        )
+        return Uri.parse(path)
+    }
+
     // show image in full screen mode.
     fun showPhoto(context: Context, uri: Uri) {
         val intent = Intent()
@@ -114,28 +126,31 @@ object Utils {
         else -> null
     }
 
-    fun getFileName(context: Context, uri: Uri): String {
-        context.contentResolver.query(uri, null, null, null, null)
-            ?.let{ cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.moveToFirst()
-                return@getFileName cursor.getString(nameIndex)
-            }?:return ""
-    }
-
-    private fun Context.getCursorContent(uri: Uri): String? = try {
-        contentResolver.query(uri, null, null, null, null)?.let { cursor ->
-            cursor.run {
-                val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
-                if (moveToFirst()) mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri))
-                // case for get actual name of file
-                //if (moveToFirst()) getString(getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                else null
-            }.also { cursor.close() }
+    fun getFileName(context: Context, uri: Uri?): String {
+        uri?.let {
+            context.contentResolver.query(uri, null, null, null, null)
+                ?.let { cursor ->
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    cursor.moveToFirst()
+                    return@getFileName cursor.getString(nameIndex)
+                } ?: return@getFileName ""
         }
-    } catch (e: Exception) {
-        null
+        return ""
+}
+
+private fun Context.getCursorContent(uri: Uri): String? = try {
+    contentResolver.query(uri, null, null, null, null)?.let { cursor ->
+        cursor.run {
+            val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
+            if (moveToFirst()) mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri))
+            // case for get actual name of file
+            //if (moveToFirst()) getString(getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            else null
+        }.also { cursor.close() }
     }
+} catch (e: Exception) {
+    null
+}
 
 }
 
