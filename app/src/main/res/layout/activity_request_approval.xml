@@ -130,7 +130,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/request_approval_comment_edit_text"
+                    android:id="@+id/request_approval_comment_text_input_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,6 +145,7 @@
                     app:boxStrokeWidth=".5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/request_approval_comment_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fadeScrollbars="false"
