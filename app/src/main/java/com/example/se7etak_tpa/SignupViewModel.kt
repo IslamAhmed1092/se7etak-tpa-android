@@ -94,7 +94,7 @@ class SignupViewModel: ViewModel() {
 
     fun signup(name: String, email: String, password: String, number: String, id: String) {
 
-        val userParams = mapOf<String, String>("se7etakID" to id, "name" to name, "email" to email,
+        val userParams = mapOf("se7etakID" to id, "name" to name, "email" to email,
             "phoneNumber" to number, "password" to password)
 
         val callResponse = Api.retrofitService.register(userParams)
@@ -212,8 +212,9 @@ class SignupViewModel: ViewModel() {
         }
 
         fun loadUserData(context: Context): User {
+            val emptyJson = "{\"email\":\"\",\"id\":\"\",\"name\":\"\",\"phoneNumber\":\"\",\"token\":\"\"}"
             val pref = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
-            return Gson().fromJson(pref.getString("USER", ""), User::class.java)
+            return Gson().fromJson(pref.getString("USER", emptyJson), User::class.java)
         }
     }
 }

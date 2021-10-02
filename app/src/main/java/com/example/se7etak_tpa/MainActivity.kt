@@ -14,5 +14,12 @@ class MainActivity : AppCompatActivity() {
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+
+        val user = SignupViewModel.loadUserData(this)
+        if(user.token != "") {
+            val homeIntent = Intent(this, HomeActivity::class.java)
+            startActivity(homeIntent)
+            finish()
+        }
     }
 }

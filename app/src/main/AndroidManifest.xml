@@ -18,8 +18,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Se7etakTPA">
+        android:theme="@style/Theme.Se7etakTPA"
+        android:usesCleartextTraffic="true">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -34,31 +34,31 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".HomeActivity"
             android:exported="true"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_home"
+            android:theme="@style/NoActionBar">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
+            android:theme="@style/NoActionBar">
 
-        </activity>
-        <activity android:name=".RequestApprovalActivity"
-            android:theme="@style/Theme.Se7etakTPA"
-            android:label="Request Activity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
+        <activity
+            android:name=".RequestApprovalActivity"
+            android:exported="true"
+            android:label="Request Activity"
+            android:theme="@style/Theme.Se7etakTPA"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
-
 
 </manifest>

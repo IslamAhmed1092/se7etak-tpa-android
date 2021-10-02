@@ -106,8 +106,6 @@ class MobileVerificationFragment : Fragment() {
                 failedAlertDialog.setMessage("Please check your internet connection and try again").show()
             }
         })
-
-
         binding.btnConfirm.setOnClickListener {
             signupViewModel.verifyCode(binding.etCode.text?.toString())
         }
@@ -116,6 +114,10 @@ class MobileVerificationFragment : Fragment() {
             if (it == StatusObject.DONE) {
                 Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_LONG).show()
                 SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
+                val action =
+                    MobileVerificationFragmentDirections.actionMobileVerificationFragmentToHomeActivity()
+                findNavController().navigate(action)
+                activity?.finish()
             } else if (it == StatusObject.ERROR){
                 failedAlertDialog.setMessage(signupViewModel.errorMessage).show()
             }

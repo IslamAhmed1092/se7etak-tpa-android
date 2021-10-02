@@ -167,7 +167,7 @@ class RequestApprovalActivity : AppCompatActivity(), View.OnClickListener {
         try {
             val email = GmailSender.init(
                 "se7etak.tpa.eva.pharma@gmail.com",
-                "password", "islamyousry16@gmail.com", "subj",
+                "password", "islamyousry16@gmail.com", "subject",
                 "body"
             )
             email.createEmailMessage()
