@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa.home_ui.notifications
+package com.example.se7etak_tpa.home_ui.request_approval
 
 import android.os.Bundle
 import android.view.LayoutInflater
