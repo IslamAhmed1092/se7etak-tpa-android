@@ -6,5 +6,5 @@ data class MapFilter(
     val name: String,
     val backgroundColorID: Int,
     val textColorID: Int = Color.WHITE,
-    var isEnabled: Boolean = false
+    var isEnabled: Boolean = true
 )

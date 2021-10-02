@@ -90,6 +90,14 @@ class CheckNetworkViewModel : ViewModel() {
         }
     }
 
+    fun showHideMarkers(type: String, visible: Boolean) {
+        _providersMap.value?.let{
+            val list = it[type]
+            list?.forEach { provider -> provider.marker?.isVisible = visible }
+        }
+    }
+
+
     companion object {
         val typesColors: Map<String, Float> = mapOf(
             "اسنان" to BitmapDescriptorFactory.HUE_AZURE,

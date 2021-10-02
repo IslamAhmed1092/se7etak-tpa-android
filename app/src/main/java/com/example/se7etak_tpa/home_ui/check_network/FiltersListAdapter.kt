@@ -10,7 +10,7 @@ import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.databinding.MapFilterItemBinding
 
-class FiltersListAdapter(val context: Context) :
+class FiltersListAdapter(private val context: Context, private val onFilterClicked: (MapFilter) -> Unit) :
     RecyclerView.Adapter<FiltersListAdapter.FiltersListViewHolder>() {
 
     private val filtersList = listOf(
@@ -29,7 +29,7 @@ class FiltersListAdapter(val context: Context) :
     class FiltersListViewHolder(private var binding: MapFilterItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(filter: MapFilter, context: Context) {
+        fun bind(filter: MapFilter, context: Context, onFilterClicked: (MapFilter) -> Unit) {
             binding.filter = filter
             binding.btnFilter.setOnClickListener {
                 filter.isEnabled = !filter.isEnabled
@@ -41,6 +41,7 @@ class FiltersListAdapter(val context: Context) :
                     binding.btnFilter.setTextColor(Color.BLACK)
                 }
 
+                onFilterClicked(filter)
             }
             if(filter.isEnabled) {
                 binding.btnFilter.backgroundTintList = ContextCompat.getColorStateList(context, filter.backgroundColorID)
@@ -65,7 +66,7 @@ class FiltersListAdapter(val context: Context) :
     }
 
     override fun onBindViewHolder(holder: FiltersListViewHolder, position: Int) {
-        holder.bind(filtersList[position], context)
+        holder.bind(filtersList[position], context, onFilterClicked)
     }
 
 }

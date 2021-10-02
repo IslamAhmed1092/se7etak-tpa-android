@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
 import com.google.android.gms.location.*
@@ -151,11 +152,14 @@ class CheckNetworkFragment : Fragment() {
         ).isAppearanceLightStatusBars = true
 
         binding.rvFilters.layoutManager =
-            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, true)
 
         binding.rvFilters.itemAnimator = DefaultItemAnimator()
         binding.rvFilters.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)))
-        binding.rvFilters.adapter = FiltersListAdapter(requireContext())
+        binding.rvFilters.adapter = FiltersListAdapter(requireContext()) {
+            viewModel.showHideMarkers(it.name, it.isEnabled)
+        }
+
         binding.rvFilters.setHasFixedSize(true)
 
         return binding.root
