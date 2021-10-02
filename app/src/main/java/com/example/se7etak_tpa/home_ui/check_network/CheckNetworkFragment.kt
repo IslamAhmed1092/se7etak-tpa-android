@@ -155,8 +155,7 @@ class CheckNetworkFragment : Fragment() {
 
         binding.rvFilters.itemAnimator = DefaultItemAnimator()
         binding.rvFilters.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)))
-        binding.rvFilters.adapter = FiltersListAdapter()
-
+        binding.rvFilters.adapter = FiltersListAdapter(requireContext())
         binding.rvFilters.setHasFixedSize(true)
 
         return binding.root

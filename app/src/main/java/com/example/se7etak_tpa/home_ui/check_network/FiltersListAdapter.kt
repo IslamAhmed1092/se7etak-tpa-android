@@ -1,28 +1,54 @@
 package com.example.se7etak_tpa.home_ui.check_network
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.databinding.MapFilterItemBinding
 
-class FiltersListAdapter :
+class FiltersListAdapter(val context: Context) :
     RecyclerView.Adapter<FiltersListAdapter.FiltersListViewHolder>() {
 
     private val filtersList = listOf(
-        MapFilter("Restaurants", R.drawable.ic_hospital),
-        MapFilter("Coffee", R.drawable.ic_hospital),
-        MapFilter("Shopping", R.drawable.ic_hospital),
-        MapFilter("Gas", R.drawable.ic_hospital),
-        MapFilter("Hospitals", R.drawable.ic_hospital)
+        MapFilter(context.getString(R.string.مستشفيات), R.color.مستشفيات),
+        MapFilter(context.getString(R.string.صيدليات), R.color.صيدليات, Color.BLACK),
+        MapFilter(context.getString(R.string.عيادات), R.color.عيادات),
+        MapFilter(context.getString(R.string.مجمع_عيادات), R.color.مجمع_عيادات),
+        MapFilter(context.getString(R.string.اسنان), R.color.اسنان),
+        MapFilter(context.getString(R.string.معامل), R.color.معامل, Color.BLACK),
+        MapFilter(context.getString(R.string.مراكز_متخصصه), R.color.مراكز_متخصصه),
+        MapFilter(context.getString(R.string.مراكز_علاج_طبيعي), R.color.مراكز_علاج_طبيعي),
+        MapFilter(context.getString(R.string.مراكز_اشعة), R.color.مراكز_اشعة),
+        MapFilter(context.getString(R.string.مركز_بصريات), R.color.مركز_بصريات, Color.BLACK)
     )
 
     class FiltersListViewHolder(private var binding: MapFilterItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(filter: MapFilter) {
+        fun bind(filter: MapFilter, context: Context) {
             binding.filter = filter
+            binding.btnFilter.setOnClickListener {
+                filter.isEnabled = !filter.isEnabled
+                if(filter.isEnabled) {
+                    binding.btnFilter.backgroundTintList = ContextCompat.getColorStateList(context, filter.backgroundColorID)
+                    binding.btnFilter.setTextColor(filter.textColorID)
+                } else {
+                    binding.btnFilter.backgroundTintList = null
+                    binding.btnFilter.setTextColor(Color.BLACK)
+                }
+
+            }
+            if(filter.isEnabled) {
+                binding.btnFilter.backgroundTintList = ContextCompat.getColorStateList(context, filter.backgroundColorID)
+                binding.btnFilter.setTextColor(filter.textColorID)
+            } else {
+                binding.btnFilter.backgroundTintList = null
+                binding.btnFilter.setTextColor(Color.BLACK)
+            }
         }
     }
 
@@ -38,8 +64,8 @@ class FiltersListAdapter :
         )
     }
 
-    override fun onBindViewHolder(holder: FiltersListAdapter.FiltersListViewHolder, position: Int) {
-        holder.bind(filtersList[position])
+    override fun onBindViewHolder(holder: FiltersListViewHolder, position: Int) {
+        holder.bind(filtersList[position], context)
     }
 
 }

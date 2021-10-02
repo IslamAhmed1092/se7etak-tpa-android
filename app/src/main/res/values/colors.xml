@@ -11,4 +11,16 @@
     <color name="disabled_button_color">#FFE0E0E0</color>
     <color name="status_bar_color">#ffe1f8f8</color>
     <color name="red">#ff0000</color>
+
+    <color name="اسنان">#007FFF</color>
+    <color name="مركز_بصريات">#00FF00</color>
+    <color name="صيدليات">#00FFFF</color>
+    <color name="عيادات">#0000FF</color>
+    <color name="مجمع_عيادات">#FF00FF</color>
+    <color name="مراكز_اشعة">#FF8000</color>
+    <color name="مراكز_علاج_طبيعي">#FF0000</color>
+    <color name="مراكز_متخصصه">#FF0080</color>
+    <color name="مستشفيات">#8000FF</color>
+    <color name="معامل">#FFFF00</color>
+
 </resources>
