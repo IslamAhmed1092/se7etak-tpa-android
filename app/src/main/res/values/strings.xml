@@ -28,4 +28,14 @@
     <string name="title_request_approval">Request Approval</string>
     <string name="title_request_reimbursement">Request Reimbursement</string>
     <string name="title_check_network">Check Network</string>
+    <string name="اسنان">اسنان</string>
+    <string name="مركز_بصريات">مركز بصريات</string>
+    <string name="صيدليات">صيدليات</string>
+    <string name="عيادات">عيادات</string>
+    <string name="مجمع_عيادات">مجمع عيادات</string>
+    <string name="مراكز_اشعة">مراكز اشعة</string>
+    <string name="مراكز_علاج_طبيعي">مراكز علاج طبيعي</string>
+    <string name="مراكز_متخصصه">مراكز متخصصه</string>
+    <string name="مستشفيات">مستشفيات</string>
+    <string name="معامل">معامل</string>
 </resources>

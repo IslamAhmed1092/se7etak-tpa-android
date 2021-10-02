@@ -1,6 +1,5 @@
 package com.example.se7etak_tpa.home_ui.check_network
 
-import android.Manifest
 import android.annotation.SuppressLint
 
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
 import com.google.android.gms.location.*
 
@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
@@ -78,9 +79,9 @@ class CheckNetworkFragment : Fragment() {
             Looper.getMainLooper()
         )
 
-        viewModel.currentLocation.observe(viewLifecycleOwner) {
+/*        viewModel.currentLocation.observe(viewLifecycleOwner) {
             if (it != null){
-                Toast.makeText(context, "current location changed", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "current location changed", Toast.LENGTH_SHORT).show()
                 mMap.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         it, 15f
@@ -88,14 +89,41 @@ class CheckNetworkFragment : Fragment() {
                 )
             }
 
-        }
+        }*/
 
         viewModel.currentTile.observe(viewLifecycleOwner) {
             if (previousTile != it) {
-                // send the request here
-                Toast.makeText(context, "Tile number changed", Toast.LENGTH_SHORT).show()
+                viewModel.updateProviders()
+//                Toast.makeText(context, "Tile number changed", Toast.LENGTH_SHORT).show()
             }
             previousTile = it
+        }
+
+        viewModel.providersMap.observe(viewLifecycleOwner) {
+            mMap.clear()
+            for((type, list) in it) {
+                list.forEach { provider ->
+                    val options = MarkerOptions()
+                        .position(LatLng(provider.latitude, provider.longitude))
+                        .title(provider.name)
+                        .icon(BitmapDescriptorFactory.defaultMarker(
+                            CheckNetworkViewModel.typesColors[type]!!)
+                        )
+                    val marker = mMap.addMarker(options)
+                    marker?.apply{
+                        tag = provider
+                    }
+                    provider.marker = marker
+                }
+
+            }
+        }
+
+        mMap.setOnMarkerClickListener { marker ->
+            (marker.tag as Provider).let {
+                Toast.makeText(context, "name: ${it.name} type: ${it.type}", Toast.LENGTH_LONG).show()
+            }
+            false
         }
 
     }
