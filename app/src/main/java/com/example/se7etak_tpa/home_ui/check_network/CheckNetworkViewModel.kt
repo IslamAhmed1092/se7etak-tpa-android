@@ -88,7 +88,9 @@ class CheckNetworkViewModel : ViewModel() {
             Provider(id = "8", name = "د/شيرين أحمد خليل", type = "عيادات", latitude = 29.9605111860232, longitude = 31.25408950803),
             Provider(id = "9", name = "عيادات داوى", type = "مجمع عيادات", latitude = 29.9612238617506, longitude = 31.2881135290003),
             Provider(id = "10", name = "مراكز د/ حسام منصور الطبية", type = "مجمع عيادات", latitude = 29.9588754580614, longitude = 31.257878410477),
-            Provider(id = "11", name = "مستشفى المجمع الطبى للقوات المسلحة", type = "مستشفيات", latitude = 29.9673248392669, longitude = 31.2421771393131),
+            Provider(id = "11", name = "مستشفى المجمع الطبى للقوات المسلحة", type = "مستشفيات", latitude = 29.9673248392669, longitude = 31.2421771393131,
+            city = "المعادي", governorate = "القاهرة", mainSpeciality = "جميع التخصصات الطبية", secondarySpeciality = "جميع التخصصات الطبية", address = "كورنيش المعادي",
+                phoneNumber1 = "0225256289", phoneNumber2 = "01203925210", phoneNumber3 = "01099926026", hotline = "19668"),
             Provider(id = "12", name = "مستشفي السلام الدولي", type = "مستشفيات", latitude = 29.984954861938, longitude = 31.2301857123296),
             Provider(id = "13", name = "مستشفي النيل بدراوي ", type = "مستشفيات", latitude = 29.9828657102764, longitude = 31.2312070250417),
         )

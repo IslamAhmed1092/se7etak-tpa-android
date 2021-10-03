@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.data.Provider
+import com.example.se7etak_tpa.databinding.BottomSheetProviderBinding
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
 import com.google.android.gms.location.*
 
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CheckNetworkFragment : Fragment() {
 
@@ -111,7 +113,6 @@ class CheckNetworkFragment : Fragment() {
                 list.forEach { provider ->
                     val options = MarkerOptions()
                         .position(LatLng(provider.latitude, provider.longitude))
-                        .title(provider.name)
                         .icon(BitmapDescriptorFactory.defaultMarker(
                             CheckNetworkViewModel.typesColors[type]!!)
                         )
@@ -127,7 +128,16 @@ class CheckNetworkFragment : Fragment() {
 
         mMap.setOnMarkerClickListener { marker ->
             (marker.tag as Provider).let {
-//                Toast.makeText(context, "name: ${it.name} type: ${it.type}", Toast.LENGTH_LONG).show()
+                val bottomSheet = BottomSheetDialog(requireContext())
+                val bindingSheet = DataBindingUtil.inflate<BottomSheetProviderBinding>(
+                    layoutInflater,
+                    R.layout.bottom_sheet_provider,
+                    null,
+                    false
+                )
+                bottomSheet.setContentView(bindingSheet.root)
+                bindingSheet.provider = it
+                bottomSheet.show()
             }
             false
         }

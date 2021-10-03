@@ -15,12 +15,12 @@ data class Provider (
     val branchType: String = "",
     @SerializedName("mainSpeciality")
     val mainSpeciality: String = "",
-    @SerializedName("subSpeciality")
-    val subSpeciality: String = "",
+    @SerializedName("secondarySpeciality")
+    val secondarySpeciality: String = "",
     @SerializedName("governorate")
     val governorate: String = "",
-    @SerializedName("area")
-    val area: String = "",
+    @SerializedName("city")
+    val city: String = "",
     @SerializedName("address")
     val address: String = "",
     @SerializedName("phoneNumber1")

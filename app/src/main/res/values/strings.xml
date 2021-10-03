@@ -38,4 +38,10 @@
     <string name="مراكز_متخصصه">مراكز متخصصه</string>
     <string name="مستشفيات">مستشفيات</string>
     <string name="معامل">معامل</string>
+    <string name="main_speciality_title">التخصص الرئيسي:</string>
+    <string name="secondary_speciality_title">التخصص الفرعي:</string>
+    <string name="address_title">العنوان:</string>
+    <string name="phone_title">ارقام التليفون:</string>
+    <string name="hotline_title">الخط الساخن:</string>
+    <string name="city_governorate_text">%s، %s</string>
 </resources>
