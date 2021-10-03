@@ -75,4 +75,5 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
-   }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
