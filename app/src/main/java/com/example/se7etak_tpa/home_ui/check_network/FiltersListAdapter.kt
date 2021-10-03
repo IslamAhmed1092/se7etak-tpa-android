@@ -15,15 +15,15 @@ class FiltersListAdapter(private val context: Context, private val onFilterClick
 
     private val filtersList = listOf(
         MapFilter(context.getString(R.string.مستشفيات), R.color.مستشفيات),
-        MapFilter(context.getString(R.string.صيدليات), R.color.صيدليات, Color.BLACK),
+        MapFilter(context.getString(R.string.صيدليات), R.color.صيدليات),
         MapFilter(context.getString(R.string.عيادات), R.color.عيادات),
         MapFilter(context.getString(R.string.مجمع_عيادات), R.color.مجمع_عيادات),
         MapFilter(context.getString(R.string.اسنان), R.color.اسنان),
-        MapFilter(context.getString(R.string.معامل), R.color.معامل, Color.BLACK),
-        MapFilter(context.getString(R.string.مراكز_متخصصه), R.color.مراكز_متخصصه),
-        MapFilter(context.getString(R.string.مراكز_علاج_طبيعي), R.color.مراكز_علاج_طبيعي),
+        MapFilter(context.getString(R.string.معامل), R.color.معامل, Color.GRAY),
+        MapFilter(context.getString(R.string.مراكز_متخصصه), R.color.مراكز_متخصصه, Color.GRAY),
+        MapFilter(context.getString(R.string.مراكز_علاج_طبيعي), R.color.مراكز_علاج_طبيعي, Color.GRAY),
         MapFilter(context.getString(R.string.مراكز_اشعة), R.color.مراكز_اشعة),
-        MapFilter(context.getString(R.string.مركز_بصريات), R.color.مركز_بصريات, Color.BLACK)
+        MapFilter(context.getString(R.string.مركز_بصريات), R.color.مركز_بصريات)
     )
 
     class FiltersListViewHolder(private var binding: MapFilterItemBinding) :

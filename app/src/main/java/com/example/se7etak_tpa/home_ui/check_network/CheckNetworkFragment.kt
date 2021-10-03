@@ -94,8 +94,13 @@ class CheckNetworkFragment : Fragment() {
 
         viewModel.currentTile.observe(viewLifecycleOwner) {
             if (previousTile != it) {
+                mMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom (
+                        viewModel.currentLocation.value!!, 15f
+                    )
+                )
+
                 viewModel.updateProviders()
-//                Toast.makeText(context, "Tile number changed", Toast.LENGTH_SHORT).show()
             }
             previousTile = it
         }
@@ -122,7 +127,7 @@ class CheckNetworkFragment : Fragment() {
 
         mMap.setOnMarkerClickListener { marker ->
             (marker.tag as Provider).let {
-                Toast.makeText(context, "name: ${it.name} type: ${it.type}", Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, "name: ${it.name} type: ${it.type}", Toast.LENGTH_LONG).show()
             }
             false
         }

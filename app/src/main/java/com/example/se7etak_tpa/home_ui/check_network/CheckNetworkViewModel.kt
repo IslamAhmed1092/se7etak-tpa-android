@@ -78,11 +78,19 @@ class CheckNetworkViewModel : ViewModel() {
         })*/
 
         val responseList = listOf(
-            Provider(id = "1", name = "عيادة سمارت للاسنان", type = "اسنان", latitude = 29.9664177816521, longitude = 31.2748687821907),
+            Provider(id = "1", name = "د/ احمد الشافعى", type = "اسنان", latitude = 29.9729578676011, longitude = 31.3152266681493),
             Provider(id = "2", name = "المركز المصري الأول لطب الأسنان", type = "اسنان", latitude = 29.9681761285931, longitude = 31.2545313736717),
-            Provider(id = "3", name = "اى فاشون  للبصريات", type = "مركز بصريات", latitude = 29.9830660945359, longitude = 31.3161109387816),
-            Provider(id = "4", name = "صيدلية د/ محمود منصور (اكرم صلاح)", type = "صيدليات", latitude = 29.9781372449795, longitude = 31.2765012386507),
-            Provider(id = "5", name = "د/ محمد سعد زغلول", type = "عيادات", latitude = 29.959795772258, longitude = 31.2550591258209),
+            Provider(id = "3", name = "د/ هشام أحمد عيسى - ماستر دينتال كلينيك", type = "اسنان", latitude = 30.0544342250867, longitude = 31.1943694156769),
+            Provider(id = "4", name = "سي &كو للبصريات", type = "مركز بصريات", latitude = 29.9830660945359, longitude = 31.3161109387816),
+            Provider(id = "5", name = "مركز جولى اوبتكس", type = "مركز بصريات", latitude = 29.9761626555958, longitude = 31.2823747104774),
+            Provider(id = "6", name = "صيدلية د/ محمود منصور (اكرم صلاح)", type = "صيدليات", latitude = 29.9781372449795, longitude = 31.2765012386507),
+            Provider(id = "7", name = "د/ محمد سعد زغلول", type = "عيادات", latitude = 29.959795772258, longitude = 31.2550591258209),
+            Provider(id = "8", name = "د/شيرين أحمد خليل", type = "عيادات", latitude = 29.9605111860232, longitude = 31.25408950803),
+            Provider(id = "9", name = "عيادات داوى", type = "مجمع عيادات", latitude = 29.9612238617506, longitude = 31.2881135290003),
+            Provider(id = "10", name = "مراكز د/ حسام منصور الطبية", type = "مجمع عيادات", latitude = 29.9588754580614, longitude = 31.257878410477),
+            Provider(id = "11", name = "مستشفى المجمع الطبى للقوات المسلحة", type = "مستشفيات", latitude = 29.9673248392669, longitude = 31.2421771393131),
+            Provider(id = "12", name = "مستشفي السلام الدولي", type = "مستشفيات", latitude = 29.984954861938, longitude = 31.2301857123296),
+            Provider(id = "13", name = "مستشفي النيل بدراوي ", type = "مستشفيات", latitude = 29.9828657102764, longitude = 31.2312070250417),
         )
 
         responseList.let { list ->
@@ -100,16 +108,17 @@ class CheckNetworkViewModel : ViewModel() {
 
     companion object {
         val typesColors: Map<String, Float> = mapOf(
+            "مستشفيات" to BitmapDescriptorFactory.HUE_ROSE,
+            "صيدليات" to BitmapDescriptorFactory.HUE_MAGENTA,
+            "عيادات" to BitmapDescriptorFactory.HUE_VIOLET,
+            "مجمع عيادات" to BitmapDescriptorFactory.HUE_BLUE,
             "اسنان" to BitmapDescriptorFactory.HUE_AZURE,
-            "مركز بصريات" to BitmapDescriptorFactory.HUE_GREEN,
-            "صيدليات" to BitmapDescriptorFactory.HUE_CYAN,
-            "عيادات" to BitmapDescriptorFactory.HUE_BLUE,
-            "مجمع عيادات" to BitmapDescriptorFactory.HUE_MAGENTA,
+            "معامل" to BitmapDescriptorFactory.HUE_CYAN,
+            "مراكز متخصصه" to BitmapDescriptorFactory.HUE_GREEN,
+            "مراكز علاج طبيعي" to BitmapDescriptorFactory.HUE_YELLOW,
             "مراكز اشعة" to BitmapDescriptorFactory.HUE_ORANGE,
-            "مراكز علاج طبيعي" to BitmapDescriptorFactory.HUE_RED,
-            "مراكز متخصصه" to BitmapDescriptorFactory.HUE_ROSE,
-            "مستشفيات" to BitmapDescriptorFactory.HUE_VIOLET,
-            "معامل" to BitmapDescriptorFactory.HUE_YELLOW
+            "مركز بصريات" to BitmapDescriptorFactory.HUE_RED
         )
     }
+
 }
