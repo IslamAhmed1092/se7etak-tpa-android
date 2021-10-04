@@ -1,21 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_request_approval"
+    <data>
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/MaterialCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/request_approval_provider_type_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="start"
+                        android:padding="3dp"
+                        android:text="Provider Type:"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textStyle="bold" />
+
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/request_approval_provider_type_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:spinnerMode="dialog"
+                        app:smsp_enableFloatingLabel="false"
+                        app:smsp_itemListColor="@color/purple_dark"
+                        app:smsp_itemListHintBackgroundColor="#808080"
+                        app:smsp_multilineError="false"
+                        app:smsp_selectedItemListColor="#FF5252"
+                        app:smsp_underlineSize="0dp" />
+
+                    <TextView
+                        android:id="@+id/request_approval_provider_name_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:padding="3dp"
+                        android:text="Provider Name:"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textStyle="bold" />
+
+
+                    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                        android:id="@+id/request_approval_provider_name_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        app:smsp_enableFloatingLabel="false"
+                        app:smsp_isSearchable="true"
+                        app:smsp_itemListColor="@color/purple_dark"
+                        app:smsp_itemListHintBackgroundColor="#808080"
+                        app:smsp_multilineError="false"
+                        app:smsp_searchHeaderBackgroundColor="@color/purple_dark"
+                        app:smsp_selectedItemListColor="#FF5252"
+                        app:smsp_underlineSize="0dp" />
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/request_approval_attachments_card_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/request_approval_provider_name_spinner"
+                        android:backgroundTint="@color/purple_dark"
+                        app:cardCornerRadius="2dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="4dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="Attachments"
+                                    android:textAppearance="@style/TextAppearance.AppCompat"
+                                    android:textColor="@color/black" />
+
+                                <ImageButton
+                                    android:id="@+id/request_approval_add_attachment_image_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/ic_add_circle_outline" />
+                            </RelativeLayout>
+
+
+                            <include
+                                android:id="@+id/request_approval_attachment1_view"
+                                layout="@layout/attachment_custom_view"
+                                />
+
+                            <include
+                                android:id="@+id/request_approval_attachment2_view"
+                                layout="@layout/attachment_custom_view" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/request_approval_comment_text_input_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/request_approval_attachments_card_view"
+                        android:layout_marginVertical="8dp"
+                        android:background="@color/white"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxStrokeColor="@color/purple_dark"
+                        app:boxStrokeWidth=".5dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/request_approval_comment_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fadeScrollbars="false"
+                            android:hint="Comment"
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:lines="4"
+                            android:scrollbars="vertical" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/request_approval_submit_button"
+                        style="@style/ContainedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="24dp"
+                        android:backgroundTint="@color/purple_dark"
+                        android:text="Submit" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+</layout>

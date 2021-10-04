@@ -58,16 +58,16 @@ class SignupFragment : Fragment() {
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
-        signupViewModel.signupStatus.observe(viewLifecycleOwner, {
-            if (it == StatusObject.DONE) {
-                Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
-                val action =
+                    signupViewModel.signupStatus.observe(viewLifecycleOwner, {
+                    if (it == StatusObject.DONE) {
+                    Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
+                    val action =
                     SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
-                findNavController().navigate(action)
+                    findNavController().navigate(action)
 
-            } else if (it == StatusObject.ERROR){
-                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
-                if (signupViewModel.errorMessage.contains("email", true)) {
+                    } else if (it == StatusObject.ERROR){
+                    errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                    if (signupViewModel.errorMessage.contains("email", true)) {
                     binding.ilEmail.isErrorEnabled = true
                     binding.ilEmail.error = signupViewModel.errorMessage
                 } else if (signupViewModel.errorMessage.contains("PhoneNumber", true)) {

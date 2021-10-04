@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import java.io.ByteArrayOutputStream
 import java.io.File
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.Fragment
 import com.theartofdev.edmodo.cropper.CropImage
 
 
@@ -72,15 +73,10 @@ object Utils {
         }
     }
 
-    // perform circular crop using UCrop library.
-    fun performCrop(uri: Uri?, cacheDir: File?, activity: Activity?) {
-        CropImage.activity(uri)
-            .start(activity!!);
-    }
 
-    fun chooseAttachement(context: Context) {
+    fun chooseAttachment(fragment: Fragment) {
         val options = arrayOf("Choose Pdf File", "Open Gallery", "Open Camera")
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(fragment.requireContext())
         builder.setTitle("Choose an option")
         builder.setItems(options) { dialog, which ->
             when (which) {
@@ -89,7 +85,7 @@ object Utils {
                     val intent = Intent(Intent.ACTION_GET_CONTENT)
                     intent.type = "application/pdf"
                     intent.addCategory(Intent.CATEGORY_OPENABLE)
-                    (context as Activity).startActivityForResult(intent, RC_PDF_PICKER)
+                    fragment.startActivityForResult(intent, RC_PDF_PICKER)
                 }
                 1 -> {
                     // Pick Image from Gallery.
@@ -97,7 +93,7 @@ object Utils {
                         Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     )
-                    (context as Activity).startActivityForResult(
+                    (fragment).startActivityForResult(
                         Intent.createChooser(
                             intent,
                             "Complete Action using"
@@ -107,7 +103,7 @@ object Utils {
                 2 -> {
                     // capture an Image.
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    (context as Activity).startActivityForResult(
+                    fragment.startActivityForResult(
                         intent,
                         REQUEST_IMAGE_CAPTURE
                     )
@@ -133,7 +129,7 @@ object Utils {
                     val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                     cursor.moveToFirst()
                     return@getFileName cursor.getString(nameIndex)
-                } ?: return@getFileName ""
+                } ?:return@getFileName ""
         }
         return ""
 }
