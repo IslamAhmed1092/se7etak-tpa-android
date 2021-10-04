@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -31,6 +33,9 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.status_bar_color)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = true
 
         signupViewModel.resetSignupData()
 
@@ -58,16 +63,17 @@ class SignupFragment : Fragment() {
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
-                    signupViewModel.signupStatus.observe(viewLifecycleOwner, {
-                    if (it == StatusObject.DONE) {
-                    Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
-                    val action =
-                    SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
-                    findNavController().navigate(action)
 
-                    } else if (it == StatusObject.ERROR){
-                    errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
-                    if (signupViewModel.errorMessage.contains("email", true)) {
+        signupViewModel.signupStatus.observe(viewLifecycleOwner, {
+            if (it == StatusObject.DONE) {
+                Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
+                val action =
+                SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
+                findNavController().navigate(action)
+
+            } else if (it == StatusObject.ERROR) {
+                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                if (signupViewModel.errorMessage.contains("email", true)) {
                     binding.ilEmail.isErrorEnabled = true
                     binding.ilEmail.error = signupViewModel.errorMessage
                 } else if (signupViewModel.errorMessage.contains("PhoneNumber", true)) {

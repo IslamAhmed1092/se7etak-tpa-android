@@ -21,6 +21,9 @@ const val TAG = "SignupViewModel"
 
 class SignupViewModel: ViewModel() {
 
+    private val _loginStatus = MutableLiveData(StatusObject.INITIAL)
+    val loginStatus: LiveData<StatusObject> get() = _loginStatus
+
     private val _signupStatus = MutableLiveData(StatusObject.INITIAL)
     val signupStatus: LiveData<StatusObject> get() = _signupStatus
 
@@ -94,6 +97,38 @@ class SignupViewModel: ViewModel() {
 
     fun validateID(inputID: String?) = !inputID.isNullOrEmpty() && inputID.length == 6
 
+
+    fun login(email: String, password: String) {
+
+        val userParams = mapOf("email" to email, "password" to password)
+
+        val callResponse = Api.retrofitService.login(userParams)
+        _loginStatus.value = StatusObject.LOADING
+        callResponse.enqueue(object : Callback<JsonObject> {
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.code() == 200) {
+                    user.email = email
+                    user.token = response.body()?.get("token")?.asString
+                    _loginStatus.value = StatusObject.DONE
+                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else {
+                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{\"message\":\"\"}").optString("message")
+                    _loginStatus.value = StatusObject.ERROR
+                    Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                _errorMessage = "Please check your internet connection and try again"
+                _loginStatus.value = StatusObject.ERROR
+                Log.i(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+
+    }
+
     fun signup(name: String, email: String, password: String, number: String, id: String) {
 
         val userParams = mapOf("se7etakID" to id, "name" to name, "email" to email,
@@ -114,7 +149,7 @@ class SignupViewModel: ViewModel() {
                     _signupStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else {
-                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{}").optString("message")
+                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{\"message\":\"\"}").optString("message")
                     _signupStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
                 }
@@ -194,6 +229,7 @@ class SignupViewModel: ViewModel() {
     }
 
     fun resetSignupData() {
+        _loginStatus.value = StatusObject.INITIAL
         _signupStatus.value = StatusObject.INITIAL
         _verificationStatus.value = StatusObject.INITIAL
         _sendCodeStatus.value = StatusObject.INITIAL

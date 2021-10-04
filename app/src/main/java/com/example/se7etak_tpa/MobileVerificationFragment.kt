@@ -112,7 +112,7 @@ class MobileVerificationFragment : Fragment() {
 
         signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
-                Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_SHORT).show()
                 SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
                 val action =
                     MobileVerificationFragmentDirections.actionMobileVerificationFragmentToHomeActivity()

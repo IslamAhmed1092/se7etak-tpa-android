@@ -44,4 +44,7 @@
     <string name="phone_title">ارقام التليفون:</string>
     <string name="hotline_title">الخط الساخن:</string>
     <string name="city_governorate_text">%s، %s</string>
+    <string name="email_hint">john@example.com</string>
+    <string name="forgot_password_text">Forgot your password?</string>
+    <string name="dont_have_account_text">Don\'t have an account?</string>
 </resources>
