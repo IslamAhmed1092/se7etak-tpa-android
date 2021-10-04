@@ -11,24 +11,24 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @POST("Register")
+    @POST("Account/Register")
     fun register (
         @Body user: Map<String, String>
     ): Call<JsonObject>
 
-    @POST("VerifyCode")
+    @POST("Account/VerifyCode")
     fun verifyCode (
         @Body body: Map<String, String>
     ): Call<JsonObject>
 
-    @GET("SendCode")
+    @GET("Account/SendCode")
     fun sendCode (
         @Query("email") email: String
     ): Call<JsonObject>
 
-    @GET("GetProviders")
+    @GET("Provider/GetProviders")
     fun getProviders(
-        @Query("tile") tile: Long
+        @Query("TileNumber") tile: Long
     ): Call<List<Provider>>
 }
 

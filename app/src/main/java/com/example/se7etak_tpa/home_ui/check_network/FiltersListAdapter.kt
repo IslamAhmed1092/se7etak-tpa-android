@@ -20,7 +20,7 @@ class FiltersListAdapter(private val context: Context, private val onFilterClick
         MapFilter(context.getString(R.string.مجمع_عيادات), R.color.مجمع_عيادات),
         MapFilter(context.getString(R.string.اسنان), R.color.اسنان),
         MapFilter(context.getString(R.string.معامل), R.color.معامل, Color.GRAY),
-        MapFilter(context.getString(R.string.مراكز_متخصصه), R.color.مراكز_متخصصه, Color.GRAY),
+        MapFilter(context.getString(R.string.مراكز_متخصصة), R.color.مراكز_متخصصة, Color.GRAY),
         MapFilter(context.getString(R.string.مراكز_علاج_طبيعي), R.color.مراكز_علاج_طبيعي, Color.GRAY),
         MapFilter(context.getString(R.string.مراكز_اشعة), R.color.مراكز_اشعة),
         MapFilter(context.getString(R.string.مركز_بصريات), R.color.مركز_بصريات)

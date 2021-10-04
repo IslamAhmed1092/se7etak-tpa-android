@@ -32,7 +32,12 @@ class MainActivity : AppCompatActivity() {
 
 
         Handler().postDelayed({
-            val intent = Intent(this@MainActivity, AuthActivity::class.java)
+            val intent: Intent
+            if(SignupViewModel.loadUserData(this).token == "") {
+                intent = Intent(this@MainActivity, AuthActivity::class.java)
+            } else {
+                intent = Intent(this@MainActivity, HomeActivity::class.java)
+            }
             startActivity(intent)
             finish()
         },3000)

@@ -30,6 +30,7 @@ class SignupViewModel: ViewModel() {
     private val _sendCodeStatus = MutableLiveData(StatusObject.INITIAL)
     val sendCodeStatus: LiveData<StatusObject> get() = _sendCodeStatus
 
+
     private var _errorMessage: String = ""
     val errorMessage: String get() = _errorMessage
 
@@ -202,6 +203,7 @@ class SignupViewModel: ViewModel() {
         _timerSeconds.value = 0
         _timerFinished.value = false
         _hideSendAgainTimerFinished.value = false
+
     }
 
     companion object {

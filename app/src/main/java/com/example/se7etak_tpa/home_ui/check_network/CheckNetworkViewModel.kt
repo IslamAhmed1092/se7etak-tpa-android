@@ -24,9 +24,9 @@ class CheckNetworkViewModel : ViewModel() {
     private val EGYPT_START_LONG = 24
     private val EGYPT_END_LAT = 32
     private val EGYPT_END_LONG = 37
-    private val h = 0.01
-    private val NO_OF_ROWS = ((EGYPT_END_LAT - EGYPT_START_LAT) / (4 * h)).toInt() + 1
-    private val NO_OF_COLUMNS = ((EGYPT_END_LONG - EGYPT_START_LONG) / (4 * h)).toInt() + 1
+    private val tileLength = 0.02
+    private val NO_OF_ROWS = ((EGYPT_END_LAT - EGYPT_START_LAT) / (tileLength)).toInt()
+    private val NO_OF_COLUMNS = ((EGYPT_END_LONG - EGYPT_START_LONG) / (tileLength)).toInt()
 
     private val _currentLocation = MutableLiveData<LatLng>()
     val currentLocation: LiveData<LatLng> get() = _currentLocation
@@ -44,15 +44,15 @@ class CheckNetworkViewModel : ViewModel() {
 
     private fun updateTileNumber() {
         val column =
-            ((_currentLocation.value?.longitude?.minus(EGYPT_START_LONG))?.div((4 * h)))?.toLong()
+            ((_currentLocation.value?.longitude?.minus(EGYPT_START_LONG))?.div((tileLength)))?.toLong()
         val row =
-            ((_currentLocation.value?.latitude?.minus(EGYPT_START_LAT))?.div((4 * h)))?.toLong()
+            ((_currentLocation.value?.latitude?.minus(EGYPT_START_LAT))?.div((tileLength)))?.toLong()
 
         _currentTile.value = row?.times(NO_OF_COLUMNS)?.let { column?.plus(it) }
     }
 
     fun updateProviders() {
-        /*val callResponse = Api.retrofitService.getProviders(_currentTile.value!!)
+        val callResponse = Api.retrofitService.getProviders(_currentTile.value!!)
 
         callResponse.enqueue(object : Callback<List<Provider>> {
             override fun onResponse(
@@ -75,9 +75,9 @@ class CheckNetworkViewModel : ViewModel() {
             }
 
 
-        })*/
+        })
 
-        val responseList = listOf(
+        /*val responseList = listOf(
             Provider(id = "1", name = "د/ احمد الشافعى", type = "اسنان", latitude = 29.9729578676011, longitude = 31.3152266681493),
             Provider(id = "2", name = "المركز المصري الأول لطب الأسنان", type = "اسنان", latitude = 29.9681761285931, longitude = 31.2545313736717),
             Provider(id = "3", name = "د/ هشام أحمد عيسى - ماستر دينتال كلينيك", type = "اسنان", latitude = 30.0544342250867, longitude = 31.1943694156769),
@@ -97,7 +97,7 @@ class CheckNetworkViewModel : ViewModel() {
 
         responseList.let { list ->
             _providersMap.value = list.groupBy { it.type }
-        }
+        }*/
     }
 
     fun showHideMarkers(type: String, visible: Boolean) {
@@ -116,7 +116,7 @@ class CheckNetworkViewModel : ViewModel() {
             "مجمع عيادات" to BitmapDescriptorFactory.HUE_BLUE,
             "اسنان" to BitmapDescriptorFactory.HUE_AZURE,
             "معامل" to BitmapDescriptorFactory.HUE_CYAN,
-            "مراكز متخصصه" to BitmapDescriptorFactory.HUE_GREEN,
+            "مراكز متخصصة" to BitmapDescriptorFactory.HUE_GREEN,
             "مراكز علاج طبيعي" to BitmapDescriptorFactory.HUE_YELLOW,
             "مراكز اشعة" to BitmapDescriptorFactory.HUE_ORANGE,
             "مركز بصريات" to BitmapDescriptorFactory.HUE_RED

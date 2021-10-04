@@ -1,16 +1,20 @@
 package com.example.se7etak_tpa.home_ui.check_network
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
 
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -36,13 +40,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CheckNetworkFragment : Fragment() {
 
+    private val REQUEST_CODE: Int = 200
     private val viewModel: CheckNetworkViewModel by viewModels()
 
-    /**
-     * to keep track of tile changes
-     */
     private var previousTile: Long = -1
-
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
@@ -113,8 +114,11 @@ class CheckNetworkFragment : Fragment() {
                 list.forEach { provider ->
                     val options = MarkerOptions()
                         .position(LatLng(provider.latitude, provider.longitude))
-                        .icon(BitmapDescriptorFactory.defaultMarker(
-                            CheckNetworkViewModel.typesColors[type]!!)
+                        .icon(CheckNetworkViewModel.typesColors[type]?.let { it1 ->
+                            BitmapDescriptorFactory.defaultMarker(
+                                it1
+                            )
+                        }
                         )
                     val marker = mMap.addMarker(options)
                     marker?.apply{
@@ -157,15 +161,6 @@ class CheckNetworkFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_check_network, container, false)
 
-        activity?.window?.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-        WindowInsetsControllerCompat(
-            activity?.window!!,
-            activity?.window!!.decorView
-        ).isAppearanceLightStatusBars = true
-
         binding.rvFilters.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, true)
 
@@ -177,19 +172,9 @@ class CheckNetworkFragment : Fragment() {
 
         binding.rvFilters.setHasFixedSize(true)
 
-        return binding.root
-    }
+        binding.btnTurnOn.setOnClickListener { checkPermission() }
 
-    override fun onResume() {
-        super.onResume()
-        activity?.window?.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-        WindowInsetsControllerCompat(
-            activity?.window!!,
-            activity?.window!!.decorView
-        ).isAppearanceLightStatusBars = true
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -205,19 +190,39 @@ class CheckNetworkFragment : Fragment() {
             }
         }
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+
+        // Checking if permission is not granted
+        checkPermission()
+
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        WindowInsetsControllerCompat(
-            activity?.window!!,
-            activity?.window!!.decorView
-        ).isAppearanceLightStatusBars = false
+    private val permReqLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        if (it) {
+            binding.clGranted.visibility = View.VISIBLE
+            binding.clNotGranted.visibility = View.GONE
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(callback)
+        } else {
+            binding.clGranted.visibility = View.GONE
+            binding.clNotGranted.visibility = View.VISIBLE
+        }
     }
 
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            permReqLauncher.launch(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } else {
+            binding.clGranted.visibility = View.VISIBLE
+            binding.clNotGranted.visibility = View.GONE
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(callback)
+        }
+    }
 
 }
