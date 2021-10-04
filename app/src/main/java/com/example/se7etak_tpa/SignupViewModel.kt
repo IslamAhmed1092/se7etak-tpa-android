@@ -1,6 +1,7 @@
 package com.example.se7etak_tpa
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
@@ -254,6 +255,11 @@ class SignupViewModel: ViewModel() {
             val emptyJson = "{\"email\":\"\",\"id\":\"\",\"name\":\"\",\"phoneNumber\":\"\",\"token\":\"\"}"
             val pref = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
             return Gson().fromJson(pref.getString("USER", emptyJson), User::class.java)
+        }
+
+        fun deleteUserData(context: Context) {
+            val pref = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
+            pref.edit().remove("USER").apply()
         }
     }
 }
