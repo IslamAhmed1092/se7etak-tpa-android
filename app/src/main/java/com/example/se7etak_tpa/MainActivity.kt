@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
-
         //Animation
         val topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation)
         val bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation)
