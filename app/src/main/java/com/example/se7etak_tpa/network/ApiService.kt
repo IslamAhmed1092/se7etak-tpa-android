@@ -1,5 +1,6 @@
 package com.example.se7etak_tpa.network
 
+import com.example.se7etak_tpa.data.Provider
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
@@ -24,5 +25,10 @@ interface ApiService {
     fun sendCode (
         @Query("email") email: String
     ): Call<JsonObject>
+
+    @GET("GetProviders")
+    fun getProviders(
+        @Query("tile") tile: Long
+    ): Call<List<Provider>>
 }
 

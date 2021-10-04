@@ -4,19 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/gradient_background">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="241dp"
+        android:layout_height="195dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="340dp"
+        android:src="@mipmap/eva_logo_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/main_nav_graph" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="serif-monospace"
+        android:text="Securing Your Health"
+        android:textColor="@color/purple_dark"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.372"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

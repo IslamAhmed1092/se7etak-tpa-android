@@ -79,8 +79,9 @@ class SignupViewModel: ViewModel() {
 
     fun validatePassword(inputPassword: String?): Boolean{
         inputPassword?.let {
-            val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
+            val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',?/*~\$^+=<>])(?=\\S+$).{8,}$"
             val passwordMatcher = Regex(passwordPattern)
+
 
             return passwordMatcher.find(inputPassword) != null
         } ?: return false

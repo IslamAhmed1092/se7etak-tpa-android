@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -32,5 +34,17 @@ class LoginFragment : Fragment() {
         }
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.purple_dark)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.status_bar_color)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = true
     }
 }

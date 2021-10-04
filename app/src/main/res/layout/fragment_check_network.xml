@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-    </data>
+    <data></data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,22 +17,34 @@
             android:layout_height="match_parent"
             tools:context=".home_ui.check_network.CheckNetworkFragment" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_filters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="1"
+            tools:listitem="@layout/map_filter_item" />
+
         <FrameLayout
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/background_circle"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="64dp"
+            android:background="@drawable/background_circle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
                 android:id="@+id/ib_my_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_location"
-                android:background="?selectableItemBackgroundBorderless" />
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_location" />
 
 
         </FrameLayout>
