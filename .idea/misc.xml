@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/bg_login_page1.xml" value="0.3345250255362615" />
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/curved_button.xml" value="0.255859375" />
+        <entry key="app/src/main/res/drawable/eva_logo_background.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/gradient_background.xml" value="0.23055555555555557" />
         <entry key="app/src/main/res/drawable/ic_add_circle_outline.xml" value="0.255859375" />
         <entry key="app/src/main/res/drawable/ic_at_home.xml" value="0.3411458333333333" />
@@ -50,6 +51,9 @@
         <entry key="app/src/main/res/layout/map_filter_item.xml" value="0.536" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3203125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3146067415730337" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/eva_logo.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.18854166666666666" />
       </map>
     </option>
   </component>
