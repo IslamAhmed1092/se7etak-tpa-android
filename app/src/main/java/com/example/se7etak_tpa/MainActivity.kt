@@ -1,5 +1,6 @@
 package com.example.se7etak_tpa
 
+import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true

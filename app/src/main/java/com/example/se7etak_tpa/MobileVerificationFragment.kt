@@ -18,12 +18,17 @@ import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 
 class MobileVerificationFragment : Fragment() {
 
     private lateinit var binding: FragmentMobileVerificationBinding
     private val signupViewModel: SignupViewModel by activityViewModels()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +62,9 @@ class MobileVerificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
         val failedAlertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Failed")
             .setPositiveButton("OK") { dialog, _ ->
@@ -112,6 +117,7 @@ class MobileVerificationFragment : Fragment() {
 
         signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
+                firebaseAnalytics.logEvent("submit"){}
                 Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_SHORT).show()
                 SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
                 val action =

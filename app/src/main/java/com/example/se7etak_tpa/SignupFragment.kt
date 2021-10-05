@@ -15,17 +15,23 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class SignupFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupBinding
     private val signupViewModel: SignupViewModel by activityViewModels()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container, false)
+        firebaseAnalytics = Firebase.analytics
         return binding.root
     }
 
@@ -66,6 +72,8 @@ class SignupFragment : Fragment() {
 
         signupViewModel.signupStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP) {}
+
                 Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
                 val action =
                 SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
