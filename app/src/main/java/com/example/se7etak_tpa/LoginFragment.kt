@@ -44,6 +44,11 @@ class LoginFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.btnSkip.setOnClickListener {
+            val action = LoginFragmentDirections.actionLoginFragmentToHomeActivity()
+            findNavController().navigate(action)
+        }
+
         binding.etEmail.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.ilEmail.isErrorEnabled = false

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "736666318859",
-    "project_id": "se7etak-fd8e9",
-    "storage_bucket": "se7etak-fd8e9.appspot.com"
+    "project_number": "859008181333",
+    "project_id": "se7etak-tpa-35ff0",
+    "storage_bucket": "se7etak-tpa-35ff0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:736666318859:android:65285632a76163aeb9af0e",
+        "mobilesdk_app_id": "1:859008181333:android:668c4e0569abb35a9420dc",
         "android_client_info": {
           "package_name": "com.example.se7etak_tpa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "736666318859-2m37i9tkfb0acqqbd9ns35l7lpvo182g.apps.googleusercontent.com",
+          "client_id": "859008181333-6ud513lp0bqpq694udq8psigc8tpbia8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBh_RST4tNZCKONv2p1pDeUsHgaCmGFdGQ"
+          "current_key": "AIzaSyBd1vvO8NRkXQXPdrlktXn69_a539bmvxg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "736666318859-2m37i9tkfb0acqqbd9ns35l7lpvo182g.apps.googleusercontent.com",
+              "client_id": "859008181333-6ud513lp0bqpq694udq8psigc8tpbia8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
