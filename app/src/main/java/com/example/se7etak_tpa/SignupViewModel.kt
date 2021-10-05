@@ -43,7 +43,7 @@ class SignupViewModel: ViewModel() {
     /**
      * for debugging only
      */
-    private val _code = MutableLiveData<String>()
+    private var _code = MutableLiveData<String>()
     val code: LiveData<String> get() = _code
 
 
@@ -114,7 +114,9 @@ class SignupViewModel: ViewModel() {
                     _loginStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else {
-                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{\"message\":\"\"}").optString("message")
+                    val errorJson = JSONObject(response.errorBody()?.string() ?:"{\"message\":\"\"}")
+                    _errorMessage = errorJson.optString("message")
+                    _code.value = errorJson.optString("code")
                     _loginStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
                 }

@@ -87,7 +87,12 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(action)
                 activity?.finish()
             } else if (it == StatusObject.ERROR) {
-                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                if (signupViewModel.errorMessage.contains("Phone", true)) {
+                    val action = LoginFragmentDirections.actionLoginFragmentToMobileVerificationFragment()
+                    findNavController().navigate(action)
+                } else {
+                    errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                }
             }
         })
 
