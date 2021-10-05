@@ -7,18 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.SignupViewModel
+import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
-
+    private lateinit var user: User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +29,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        user = SignupViewModel.loadUserData(requireContext())
+        if(!user.token.isNullOrEmpty()) homeViewModel.getPatientsRequests(user.token!!)
         return binding.root
     }
 

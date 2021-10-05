@@ -1,5 +1,6 @@
 package com.example.se7etak_tpa.network
 
+import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.data.Provider
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -35,5 +36,11 @@ interface ApiService {
     fun getProviders(
         @Query("TileNumber") tile: Long
     ): Call<List<Provider>>
+
+    @GET("/api/Provider/GetPatientRequests")
+    fun getPatientRequests(
+        @Header("Authorization") authHeader: String     //should send "Bearer" + token
+    ): Call<List<HomeRequest>>
+
 }
 
