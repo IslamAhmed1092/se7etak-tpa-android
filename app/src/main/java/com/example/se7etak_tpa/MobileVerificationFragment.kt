@@ -29,6 +29,7 @@ class MobileVerificationFragment : Fragment() {
     private lateinit var binding: FragmentMobileVerificationBinding
     private val signupViewModel: SignupViewModel by activityViewModels()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var timer: CountDownTimer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +72,7 @@ class MobileVerificationFragment : Fragment() {
                 dialog.dismiss()
             }
 
-        val timer = object: CountDownTimer(300000, 1000) {
+        timer = object: CountDownTimer(300000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 signupViewModel.setTimer(millisUntilFinished)
             }
@@ -117,7 +118,7 @@ class MobileVerificationFragment : Fragment() {
 
         signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
-                firebaseAnalytics.logEvent("submit"){}
+                firebaseAnalytics.logEvent("Signup-OTP"){}
                 Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_SHORT).show()
                 SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
                 val action =
@@ -138,6 +139,11 @@ class MobileVerificationFragment : Fragment() {
         }
     }
 
-
+    override fun onPause() {
+        super.onPause()
+        if(this::timer.isInitialized) {
+            timer.cancel()
+        }
+    }
 
 }

@@ -113,12 +113,18 @@ class SignupViewModel: ViewModel() {
                     user.token = response.body()?.get("token")?.asString
                     _loginStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
-                } else {
-                    val errorJson = JSONObject(response.errorBody()?.string() ?:"{\"message\":\"\"}")
-                    _errorMessage = errorJson.optString("message")
-                    _code.value = errorJson.optString("code")
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
                     _loginStatus.value = StatusObject.ERROR
-                    Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
+                } else {
+                    response.errorBody()?.let {
+                        val errorJson = JSONObject(it.string())
+                        _errorMessage = errorJson.optString("message")
+                        _code.value = _errorMessage.toIntOrNull()?.toString()
+                        if (_code.value != null) user.email = email
+                    }
+                    _loginStatus.value = StatusObject.ERROR
+                    Log.i("TAG", "onResponse ${response.code()}: $_errorMessage" )
                 }
             }
 
@@ -151,8 +157,13 @@ class SignupViewModel: ViewModel() {
                     _code.value = response.body()?.get("code")?.asString
                     _signupStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
+                    _signupStatus.value = StatusObject.ERROR
                 } else {
-                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{\"message\":\"\"}").optString("message")
+                    response.errorBody()?.let {
+                        _errorMessage = JSONObject(it.string()).optString("message")
+                    }
                     _signupStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
                 }
@@ -186,6 +197,9 @@ class SignupViewModel: ViewModel() {
                     user.token = response.body()?.get("token")?.asString
                     _verificationStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
+                    _verificationStatus.value = StatusObject.ERROR
                 } else {
                     _errorMessage = "Code isn't correct, Please try again."
                     _verificationStatus.value = StatusObject.ERROR
@@ -216,6 +230,7 @@ class SignupViewModel: ViewModel() {
                     _sendCodeStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else {
+                    _sendCodeStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
                 }
             }

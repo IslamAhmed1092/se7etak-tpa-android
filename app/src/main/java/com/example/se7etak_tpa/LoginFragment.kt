@@ -18,11 +18,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.se7etak_tpa.databinding.FragmentLoginBinding
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val signupViewModel: SignupViewModel by activityViewModels()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,15 +41,23 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        firebaseAnalytics = Firebase.analytics
 
         signupViewModel.resetSignupData()
 
+        binding.buttonForgotPassword.setOnClickListener {
+            firebaseAnalytics.logEvent("Forgot Password"){}
+            Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+
         binding.btnSignup.setOnClickListener {
+            firebaseAnalytics.logEvent("Create Account"){}
             val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
             findNavController().navigate(action)
         }
 
         binding.btnSkip.setOnClickListener {
+            firebaseAnalytics.logEvent("Skip"){}
             val action = LoginFragmentDirections.actionLoginFragmentToHomeActivity()
             findNavController().navigate(action)
         }
@@ -80,6 +93,7 @@ class LoginFragment : Fragment() {
 
         signupViewModel.loginStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
+                firebaseAnalytics.logEvent("Sign in"){}
                 Toast.makeText(context, "Logged in successfully!", Toast.LENGTH_SHORT).show()
                 SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
                 val action =
@@ -87,7 +101,8 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(action)
                 activity?.finish()
             } else if (it == StatusObject.ERROR) {
-                if (signupViewModel.errorMessage.contains("Phone", true)) {
+                if (signupViewModel.code.value != null) {
+                    firebaseAnalytics.logEvent("Sign in"){}
                     val action = LoginFragmentDirections.actionLoginFragmentToMobileVerificationFragment()
                     findNavController().navigate(action)
                 } else {

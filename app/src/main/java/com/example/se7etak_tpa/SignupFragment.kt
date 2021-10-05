@@ -31,7 +31,6 @@ class SignupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container, false)
-        firebaseAnalytics = Firebase.analytics
         return binding.root
     }
 
@@ -39,6 +38,7 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        firebaseAnalytics = Firebase.analytics
 
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.status_bar_color)
         WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = true
@@ -72,7 +72,7 @@ class SignupFragment : Fragment() {
 
         signupViewModel.signupStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
-                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP) {}
+                firebaseAnalytics.logEvent("Signup") {}
 
                 Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
                 val action =
