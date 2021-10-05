@@ -10,9 +10,7 @@ import com.example.se7etak_tpa.StatusObject
 import com.example.se7etak_tpa.TAG
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.network.Api
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.*
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,15 +29,38 @@ class CheckNetworkViewModel : ViewModel() {
     private val _currentLocation = MutableLiveData<LatLng>()
     val currentLocation: LiveData<LatLng> get() = _currentLocation
 
+    private val _pinnedLocation = MutableLiveData<LatLng>()
+    val pinnedLocation: LiveData<LatLng> get() = _pinnedLocation
+
     private val _currentTile = MutableLiveData<Long>()
     val currentTile: LiveData<Long> get() = _currentTile
+
+    private val _pinnedTile = MutableLiveData<Long>()
+    val pinnedTile: LiveData<Long> get() = _pinnedTile
 
     private val _providersMap = MutableLiveData<Map<String, List<Provider>>>()
     val providersMap: LiveData<Map<String, List<Provider>>> get() = _providersMap
 
+    var selectedLocationMarker: Marker? = null
+    var pinnedLocationMarker: Marker? = null
+
     fun setCurrentLocation(location: Location) {
         _currentLocation.value = LatLng(location.latitude, location.longitude)
         updateTileNumber()
+    }
+
+    fun setPinnedLocation(location: LatLng) {
+        _pinnedLocation.value = location
+        updatePinnedTileNumber()
+    }
+
+    private fun updatePinnedTileNumber() {
+        val column =
+            ((_pinnedLocation.value?.longitude?.minus(EGYPT_START_LONG))?.div((tileLength)))?.toLong()
+        val row =
+            ((_pinnedLocation.value?.latitude?.minus(EGYPT_START_LAT))?.div((tileLength)))?.toLong()
+
+        _pinnedTile.value = row?.times(NO_OF_COLUMNS)?.let { column?.plus(it) }
     }
 
     private fun updateTileNumber() {
@@ -51,8 +72,8 @@ class CheckNetworkViewModel : ViewModel() {
         _currentTile.value = row?.times(NO_OF_COLUMNS)?.let { column?.plus(it) }
     }
 
-    fun updateProviders() {
-        val callResponse = Api.retrofitService.getProviders(_currentTile.value!!)
+    fun updateProviders(currentTile: Long) {
+        val callResponse = Api.retrofitService.getProviders(currentTile)
 
         callResponse.enqueue(object : Callback<List<Provider>> {
             override fun onResponse(

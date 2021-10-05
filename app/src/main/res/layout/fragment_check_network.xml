@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data></data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,11 +59,48 @@
 
             </FrameLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_pin"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:background="@drawable/less_curved_button"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/less_curved_button"
+                    android:text="Pin location"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/map"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_not_granted"
+            tools:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#000000"

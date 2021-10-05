@@ -25,8 +25,11 @@
         <entry key="app/src/main/res/drawable/ic_map.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_otp.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/ic_pin.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/ic_pin_blue.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_se7etak_doctor.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/less_curved_button.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/rounded_buttom_sheet.xml" value="0.255859375" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.255859375" />
         <entry key="app/src/main/res/font/amaranth.xml" value="0.359375" />
@@ -40,7 +43,7 @@
         <entry key="app/src/main/res/layout/app_bar_transparent.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/attachment_custom_view.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/bottom_sheet_provider.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/fragment_check_network.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_check_network.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.4" />
