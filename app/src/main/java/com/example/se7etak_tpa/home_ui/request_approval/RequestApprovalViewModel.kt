@@ -41,6 +41,8 @@ class RequestApprovalViewModel : ViewModel() {
     val providerNameSelectedPosition = MutableLiveData<Int>()
 
 
+    val comment = MutableLiveData<String>()
+
 
 
     fun sendEmail() {

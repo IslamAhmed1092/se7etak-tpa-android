@@ -30,5 +30,13 @@ interface ApiService {
     fun getProviders(
         @Query("tile") tile: Long
     ): Call<List<Provider>>
+
+
+    @GET("GetProviderType")
+    fun getProvidersType(): Call<List<String>>
+
+
+
+
 }
 

@@ -66,6 +66,7 @@
                         android:textStyle="bold" />
 
 
+
                     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                         android:id="@+id/request_approval_provider_name_spinner"
                         android:layout_width="match_parent"
@@ -78,7 +79,8 @@
                         app:smsp_multilineError="false"
                         app:smsp_searchHeaderBackgroundColor="@color/purple_dark"
                         app:smsp_selectedItemListColor="#FF5252"
-                        app:smsp_underlineSize="0dp" />
+                        app:smsp_underlineSize="0dp"
+                       />
 
 
                     <androidx.cardview.widget.CardView

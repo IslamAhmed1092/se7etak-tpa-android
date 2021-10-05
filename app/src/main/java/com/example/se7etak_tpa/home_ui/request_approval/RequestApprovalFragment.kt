@@ -113,6 +113,7 @@ class RequestApprovalFragment : Fragment() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
         requestApprovalViewModel.providerTypeSelectedPosition.observe(viewLifecycleOwner, {
+            Log.d("Request", it.toString())
             providerTypeSpinner.setSelection(it)
         })
 
@@ -128,15 +129,26 @@ class RequestApprovalFragment : Fragment() {
                 id: Long
             ) {
                 requestApprovalViewModel.providerNameSelectedPosition.value = position
-                Toast.makeText(requireActivity(), list!![position], Toast.LENGTH_SHORT)
+                Toast.makeText(requireActivity(), position.toString(), Toast.LENGTH_SHORT)
                     .show()
             }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
         }
-        requestApprovalViewModel.providerNameSelectedPosition.observe(viewLifecycleOwner, {
-            providerNameSpinner.setSelection(it)
-        })
+
+//        requestApprovalViewModel.providerNameSelectedPosition.observe(viewLifecycleOwner, {
+//            providerNameSpinner.setSelection(it)
+//        })
+
+            binding.requestApprovalCommentEditText.setText(requestApprovalViewModel.comment.value ?: "")
+
+//        binding.requestApprovalCommentEditText.addTextChangedListener(object: TextWatcher{
+//            override fun afterTextChanged(e: Editable?) {
+//                TODO("Not yet implemented")
+//            }
+//        })
 
         return root
     }
@@ -168,41 +180,45 @@ class RequestApprovalFragment : Fragment() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // get the image selected for Attachment.
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-            if (requestCode == Utils.RC_PHOTO_PICKER || requestCode == Utils.REQUEST_IMAGE_CAPTURE) {
-                var uri = data?.data
-                if (requestCode == Utils.REQUEST_IMAGE_CAPTURE) uri = Utils.getImageUri(
-                    requireActivity().applicationContext,
-                    data?.extras?.get("data") as Bitmap
-                )
-                if (requestApprovalViewModel.attachment1Name.value == null) requestApprovalViewModel.attachment1Name.value =
-                    Utils.getFileName(requireActivity(), uri)
-                else requestApprovalViewModel.attachment2Name.value =
-                    Utils.getFileName(requireActivity(), uri)
-                CropImage.activity(uri)
-                    .start(requireContext(), this)
-            } else if (requestCode == Utils.RC_PDF_PICKER) { // pdf file
-                data?.data?.also { uri ->
-                    if (requestApprovalViewModel.attachment1Uri.value == null) requestApprovalViewModel.attachment2Uri.value =
-                        uri
-                    else requestApprovalViewModel.attachment1Uri.value = uri
-                }
-            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                val result = CropImage.getActivityResult(data);
-                val resultUri = result.uri;
-                if (requestApprovalViewModel.attachment1Uri.value == null) requestApprovalViewModel.attachment1Uri.value =
-                    resultUri
-                else requestApprovalViewModel.attachment2Uri.value = resultUri
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            // get the image selected for Attachment.
+            if (resultCode == AppCompatActivity.RESULT_OK) {
+                if (requestCode == Utils.RC_PHOTO_PICKER || requestCode == Utils.REQUEST_IMAGE_CAPTURE) {
+                    var uri = data?.data
+                    if (requestCode == Utils.REQUEST_IMAGE_CAPTURE) uri = Utils.getImageUri(
+                        requireActivity().applicationContext,
+                        data?.extras?.get("data") as Bitmap
+                    )
+                    if (requestApprovalViewModel.attachment1Name.value == null) requestApprovalViewModel.attachment1Name.value =
+                        Utils.getFileName(requireActivity(), uri)
+                    else requestApprovalViewModel.attachment2Name.value =
+                        Utils.getFileName(requireActivity(), uri)
+                    CropImage.activity(uri)
+                        .start(requireContext(), this)
+                } else if (requestCode == Utils.RC_PDF_PICKER) { // pdf file
+                    data?.data?.also { uri ->
+                        if (requestApprovalViewModel.attachment1Uri.value == null) requestApprovalViewModel.attachment2Uri.value =
+                            uri
+                        else requestApprovalViewModel.attachment1Uri.value = uri
+                    }
+                } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                    val result = CropImage.getActivityResult(data);
+                    val resultUri = result.uri;
+                    if (requestApprovalViewModel.attachment1Uri.value == null) requestApprovalViewModel.attachment1Uri.value =
+                        resultUri
+                    else requestApprovalViewModel.attachment2Uri.value = resultUri
 
-            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(requireActivity(), "upload failed, try again!", Toast.LENGTH_SHORT)
-                    .show()
-                Log.w(requireActivity().packageName, "OnActivityResult: UCrop.RESULT_ERROR")
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
+                } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "upload failed, try again!",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    Log.w(requireActivity().packageName, "OnActivityResult: UCrop.RESULT_ERROR")
+                }
+            } else super.onActivityResult(requestCode, resultCode, data)
+
+        }
 
     }
-
-}
