@@ -1,13 +1,18 @@
 package com.example.se7etak_tpa.home_ui.check_network
 
+import android.app.Application
+import android.graphics.Color
 import android.location.Location
 import android.util.Log
+import androidx.annotation.StringRes
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.StatusObject
 import com.example.se7etak_tpa.TAG
+import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.network.Api
 import com.google.android.gms.maps.model.*
@@ -16,7 +21,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CheckNetworkViewModel : ViewModel() {
+class CheckNetworkViewModel(application: Application) : AndroidViewModel(application) {
+
+    private fun getString(@StringRes id: Int): String{
+        return getApplication<Application>().resources.getString(id)
+    }
 
     private val EGYPT_START_LAT = 22
     private val EGYPT_START_LONG = 24
@@ -25,6 +34,20 @@ class CheckNetworkViewModel : ViewModel() {
     private val tileLength = 0.02
     private val NO_OF_ROWS = ((EGYPT_END_LAT - EGYPT_START_LAT) / (tileLength)).toInt()
     private val NO_OF_COLUMNS = ((EGYPT_END_LONG - EGYPT_START_LONG) / (tileLength)).toInt()
+
+    val filtersList:List<MutableLiveData<MapFilter>> = listOf(
+        MutableLiveData(MapFilter(getString(R.string.الكل), R.color.الكل, Color.BLACK)),
+        MutableLiveData(MapFilter(getString(R.string.مستشفيات), R.color.مستشفيات)),
+        MutableLiveData(MapFilter(getString(R.string.صيدليات), R.color.صيدليات)),
+        MutableLiveData(MapFilter(getString(R.string.عيادات), R.color.عيادات)),
+        MutableLiveData(MapFilter(getString(R.string.مجمع_عيادات), R.color.مجمع_عيادات)),
+        MutableLiveData(MapFilter(getString(R.string.اسنان), R.color.اسنان)),
+        MutableLiveData(MapFilter(getString(R.string.معامل), R.color.معامل, Color.GRAY)),
+        MutableLiveData(MapFilter(getString(R.string.مراكز_متخصصة), R.color.مراكز_متخصصة, Color.GRAY)),
+        MutableLiveData(MapFilter(getString(R.string.مراكز_علاج_طبيعي), R.color.مراكز_علاج_طبيعي, Color.GRAY)),
+        MutableLiveData(MapFilter(getString(R.string.مراكز_اشعة), R.color.مراكز_اشعة)),
+        MutableLiveData(MapFilter(getString(R.string.مركز_بصريات), R.color.مركز_بصريات))
+    )
 
     private val _currentLocation = MutableLiveData<LatLng>()
     val currentLocation: LiveData<LatLng> get() = _currentLocation
@@ -41,8 +64,8 @@ class CheckNetworkViewModel : ViewModel() {
     private val _providersMap = MutableLiveData<Map<String, List<Provider>>>()
     val providersMap: LiveData<Map<String, List<Provider>>> get() = _providersMap
 
-    var selectedLocationMarker: Marker? = null
-    var pinnedLocationMarker: Marker? = null
+    var selectedLocationMarker =  MutableLiveData<Marker>()
+    var pinnedLocationMarker = MutableLiveData<Marker>()
 
     fun setCurrentLocation(location: Location) {
         _currentLocation.value = LatLng(location.latitude, location.longitude)
@@ -81,6 +104,7 @@ class CheckNetworkViewModel : ViewModel() {
                 response: Response<List<Provider>>
             ) {
                 if(response.code() == 200) {
+                    filtersList.forEach { filter -> filter.value = filter.value?.copy(isEnabled = true) }
                     val responseList = response.body()
                     responseList?.let { list ->
                         _providersMap.value = list.groupBy { it.type }
@@ -121,10 +145,22 @@ class CheckNetworkViewModel : ViewModel() {
         }*/
     }
 
-    fun showHideMarkers(type: String, visible: Boolean) {
+    fun showHideMarkers(type: String) {
+
         _providersMap.value?.let{
-            val list = it[type]
-            list?.forEach { provider -> provider.marker?.isVisible = visible }
+            if (type == "الكل") {
+                for ((_, list) in it) {
+                    list.forEach { provider -> provider.marker?.isVisible = true }
+                }
+            } else {
+                for ((listType, list) in it) {
+                    if (listType == type)
+                        list.forEach { provider -> provider.marker?.isVisible = true }
+                    else
+                        list.forEach { provider -> provider.marker?.isVisible = false }
+
+                }
+            }
         }
     }
 

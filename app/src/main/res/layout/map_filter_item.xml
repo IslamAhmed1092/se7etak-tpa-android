@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.example.se7etak_tpa.data.MapFilter"/>
         <variable
             name="filter"
-            type="com.example.se7etak_tpa.data.MapFilter" />
+            type="androidx.lifecycle.MutableLiveData&lt;MapFilter&gt;" />
     </data>
 
 <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
@@ -47,6 +48,7 @@
         android:minHeight="36dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        btnStyle="@{filter}"
         android:background="@drawable/curved_button"
         />
 </layout>

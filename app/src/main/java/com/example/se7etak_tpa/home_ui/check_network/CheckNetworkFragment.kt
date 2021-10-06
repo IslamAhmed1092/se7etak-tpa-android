@@ -99,16 +99,16 @@ class CheckNetworkFragment : Fragment() {
                         )
                     )
                 }
-                viewModel.pinnedLocationMarker?.remove()
+                viewModel.pinnedLocationMarker.value?.remove()
                 val options = MarkerOptions()
                     .position(viewModel.currentLocation.value!!)
                     .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_pin_blue))
 
                 viewModel.setPinnedLocation(viewModel.currentLocation.value!!)
-                viewModel.selectedLocationMarker = null
+                viewModel.selectedLocationMarker.value = null
                 val marker = mMap.addMarker(options)
                 marker?.tag = "pinned"
-                viewModel.pinnedLocationMarker = marker
+                viewModel.pinnedLocationMarker.value = marker
 
                 viewModel.updateProviders(viewModel.currentTile.value!!)
             }
@@ -116,19 +116,19 @@ class CheckNetworkFragment : Fragment() {
         }
 
         binding.btnPin.setOnClickListener {
-            viewModel.selectedLocationMarker?.let {
+            viewModel.selectedLocationMarker.value?.let {
 
-                viewModel.pinnedLocationMarker?.remove()
+                viewModel.pinnedLocationMarker.value?.remove()
                 val options = MarkerOptions()
                     .position(it.position)
                     .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_pin_blue))
 
                 viewModel.setPinnedLocation(it.position)
                 it.remove()
-                viewModel.selectedLocationMarker = null
+                viewModel.selectedLocationMarker.value = null
                 val marker = mMap.addMarker(options)
                 marker?.tag = "pinned"
-                viewModel.pinnedLocationMarker = marker
+                viewModel.pinnedLocationMarker.value = marker
                 viewModel.updateProviders(viewModel.pinnedTile.value!!)
                 binding.llPin.visibility = View.GONE
             }
@@ -136,30 +136,30 @@ class CheckNetworkFragment : Fragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-            viewModel.selectedLocationMarker?.remove()
-            viewModel.selectedLocationMarker = null
+            viewModel.selectedLocationMarker.value?.remove()
+            viewModel.selectedLocationMarker.value = null
             binding.llPin.visibility = View.GONE
         }
 
         viewModel.providersMap.observe(viewLifecycleOwner) {
             mMap.clear()
 
-            viewModel.selectedLocationMarker?.let {
+            viewModel.selectedLocationMarker.value?.let {
                 val options = MarkerOptions()
                     .position(it.position)
                     .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_pin_red))
                 val marker = mMap.addMarker(options)
                 marker?.tag = "selected"
-                viewModel.selectedLocationMarker = marker
+                viewModel.selectedLocationMarker.value = marker
             }
 
-            viewModel.pinnedLocationMarker?.let {
+            viewModel.pinnedLocationMarker.value?.let {
                 val options = MarkerOptions()
                     .position(it.position)
                     .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_pin_blue))
                 val marker = mMap.addMarker(options)
                 marker?.tag = "pinned"
-                viewModel.pinnedLocationMarker = marker
+                viewModel.pinnedLocationMarker.value = marker
             }
 
             for((type, list) in it) {
@@ -206,14 +206,14 @@ class CheckNetworkFragment : Fragment() {
         }
 
         mMap.setOnMapClickListener {
-            viewModel.selectedLocationMarker?.remove()
+            viewModel.selectedLocationMarker.value?.remove()
             val options = MarkerOptions()
                 .position(it)
                 .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_pin_red))
 
             val marker = mMap.addMarker(options)
             marker?.tag = "selected"
-            viewModel.selectedLocationMarker = marker
+            viewModel.selectedLocationMarker.value = marker
             binding.llPin.visibility = View.VISIBLE
         }
 
@@ -237,8 +237,8 @@ class CheckNetworkFragment : Fragment() {
 
         binding.rvFilters.itemAnimator = DefaultItemAnimator()
         binding.rvFilters.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)))
-        binding.rvFilters.adapter = FiltersListAdapter(requireContext()) {
-            viewModel.showHideMarkers(it.name, it.isEnabled)
+        binding.rvFilters.adapter = FiltersListAdapter(viewModel.filtersList, viewLifecycleOwner) {
+            viewModel.showHideMarkers(it.name)
         }
 
         binding.rvFilters.setHasFixedSize(true)

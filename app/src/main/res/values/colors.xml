@@ -13,6 +13,7 @@
     <color name="status_bar_color">#ffe1f8f8</color>
     <color name="red">#ff0000</color>
 
+    <color name="الكل">#FFFFFF</color>
     <color name="مستشفيات">#FF66B3</color>
     <color name="صيدليات">#FF66FF</color>
     <color name="عيادات">#B366FF</color>
