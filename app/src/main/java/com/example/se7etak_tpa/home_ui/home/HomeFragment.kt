@@ -35,14 +35,16 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        user = SignupViewModel.loadUserData(requireContext())
-        if(!user.token.isNullOrEmpty()) homeViewModel.getPatientsRequests(user.token!!)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseAnalytics = Firebase.analytics
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = homeViewModel
+        binding.rvRequests.adapter = RequestsAdapter()
+
         binding.ivLogout.setOnClickListener {
             SignupViewModel.deleteUserData(requireContext())
             //TODO: send request to the server here

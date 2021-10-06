@@ -24,5 +24,6 @@
     <color name="مراكز_علاج_طبيعي">#FFFF66</color>
     <color name="مراكز_اشعة">#FFB366</color>
     <color name="مركز_بصريات">#FF6666</color>
+    <color name="light_gray">#E6E6E6</color>
 
 </resources>

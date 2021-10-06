@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_error.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable-v24/ic_logo.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/background_circle.xml" value="0.3411458333333333" />
@@ -11,6 +12,9 @@
         <entry key="app/src/main/res/drawable/curved_button.xml" value="0.255859375" />
         <entry key="app/src/main/res/drawable/eva_logo_background.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/gradient_background.xml" value="0.23055555555555557" />
+        <entry key="app/src/main/res/drawable/gradient_blue.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/gradient_purple.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/drawable/gradient_red.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_add_circle_outline.xml" value="0.255859375" />
         <entry key="app/src/main/res/drawable/ic_at_home.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.340625" />
@@ -45,13 +49,14 @@
         <entry key="app/src/main/res/layout/bottom_sheet_provider.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_check_network.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_mobile_verification.xml" value="0.6983240223463687" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_request_approval.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_request_reimbursement.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.264" />
+        <entry key="app/src/main/res/layout/home_request_item.xml" value="0.4" />
         <entry key="app/src/main/res/layout/map_filter_item.xml" value="0.536" />
         <entry key="app/src/main/res/layout/test.xml" value="0.3203125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3146067415730337" />

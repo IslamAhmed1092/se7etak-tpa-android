@@ -4,11 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data></data>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.se7etak_tpa.home_ui.home.HomeViewModel" />
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:background="@drawable/gradient_background"
         tools:context=".home_ui.home.HomeFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -67,49 +72,17 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_requests"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/MaterialCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/MaterialCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/MaterialCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/MaterialCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/MaterialCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/MaterialCardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
-            </LinearLayout>
-
-
-        </androidx.core.widget.NestedScrollView>
+            android:padding="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:listData="@{viewModel.requests}"
+            tools:itemCount="5"
+            android:clipToPadding="false"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:listitem="@layout/home_request_item" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

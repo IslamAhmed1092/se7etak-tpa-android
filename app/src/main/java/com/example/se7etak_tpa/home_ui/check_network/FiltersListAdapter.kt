@@ -31,7 +31,7 @@ class FiltersListAdapter(private val filtersList: List<MutableLiveData<MapFilter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FiltersListViewHolder {
         return FiltersListViewHolder(
             MapFilterItemBinding.inflate(
-                LayoutInflater.from(parent.context)
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
