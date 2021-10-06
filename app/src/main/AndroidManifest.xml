@@ -34,6 +34,7 @@
 
         <activity
             android:name=".HomeActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:label="@string/title_activity_home"
             android:theme="@style/NoActionBar" >

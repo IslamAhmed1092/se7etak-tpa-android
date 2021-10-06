@@ -32,16 +32,21 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class CheckNetworkFragment : Fragment() {
 
-    private val REQUEST_CODE: Int = 200
     private val viewModel: CheckNetworkViewModel by viewModels()
 
     private var previousTile: Long = -1
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private lateinit var mMap: GoogleMap
 
@@ -232,12 +237,21 @@ class CheckNetworkFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_check_network, container, false)
 
+
+        firebaseAnalytics = Firebase.analytics
+
         binding.rvFilters.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, true)
+
 
         binding.rvFilters.itemAnimator = DefaultItemAnimator()
         binding.rvFilters.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)))
         binding.rvFilters.adapter = FiltersListAdapter(viewModel.filtersList, viewLifecycleOwner) {
+            if(it.name != "الكل") {
+                firebaseAnalytics.logEvent("Filter Map") {
+                    param("Provider Type", it.name)
+                }
+            }
             viewModel.showHideMarkers(it.name)
         }
 
