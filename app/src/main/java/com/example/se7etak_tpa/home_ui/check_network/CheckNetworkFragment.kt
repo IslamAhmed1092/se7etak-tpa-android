@@ -3,7 +3,6 @@ package com.example.se7etak_tpa.home_ui.check_network
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -21,13 +20,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.SignupViewModel
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.databinding.BottomSheetProviderBinding
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
-import com.example.se7etak_tpa.home_ui.home.RequestsApiStatus
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.CameraUpdateFactory

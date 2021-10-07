@@ -5,13 +5,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.se7etak_tpa.SignupViewModel
-import com.example.se7etak_tpa.StatusObject
-import com.example.se7etak_tpa.TAG
+import com.example.se7etak_tpa.auth_ui.SignupViewModel
+import com.example.se7etak_tpa.auth_ui.TAG
 import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.network.Api
-import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback

@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.se7etak_tpa.StatusObject"/>
+        <import type="com.example.se7etak_tpa.auth_ui.StatusObject"/>
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.example.se7etak_tpa.SignupViewModel" />
+            type="com.example.se7etak_tpa.auth_ui.SignupViewModel" />
     </data>
 
     <ScrollView
@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ChangePhoneNumberFragment">
+            tools:context=".auth_ui.ChangePhoneNumberFragment">
 
             <TextView
                 android:id="@+id/tv_app_bar_title"

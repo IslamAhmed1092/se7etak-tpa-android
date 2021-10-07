@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa
+package com.example.se7etak_tpa.auth_ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,11 +10,10 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentChangePhoneNumberBinding
-import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.analytics.ktx.logEvent
 
 class ChangePhoneNumberFragment : Fragment() {
 
@@ -34,7 +33,8 @@ class ChangePhoneNumberFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_change_phone_number, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_change_phone_number, container, false)
         signupViewModel.user = user
         signupViewModel.resetMobileData()
         return binding.root

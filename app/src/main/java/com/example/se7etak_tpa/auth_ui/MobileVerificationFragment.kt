@@ -1,7 +1,5 @@
-package com.example.se7etak_tpa
+package com.example.se7etak_tpa.auth_ui
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -9,20 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.se7etak_tpa.data.User
+import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 
 class MobileVerificationFragment : Fragment() {
 
@@ -57,7 +53,8 @@ class MobileVerificationFragment : Fragment() {
         signupViewModel.resetMobileData()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mobile_verification, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_mobile_verification, container, false)
         return binding.root
     }
 

@@ -8,15 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.SignupViewModel
+import com.example.se7etak_tpa.auth_ui.SignupViewModel
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
-import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics

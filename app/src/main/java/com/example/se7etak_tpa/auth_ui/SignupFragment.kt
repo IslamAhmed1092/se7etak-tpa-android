@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa
+package com.example.se7etak_tpa.auth_ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,8 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -40,7 +40,9 @@ class SignupFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         firebaseAnalytics = Firebase.analytics
 
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.status_bar_color)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),
+            R.color.status_bar_color
+        )
         WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = true
 
         signupViewModel.resetSignupData()

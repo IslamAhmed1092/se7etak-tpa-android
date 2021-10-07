@@ -1,7 +1,6 @@
-package com.example.se7etak_tpa
+package com.example.se7etak_tpa.auth_ui
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData

@@ -8,16 +8,12 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.StatusObject
-import com.example.se7etak_tpa.TAG
+import com.example.se7etak_tpa.auth_ui.TAG
 import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.data.Provider
-import com.example.se7etak_tpa.home_ui.home.RequestsApiStatus
 import com.example.se7etak_tpa.network.Api
 import com.google.android.gms.maps.model.*
-import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback

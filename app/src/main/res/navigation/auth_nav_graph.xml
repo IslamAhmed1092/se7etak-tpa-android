@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.se7etak_tpa.LoginFragment"
+        android:name="com.example.se7etak_tpa.auth_ui.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.example.se7etak_tpa.SignupFragment"
+        android:name="com.example.se7etak_tpa.auth_ui.SignupFragment"
         android:label="SignupFragment"
         tools:layout="@layout/fragment_signup">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/mobileVerificationFragment"
-        android:name="com.example.se7etak_tpa.MobileVerificationFragment"
+        android:name="com.example.se7etak_tpa.auth_ui.MobileVerificationFragment"
         android:label="fragment_mobile_verification"
         tools:layout="@layout/fragment_mobile_verification" >
         <action
@@ -64,7 +64,7 @@
         tools:layout="@layout/activity_home"/>
     <fragment
         android:id="@+id/changePhoneNumberFragment"
-        android:name="com.example.se7etak_tpa.ChangePhoneNumberFragment"
+        android:name="com.example.se7etak_tpa.auth_ui.ChangePhoneNumberFragment"
         android:label="ChangePhoneNumberFragment"
         tools:layout="@layout/fragment_change_phone_number">
         <action
