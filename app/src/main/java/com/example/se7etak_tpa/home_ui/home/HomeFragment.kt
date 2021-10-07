@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.ViewProfile
 import com.example.se7etak_tpa.auth_ui.SignupViewModel
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
@@ -51,9 +52,10 @@ class HomeFragment : Fragment() {
         }
         binding.ivProfile.setOnClickListener {
             firebaseAnalytics.logEvent("Profile"){}
-            Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ViewProfile::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
-
 
         homeViewModel.status.observe(viewLifecycleOwner) {
             if(it == RequestsApiStatus.UNAUTHORIZED) {
