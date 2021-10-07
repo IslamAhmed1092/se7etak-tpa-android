@@ -14,12 +14,17 @@ import com.example.se7etak_tpa.StatusObject
 import com.example.se7etak_tpa.TAG
 import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.data.Provider
+import com.example.se7etak_tpa.home_ui.home.RequestsApiStatus
 import com.example.se7etak_tpa.network.Api
 import com.google.android.gms.maps.model.*
 import com.google.gson.JsonObject
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+enum class CheckNetworkStatus { NOT_GRANTED, LOADING_MAP, NO_CONNECTION, LOADING_DATA, DONE, ERROR }
+
 
 class CheckNetworkViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -49,6 +54,12 @@ class CheckNetworkViewModel(application: Application) : AndroidViewModel(applica
         MutableLiveData(MapFilter(getString(R.string.مركز_بصريات), R.color.مركز_بصريات))
     )
 
+    private val _status = MutableLiveData<CheckNetworkStatus>()
+    val status: LiveData<CheckNetworkStatus> = _status
+
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
+
     private val _currentLocation = MutableLiveData<LatLng>()
     val currentLocation: LiveData<LatLng> get() = _currentLocation
 
@@ -70,6 +81,10 @@ class CheckNetworkViewModel(application: Application) : AndroidViewModel(applica
     fun setCurrentLocation(location: Location) {
         _currentLocation.value = LatLng(location.latitude, location.longitude)
         updateTileNumber()
+    }
+
+    fun setStatus(status: CheckNetworkStatus) {
+        _status.value = status
     }
 
     fun setPinnedLocation(location: LatLng) {
@@ -97,25 +112,35 @@ class CheckNetworkViewModel(application: Application) : AndroidViewModel(applica
 
     fun updateProviders(currentTile: Long) {
         val callResponse = Api.retrofitService.getProviders(currentTile)
-
+        _status.value = CheckNetworkStatus.LOADING_DATA
         callResponse.enqueue(object : Callback<List<Provider>> {
             override fun onResponse(
                 call: Call<List<Provider>>,
                 response: Response<List<Provider>>
             ) {
                 if(response.code() == 200) {
+                    _status.value = CheckNetworkStatus.DONE
                     filtersList.forEach { filter -> filter.value = filter.value?.copy(isEnabled = true) }
                     val responseList = response.body()
                     responseList?.let { list ->
                         _providersMap.value = list.groupBy { it.type }
                     }
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500){
+                    _errorMessage.value = "There is a problem in the server."
+                    _status.value = CheckNetworkStatus.ERROR
                 } else {
-                    Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
+                    try {
+                        _errorMessage.value = JSONObject(response.errorBody()?.string()!!).optString("message")
+                    } catch (e: Exception) {
+                        _errorMessage.value = response.message()
+                    }
+                    _status.value = CheckNetworkStatus.ERROR
                 }
             }
 
             override fun onFailure(call: Call<List<Provider>>, t: Throwable) {
+                _status.value = CheckNetworkStatus.NO_CONNECTION
                 Log.i(TAG, "onFailure: ${t.message}")
             }
 

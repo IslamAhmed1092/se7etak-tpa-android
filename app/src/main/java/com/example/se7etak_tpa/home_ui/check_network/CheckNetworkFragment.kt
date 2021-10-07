@@ -3,6 +3,7 @@ package com.example.se7etak_tpa.home_ui.check_network
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -20,10 +21,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.SignupViewModel
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.databinding.BottomSheetProviderBinding
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
+import com.example.se7etak_tpa.home_ui.home.RequestsApiStatus
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -264,6 +269,8 @@ class CheckNetworkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.ibMyLocation.setOnClickListener {
             if (viewModel.currentLocation.value != null) {
                 mMap.animateCamera(
@@ -274,6 +281,21 @@ class CheckNetworkFragment : Fragment() {
             }
         }
 
+        binding.btnTryAgain.setOnClickListener {
+            viewModel.updateProviders(viewModel.currentTile.value!!)
+        }
+
+        viewModel.status.observe(viewLifecycleOwner) {
+            if (it == CheckNetworkStatus.ERROR) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("ERROR!")
+                    .setMessage(viewModel.errorMessage.value)
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+        }
 
         // Checking if permission is not granted
         checkPermission()
@@ -282,13 +304,11 @@ class CheckNetworkFragment : Fragment() {
 
     private val permReqLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         if (it) {
-            binding.clGranted.visibility = View.VISIBLE
-            binding.clNotGranted.visibility = View.GONE
+            viewModel.setStatus(CheckNetworkStatus.LOADING_MAP)
             val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
             mapFragment?.getMapAsync(callback)
         } else {
-            binding.clGranted.visibility = View.GONE
-            binding.clNotGranted.visibility = View.VISIBLE
+            viewModel.setStatus(CheckNetworkStatus.NOT_GRANTED)
         }
     }
 
