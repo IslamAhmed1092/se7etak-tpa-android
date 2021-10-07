@@ -17,6 +17,7 @@ import com.example.se7etak_tpa.SignupViewModel
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -47,7 +48,6 @@ class HomeFragment : Fragment() {
 
         binding.ivLogout.setOnClickListener {
             SignupViewModel.deleteUserData(requireContext())
-            //TODO: send request to the server here
             val intent = Intent(context, AuthActivity::class.java)
             startActivity(intent)
             activity?.finish()
@@ -55,6 +55,37 @@ class HomeFragment : Fragment() {
         binding.ivProfile.setOnClickListener {
             firebaseAnalytics.logEvent("Profile"){}
             Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+
+
+        homeViewModel.status.observe(viewLifecycleOwner) {
+            if(it == RequestsApiStatus.UNAUTHORIZED) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Session Expired")
+                    .setMessage("Your session has expired. Please log in again.")
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .setOnDismissListener {
+                        SignupViewModel.deleteUserData(requireContext())
+                        val intent = Intent(activity, AuthActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                    .show()
+            } else if (it == RequestsApiStatus.ERROR) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("ERROR!")
+                    .setMessage(homeViewModel.errorMessage.value)
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+        }
+
+        binding.btnTryAgain.setOnClickListener {
+            homeViewModel.getPatientsRequests()
         }
     }
 

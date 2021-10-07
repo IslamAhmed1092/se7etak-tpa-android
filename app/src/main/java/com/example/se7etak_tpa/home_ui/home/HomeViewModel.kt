@@ -17,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-enum class RequestsApiStatus { LOADING, ERROR, DONE }
+enum class RequestsApiStatus { LOADING, NO_CONNECTION, UNAUTHORIZED, EMPTY, DONE, ERROR}
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -37,18 +37,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         return SignupViewModel.loadUserData(getApplication<Application>().applicationContext).token
     }
 
-    private var token:String? = ""
+    private var userToken:String? = ""
 
     init {
-        token = getToken()
-        if(!token.isNullOrEmpty()) {
-            getPatientsRequests(token!!)
-        }
+        userToken = getToken()
+        if(!userToken.isNullOrEmpty())
+            getPatientsRequests()
     }
 
 
-    private fun getPatientsRequests(token: String) {
-        val callResponse = Api.retrofitService.getPatientRequests("Bearer $token")
+    fun getPatientsRequests() {
+
+        val callResponse = Api.retrofitService.getPatientRequests("Bearer $userToken")
 
         _status.value = RequestsApiStatus.LOADING
         callResponse.enqueue(object : Callback<List<HomeRequest>> {
@@ -58,24 +58,30 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             ) {
                 if(response.code() == 200) {
                     _requests.value = response.body()
-                    _status.value = RequestsApiStatus.DONE
+                    if(_requests.value.isNullOrEmpty())
+                        _status.value = RequestsApiStatus.EMPTY
+                    else
+                        _status.value = RequestsApiStatus.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else if(response.code() == 500){
                     _errorMessage.value = "There is a problem in the server."
                     _status.value = RequestsApiStatus.ERROR
                 } else {
-                    response.errorBody()?.let {
-                        _errorMessage.value = JSONObject(it.string()).optString("message")
+                    try {
+                        _errorMessage.value = JSONObject(response.errorBody()?.string()!!).optString("message")
+                        _status.value = RequestsApiStatus.ERROR
+                    } catch (e: Exception) {
+                        _errorMessage.value = response.message()
+                        if (_errorMessage.value == "Unauthorized")
+                            _status.value = RequestsApiStatus.UNAUTHORIZED
                     }
-
-                    _status.value = RequestsApiStatus.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
                 }
             }
 
             override fun onFailure(call: Call<List<HomeRequest>>, t: Throwable) {
                 _errorMessage.value = "Please check your internet connection."
-                _status.value = RequestsApiStatus.ERROR
+                _status.value = RequestsApiStatus.NO_CONNECTION
                 Log.i(TAG, "onFailure: ${t.message}")
             }
 

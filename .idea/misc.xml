@@ -40,7 +40,7 @@
         <entry key="app/src/main/res/font/font_family.xml" value="0.35885416666666664" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.264" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/activity_request_approval.xml" value="0.264" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.264" />
@@ -49,7 +49,7 @@
         <entry key="app/src/main/res/layout/bottom_sheet_provider.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_check_network.xml" value="0.264" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_mobile_verification.xml" value="0.6983240223463687" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.32083333333333336" />

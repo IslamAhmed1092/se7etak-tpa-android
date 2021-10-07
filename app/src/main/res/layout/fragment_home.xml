@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.example.se7etak_tpa.home_ui.home.RequestsApiStatus"/>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.example.se7etak_tpa.home_ui.home.HomeViewModel" />
@@ -72,17 +74,119 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_requests"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:listData="@{viewModel.requests}"
-            tools:itemCount="5"
-            android:clipToPadding="false"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            tools:listitem="@layout/home_request_item" />
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_requests"
+                android:visibility="@{(viewModel.status == RequestsApiStatus.DONE)?View.VISIBLE:View.GONE}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:listData="@{viewModel.requests}"
+                tools:itemCount="5"
+                android:clipToPadding="false"
+                tools:listitem="@layout/home_request_item" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_empty_state"
+                android:visibility="@{(viewModel.status == RequestsApiStatus.EMPTY)?View.VISIBLE:View.GONE}"
+                tools:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/empty_state"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="No requests yet"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/empty_statement"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/empty_statement"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:gravity="center"
+                    android:text="Here, you can see your history of requests"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.6" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_no_connection"
+                android:visibility="@{(viewModel.status == RequestsApiStatus.NO_CONNECTION)?View.VISIBLE:View.GONE}"
+                tools:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/no_connection"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35000002" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_try_again"
+                    style="@style/TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Try again"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView4"
+                    app:layout_constraintVertical_bias="0.85" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_loading"
+                android:visibility="@{(viewModel.status == RequestsApiStatus.LOADING)?View.VISIBLE:View.GONE}"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:contentPadding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="16dp">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.card.MaterialCardView>
+
+        </RelativeLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
