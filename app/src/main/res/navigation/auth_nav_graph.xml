@@ -53,9 +53,29 @@
             app:destination="@id/homeActivity"
             app:popUpTo="@id/homeActivity"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_changePhoneNumberFragment"
+            app:destination="@id/changePhoneNumberFragment" />
     </fragment>
     <activity
         android:id="@+id/homeActivity"
         android:name="com.example.se7etak_tpa.HomeActivity"
-        android:label="HomeActivity" />
+        android:label="HomeActivity"
+        tools:layout="@layout/activity_home"/>
+    <fragment
+        android:id="@+id/changePhoneNumberFragment"
+        android:name="com.example.se7etak_tpa.ChangePhoneNumberFragment"
+        android:label="ChangePhoneNumberFragment"
+        tools:layout="@layout/fragment_change_phone_number">
+        <action
+            android:id="@+id/action_changePhoneNumberFragment_to_mobileVerificationFragment"
+            app:destination="@id/mobileVerificationFragment"
+            app:popUpTo="@id/mobileVerificationFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="user"
+            app:argType="com.example.se7etak_tpa.data.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

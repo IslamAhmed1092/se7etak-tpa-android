@@ -101,7 +101,7 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(action)
                 activity?.finish()
             } else if (it == StatusObject.ERROR) {
-                if (signupViewModel.code.value != null) {
+                if (!signupViewModel.code.value.isNullOrEmpty()) {
                     firebaseAnalytics.logEvent("Sign in"){}
                     val action = LoginFragmentDirections.actionLoginFragmentToMobileVerificationFragment()
                     findNavController().navigate(action)

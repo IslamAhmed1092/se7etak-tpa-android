@@ -297,7 +297,6 @@ class CheckNetworkFragment : Fragment() {
             }
         }
 
-        // Checking if permission is not granted
         checkPermission()
 
     }
@@ -322,8 +321,6 @@ class CheckNetworkFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         } else {
-            binding.clGranted.visibility = View.VISIBLE
-            binding.clNotGranted.visibility = View.GONE
             val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
             mapFragment?.getMapAsync(callback)
         }

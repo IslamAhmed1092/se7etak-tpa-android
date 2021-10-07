@@ -34,6 +34,9 @@ class SignupViewModel: ViewModel() {
     private val _sendCodeStatus = MutableLiveData(StatusObject.INITIAL)
     val sendCodeStatus: LiveData<StatusObject> get() = _sendCodeStatus
 
+    private val _changePhoneStatus = MutableLiveData(StatusObject.INITIAL)
+    val changePhoneStatus: LiveData<StatusObject> get() = _changePhoneStatus
+
 
     private var _errorMessage: String = ""
     val errorMessage: String get() = _errorMessage
@@ -109,8 +112,14 @@ class SignupViewModel: ViewModel() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if(response.code() == 200) {
-                    user.email = email
-                    user.token = response.body()?.get("token")?.asString
+                    response.body()?.let {
+                        val userString = it.get("user")
+                        userString?.let { json ->
+                            user = Gson().fromJson(json, User::class.java)
+                        }
+                        user.token = it.get("token")?.asString
+                    }
+
                     _loginStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else if(response.code() == 500) {
@@ -120,8 +129,10 @@ class SignupViewModel: ViewModel() {
                     response.errorBody()?.let {
                         val errorJson = JSONObject(it.string())
                         _errorMessage = errorJson.optString("message")
-                        _code.value = _errorMessage.toIntOrNull()?.toString()
-                        if (_code.value != null) user.email = email
+                        errorJson.optJSONObject("user")?.let {
+                            user = Gson().fromJson(it.toString(), User::class.java)
+                        }
+                        _code.value = errorJson.optString("code")
                     }
                     _loginStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: $_errorMessage" )
@@ -246,11 +257,47 @@ class SignupViewModel: ViewModel() {
 
     }
 
+    fun changePhoneNumber(phoneNumber: String) {
+        val body = mapOf("se7etakID" to user.id!!, "email" to user.email!!,
+            "phoneNumber" to phoneNumber)
+
+        val callResponse = Api.retrofitService.changePhoneNumber(body)
+        _changePhoneStatus.value = StatusObject.LOADING
+        callResponse.enqueue(object : Callback<JsonObject> {
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.code() == 200) {
+                    user.phoneNumber = phoneNumber
+                    _code.value = response.body()?.get("code")?.asString
+                    _changePhoneStatus.value = StatusObject.DONE
+                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
+                    _changePhoneStatus.value = StatusObject.ERROR
+                } else {
+                    response.errorBody()?.let {
+                        _errorMessage = JSONObject(it.string()).optString("message")
+                    }
+                    _changePhoneStatus.value = StatusObject.ERROR
+                    Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                _errorMessage = "Please check your internet connection and try again"
+                _changePhoneStatus.value = StatusObject.ERROR
+                Log.i(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+    }
+
     fun resetSignupData() {
         _loginStatus.value = StatusObject.INITIAL
         _signupStatus.value = StatusObject.INITIAL
         _verificationStatus.value = StatusObject.INITIAL
         _sendCodeStatus.value = StatusObject.INITIAL
+        _changePhoneStatus.value = StatusObject.INITIAL
         _errorMessage = ""
         user = User()
         _timerMinutes.value = 0
@@ -259,6 +306,20 @@ class SignupViewModel: ViewModel() {
         _hideSendAgainTimerFinished.value = false
 
     }
+
+    fun resetMobileData() {
+        _verificationStatus.value = StatusObject.INITIAL
+        _sendCodeStatus.value = StatusObject.INITIAL
+        _changePhoneStatus.value = StatusObject.INITIAL
+        _errorMessage = ""
+        _timerMinutes.value = 0
+        _timerSeconds.value = 0
+        _timerFinished.value = false
+        _hideSendAgainTimerFinished.value = false
+
+    }
+
+
 
     companion object {
         fun saveUserData(context: Context, user: User) {

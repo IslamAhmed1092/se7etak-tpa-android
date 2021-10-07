@@ -78,12 +78,22 @@
                         android:textSize="16sp"
                         tools:text="@string/test_verification_text" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_change"
+                        style="@style/TextButton"
+                        android:enabled="@{viewModel.verificationStatus != StatusObject.LOADING}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/runda_medium"
+                        android:text="change" />
+
                     <TextView
                         android:id="@+id/tv_enter_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:gravity="center"
                         android:text="@{viewModel.code}"
                         tools:text="123456"

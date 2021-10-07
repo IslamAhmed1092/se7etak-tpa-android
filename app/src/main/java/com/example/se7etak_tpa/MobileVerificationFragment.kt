@@ -54,7 +54,7 @@ class MobileVerificationFragment : Fragment() {
                     dialogBuilder.show()
             }
         }
-
+        signupViewModel.resetMobileData()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mobile_verification, container, false)
@@ -136,6 +136,11 @@ class MobileVerificationFragment : Fragment() {
                 binding.btnConfirm.performClick()
             }
             false
+        }
+
+        binding.btnChange.setOnClickListener {
+            val action = MobileVerificationFragmentDirections.actionMobileVerificationFragmentToChangePhoneNumberFragment(signupViewModel.user)
+            findNavController().navigate(action)
         }
     }
 

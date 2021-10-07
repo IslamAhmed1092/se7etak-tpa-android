@@ -42,5 +42,9 @@ interface ApiService {
         @Header("Authorization") authHeader: String     //should send "Bearer" + token
     ): Call<List<HomeRequest>>
 
+    @POST("/api/Account/ChangePhoneNumber")
+    fun changePhoneNumber(
+        @Body body: Map<String, String>
+    ): Call<JsonObject>
 }
 

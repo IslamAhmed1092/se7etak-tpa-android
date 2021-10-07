@@ -51,4 +51,8 @@
     <string name="approval">Approval</string>
     <string name="reimbursement">Reimbursement</string>
     <string name="network">Network</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_phone_number">Change Phone Number</string>
+    <string name="text_continue">Continue</string>
 </resources>
