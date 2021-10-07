@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_request_approval"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_request_approval" />
+        android:icon="@drawable/ic_approval"
+        android:title="@string/approval" />
 
     <item
         android:id="@+id/navigation_request_reimbursement"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_request_reimbursement" />
+        android:icon="@drawable/ic_reimbursement"
+        android:title="@string/reimbursement" />
 
     <item
         android:id="@+id/navigation_check_network"
-        android:icon="@drawable/ic_map"
-        android:title="@string/title_check_network" />
+        android:icon="@drawable/ic_check_network"
+        android:title="@string/network" />
 
 </menu>

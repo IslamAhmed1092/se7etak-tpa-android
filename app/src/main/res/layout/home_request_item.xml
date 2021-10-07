@@ -42,10 +42,10 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:text="@{`Request ` + request.type}"
+                android:text="@{request.type}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/title_request_approval" />
+                tools:text="Approval" />
 
             <TextView
                 android:id="@+id/tv_date"

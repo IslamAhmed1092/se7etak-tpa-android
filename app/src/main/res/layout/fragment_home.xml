@@ -175,6 +175,7 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
                 app:contentPadding="8dp"
+                tools:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

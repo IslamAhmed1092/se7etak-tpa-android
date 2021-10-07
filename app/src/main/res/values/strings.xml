@@ -48,4 +48,7 @@
     <string name="forgot_password_text">Forgot your password?</string>
     <string name="dont_have_account_text">Don\'t have an account?</string>
     <string name="الكل">الكل</string>
+    <string name="approval">Approval</string>
+    <string name="reimbursement">Reimbursement</string>
+    <string name="network">Network</string>
 </resources>
