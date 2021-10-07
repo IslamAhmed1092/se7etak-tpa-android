@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa.auth_ui
+package com.example.se7etak_tpa.auth_ui.mobile_verification
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,9 +10,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.Utils.Utils.saveUserData
+import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -22,10 +24,22 @@ import com.google.firebase.ktx.Firebase
 
 class MobileVerificationFragment : Fragment() {
 
+    private lateinit var user: User
+    private lateinit var code: String
     private lateinit var binding: FragmentMobileVerificationBinding
-    private val signupViewModel: SignupViewModel by activityViewModels()
+    private val viewModel: MobileVerificationViewModel by viewModels()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var timer: CountDownTimer
+    private lateinit var hideSendAgainTimer: CountDownTimer
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            user = it.get("user") as User
+            code = it.get("code") as String
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +50,6 @@ class MobileVerificationFragment : Fragment() {
             .setTitle("Warning!")
             .setMessage("Do you want to return before verifying your phone number?")
             .setPositiveButton("RETURN") { _, _ ->
-                signupViewModel.resetSignupData()
-
                 val action = MobileVerificationFragmentDirections.actionMobileVerificationFragmentToLoginFragment()
                 findNavController().navigate(action)
             }
@@ -50,8 +62,11 @@ class MobileVerificationFragment : Fragment() {
                     dialogBuilder.show()
             }
         }
-        signupViewModel.resetMobileData()
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+        viewModel.user = user
+        viewModel.setCode(code)
 
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_mobile_verification, container, false)
@@ -61,7 +76,7 @@ class MobileVerificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseAnalytics = Firebase.analytics
-        binding.viewModel = signupViewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         val failedAlertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Failed")
@@ -71,59 +86,59 @@ class MobileVerificationFragment : Fragment() {
 
         timer = object: CountDownTimer(300000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                signupViewModel.setTimer(millisUntilFinished)
+                viewModel.setTimer(millisUntilFinished)
             }
 
             override fun onFinish() {
-                signupViewModel.setTimerFinished(true)
+                viewModel.setTimerFinished(true)
             }
         }
         timer.start()
 
 
-        val hideSendAgainTimer = object: CountDownTimer(10000, 1000) {
+        hideSendAgainTimer = object: CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
             }
 
             override fun onFinish() {
-                signupViewModel.setHideSendCodeTimerFinished(true)
+                viewModel.setHideSendCodeTimerFinished(true)
             }
         }
         hideSendAgainTimer.start()
 
 
         binding.btnSendAgain.setOnClickListener {
-            signupViewModel.sendCode()
+            viewModel.sendCode()
 
         }
 
-        signupViewModel.sendCodeStatus.observe(viewLifecycleOwner, {
+        viewModel.sendCodeStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
                 timer.cancel()
                 timer.start()
-                signupViewModel.setTimerFinished(false)
+                viewModel.setTimerFinished(false)
                 hideSendAgainTimer.cancel()
                 hideSendAgainTimer.start()
-                signupViewModel.setHideSendCodeTimerFinished(false)
+                viewModel.setHideSendCodeTimerFinished(false)
             } else if (it == StatusObject.ERROR){
                 failedAlertDialog.setMessage("Please check your internet connection and try again").show()
             }
         })
         binding.btnConfirm.setOnClickListener {
-            signupViewModel.verifyCode(binding.etCode.text?.toString())
+            viewModel.verifyCode(binding.etCode.text?.toString())
         }
 
-        signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
+        viewModel.verificationStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
                 firebaseAnalytics.logEvent("Signup-OTP"){}
                 Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_SHORT).show()
-                SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
+                saveUserData(requireContext(), viewModel.user)
                 val action =
                     MobileVerificationFragmentDirections.actionMobileVerificationFragmentToHomeActivity()
                 findNavController().navigate(action)
                 activity?.finish()
             } else if (it == StatusObject.ERROR){
-                failedAlertDialog.setMessage(signupViewModel.errorMessage).show()
+                failedAlertDialog.setMessage(viewModel.errorMessage).show()
             }
         })
 
@@ -136,9 +151,14 @@ class MobileVerificationFragment : Fragment() {
         }
 
         binding.btnChange.setOnClickListener {
-            val action = MobileVerificationFragmentDirections.actionMobileVerificationFragmentToChangePhoneNumberFragment(signupViewModel.user)
+            val action = MobileVerificationFragmentDirections.actionMobileVerificationFragmentToChangePhoneNumberFragment(viewModel.user)
             findNavController().navigate(action)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetData()
     }
 
     override fun onPause() {
@@ -146,6 +166,11 @@ class MobileVerificationFragment : Fragment() {
         if(this::timer.isInitialized) {
             timer.cancel()
         }
+
+        if(this::hideSendAgainTimer.isInitialized) {
+            hideSendAgainTimer.cancel()
+        }
+
     }
 
 }

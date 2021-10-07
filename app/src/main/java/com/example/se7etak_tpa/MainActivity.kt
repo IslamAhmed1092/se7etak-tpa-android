@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.se7etak_tpa.auth_ui.SignupViewModel
+import com.example.se7etak_tpa.Utils.Utils.loadUserData
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             val intent: Intent
-            val user = SignupViewModel.loadUserData(this)
+            val user = loadUserData(this)
             if(user.token.isNullOrEmpty()) {
                 intent = Intent(this@MainActivity, AuthActivity::class.java)
             } else {

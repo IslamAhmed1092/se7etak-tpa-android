@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.se7etak_tpa.auth_ui.StatusObject"/>
+        <import type="com.example.se7etak_tpa.auth_ui.login.StatusObject"/>
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.example.se7etak_tpa.auth_ui.SignupViewModel" />
+            type="com.example.se7etak_tpa.auth_ui.login.LoginViewModel" />
     </data>
 
     <ScrollView
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:background="@drawable/gradient_background"
-            tools:context=".auth_ui.LoginFragment">
+            tools:context=".auth_ui.login.LoginFragment">
 
             <ImageView
                 android:id="@+id/imageView"

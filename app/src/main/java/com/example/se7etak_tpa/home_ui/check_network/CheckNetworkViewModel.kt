@@ -9,7 +9,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.auth_ui.TAG
 import com.example.se7etak_tpa.data.MapFilter
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.network.Api
@@ -121,7 +120,7 @@ class CheckNetworkViewModel(application: Application) : AndroidViewModel(applica
                     responseList?.let { list ->
                         _providersMap.value = list.groupBy { it.type }
                     }
-                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                    Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
                 } else if(response.code() == 500){
                     _errorMessage.value = "There is a problem in the server."
                     _status.value = CheckNetworkStatus.ERROR
@@ -137,7 +136,7 @@ class CheckNetworkViewModel(application: Application) : AndroidViewModel(applica
 
             override fun onFailure(call: Call<List<Provider>>, t: Throwable) {
                 _status.value = CheckNetworkStatus.NO_CONNECTION
-                Log.i(TAG, "onFailure: ${t.message}")
+                Log.i("TAG", "onFailure: ${t.message}")
             }
 
 

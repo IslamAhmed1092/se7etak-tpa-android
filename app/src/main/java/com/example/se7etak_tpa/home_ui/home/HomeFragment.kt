@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.ViewProfile
-import com.example.se7etak_tpa.auth_ui.SignupViewModel
+import com.example.se7etak_tpa.Utils.Utils.deleteUserData
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         binding.rvRequests.adapter = RequestsAdapter()
 
         binding.ivLogout.setOnClickListener {
-            SignupViewModel.deleteUserData(requireContext())
+            deleteUserData(requireContext())
             val intent = Intent(context, AuthActivity::class.java)
             startActivity(intent)
             activity?.finish()
@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
                         dialog.dismiss()
                     }
                     .setOnDismissListener {
-                        SignupViewModel.deleteUserData(requireContext())
+                        deleteUserData(requireContext())
                         val intent = Intent(activity, AuthActivity::class.java)
                         startActivity(intent)
                         activity?.finish()

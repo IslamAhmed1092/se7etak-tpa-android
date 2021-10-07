@@ -5,8 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.se7etak_tpa.auth_ui.SignupViewModel
-import com.example.se7etak_tpa.auth_ui.TAG
+import com.example.se7etak_tpa.Utils.Utils.loadUserData
 import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.network.Api
 import org.json.JSONObject
@@ -31,7 +30,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val errorMessage: LiveData<String> = _errorMessage
 
     private fun getToken(): String? {
-        return SignupViewModel.loadUserData(getApplication<Application>().applicationContext).token
+        return loadUserData(getApplication<Application>().applicationContext).token
     }
 
     private var userToken:String? = ""
@@ -59,7 +58,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         _status.value = RequestsApiStatus.EMPTY
                     else
                         _status.value = RequestsApiStatus.DONE
-                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                    Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
                 } else if(response.code() == 500){
                     _errorMessage.value = "There is a problem in the server."
                     _status.value = RequestsApiStatus.ERROR
@@ -79,7 +78,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             override fun onFailure(call: Call<List<HomeRequest>>, t: Throwable) {
                 _errorMessage.value = "Please check your internet connection."
                 _status.value = RequestsApiStatus.NO_CONNECTION
-                Log.i(TAG, "onFailure: ${t.message}")
+                Log.i("TAG", "onFailure: ${t.message}")
             }
 
         })

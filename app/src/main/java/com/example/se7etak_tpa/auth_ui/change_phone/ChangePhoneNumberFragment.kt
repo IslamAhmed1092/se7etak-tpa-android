@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa.auth_ui
+package com.example.se7etak_tpa.auth_ui.change_phone
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,8 +9,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.Utils.Utils.validatePhone
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentChangePhoneNumberBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,7 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ChangePhoneNumberFragment : Fragment() {
 
     private lateinit var user: User
-    private val signupViewModel: SignupViewModel by activityViewModels()
+    private val viewModel: ChangePhoneNumberViewModel by viewModels()
     private lateinit var binding: FragmentChangePhoneNumberBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +37,13 @@ class ChangePhoneNumberFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_change_phone_number, container, false)
-        signupViewModel.user = user
-        signupViewModel.resetMobileData()
+        viewModel.user = user
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = signupViewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.etPhone.setOnFocusChangeListener { _, hasFocus ->
@@ -64,7 +65,7 @@ class ChangePhoneNumberFragment : Fragment() {
             checkMobileNumber()
 
             if (!binding.ilPhone.isErrorEnabled) {
-                signupViewModel.changePhoneNumber(
+                viewModel.changePhoneNumber(
                     binding.etPhone.text.toString()
                 )
             }
@@ -76,19 +77,22 @@ class ChangePhoneNumberFragment : Fragment() {
                 dialog.dismiss()
             }
 
-        signupViewModel.changePhoneStatus.observe(viewLifecycleOwner, {
+        viewModel.changePhoneStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
                 Toast.makeText(context, "Phone number changed successfully!", Toast.LENGTH_SHORT).show()
-                val action = ChangePhoneNumberFragmentDirections.actionChangePhoneNumberFragmentToMobileVerificationFragment()
+                val action = ChangePhoneNumberFragmentDirections.actionChangePhoneNumberFragmentToMobileVerificationFragment(
+                    viewModel.user,
+                    viewModel.code.value!!
+                )
                 findNavController().navigate(action)
             } else if (it == StatusObject.ERROR) {
-                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                errorAlertDialogBuilder.setMessage(viewModel.errorMessage).show()
             }
         })
     }
 
     private fun checkMobileNumber() {
-        if (!signupViewModel.validatePhone(binding.etPhone.text?.toString())) {
+        if (!validatePhone(binding.etPhone.text?.toString())) {
             binding.ilPhone.isErrorEnabled = true
             binding.ilPhone.error = "invalid phone number"
         } else {
