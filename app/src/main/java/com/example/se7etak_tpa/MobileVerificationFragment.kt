@@ -18,12 +18,18 @@ import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 
 class MobileVerificationFragment : Fragment() {
 
     private lateinit var binding: FragmentMobileVerificationBinding
     private val signupViewModel: SignupViewModel by activityViewModels()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var timer: CountDownTimer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,16 +63,16 @@ class MobileVerificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
         val failedAlertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Failed")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
 
-        val timer = object: CountDownTimer(300000, 1000) {
+        timer = object: CountDownTimer(300000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 signupViewModel.setTimer(millisUntilFinished)
             }
@@ -112,7 +118,8 @@ class MobileVerificationFragment : Fragment() {
 
         signupViewModel.verificationStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
-                Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_LONG).show()
+                firebaseAnalytics.logEvent("Signup-OTP"){}
+                Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_SHORT).show()
                 SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
                 val action =
                     MobileVerificationFragmentDirections.actionMobileVerificationFragmentToHomeActivity()
@@ -132,6 +139,11 @@ class MobileVerificationFragment : Fragment() {
         }
     }
 
-
+    override fun onPause() {
+        super.onPause()
+        if(this::timer.isInitialized) {
+            timer.cancel()
+        }
+    }
 
 }

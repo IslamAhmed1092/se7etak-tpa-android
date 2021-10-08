@@ -1,5 +1,6 @@
 package com.example.se7etak_tpa
 
+import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
@@ -32,7 +34,13 @@ class MainActivity : AppCompatActivity() {
 
 
         Handler().postDelayed({
-            val intent = Intent(this@MainActivity, AuthActivity::class.java)
+            val intent: Intent
+            val user = SignupViewModel.loadUserData(this)
+            if(user.token.isNullOrEmpty()) {
+                intent = Intent(this@MainActivity, AuthActivity::class.java)
+            } else {
+                intent = Intent(this@MainActivity, HomeActivity::class.java)
+            }
             startActivity(intent)
             finish()
         },3000)

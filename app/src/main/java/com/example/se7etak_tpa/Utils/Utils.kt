@@ -1,15 +1,15 @@
 package com.example.se7etak_tpa.Utils
 
+import android.Manifest
 import android.app.Activity
-import android.content.ContentResolver
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
@@ -22,12 +22,21 @@ import java.io.File
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
 import com.theartofdev.edmodo.cropper.CropImage
+import java.io.OutputStream
+import android.content.Intent
+
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+
+
 
 
 object Utils {
     const val RC_PHOTO_PICKER = 1
     const val REQUEST_IMAGE_CAPTURE = 2
     const val RC_PDF_PICKER = 3
+    const val WRITE_EXTERNAL_PERMISSION_CODE = 4
+
 
 
     // convert Uri to bitmap.
@@ -49,6 +58,8 @@ object Utils {
     fun getImageUri(context: Context, image: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+
         val path = MediaStore.Images.Media.insertImage(
             context.contentResolver,
             image,
@@ -57,6 +68,8 @@ object Utils {
         )
         return Uri.parse(path)
     }
+
+
 
     // show image in full screen mode.
     fun showPhoto(context: Context, uri: Uri) {
@@ -75,18 +88,16 @@ object Utils {
 
 
     fun chooseAttachment(fragment: Fragment) {
+
+
         val options = arrayOf("Choose Pdf File", "Open Gallery", "Open Camera")
         val builder = AlertDialog.Builder(fragment.requireContext())
         builder.setTitle("Choose an option")
         builder.setItems(options) { dialog, which ->
             when (which) {
                 0 -> {
-                    // Pick pdf file.
-                    val intent = Intent(Intent.ACTION_GET_CONTENT)
-                    intent.type = "application/pdf"
-                    intent.addCategory(Intent.CATEGORY_OPENABLE)
-                    fragment.startActivityForResult(intent, RC_PDF_PICKER)
-                }
+                    pickPDF(fragment)
+                    }
                 1 -> {
                     // Pick Image from Gallery.
                     val intent = Intent(
@@ -101,16 +112,40 @@ object Utils {
                     )
                 }
                 2 -> {
-                    // capture an Image.
-                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    fragment.startActivityForResult(
-                        intent,
-                        REQUEST_IMAGE_CAPTURE
-                    )
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (fragment.requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                            // capture an Image.
+                            captureImage(fragment)
+                        } else {
+                            fragment.requestPermissions(
+                                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                                WRITE_EXTERNAL_PERMISSION_CODE
+                            )
+                        }
+                    } else {
+                        captureImage(fragment)
+                    }
                 }
             }
         }
         builder.create().show()
+    }
+
+    fun captureImage(fragment: Fragment){
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        fragment.startActivityForResult(
+            intent,
+            REQUEST_IMAGE_CAPTURE
+        )
+    }
+
+    fun pickPDF(fragment: Fragment){
+        // Pick pdf file.
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "application/pdf"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        fragment.startActivityForResult(intent, RC_PDF_PICKER)
+
     }
 
     fun Context.getFileExtension(uri: Uri): String? = when (uri.scheme) {
@@ -122,17 +157,6 @@ object Utils {
         else -> null
     }
 
-    fun getFileName(context: Context, uri: Uri?): String {
-        uri?.let {
-            context.contentResolver.query(uri, null, null, null, null)
-                ?.let { cursor ->
-                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    cursor.moveToFirst()
-                    return@getFileName cursor.getString(nameIndex)
-                } ?:return@getFileName ""
-        }
-        return ""
-}
 
 private fun Context.getCursorContent(uri: Uri): String? = try {
     contentResolver.query(uri, null, null, null, null)?.let { cursor ->

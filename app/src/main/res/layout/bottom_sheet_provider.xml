@@ -53,7 +53,7 @@
             android:id="@+id/tv_main_speciality_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:text="@string/main_speciality_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_city_governorate"
             app:layout_constraintTop_toBottomOf="@+id/tv_city_governorate" />
@@ -67,8 +67,8 @@
             android:text="@{provider.mainSpeciality}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_main_speciality_title"
             app:layout_constraintEnd_toStartOf="@+id/tv_main_speciality_title"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_main_speciality_title"
             tools:text="جميع التخصصات الطبية" />
 
@@ -76,7 +76,7 @@
             android:id="@+id/tv_secondary_speciality_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/secondary_speciality_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_main_speciality_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_main_speciality_title" />
@@ -89,8 +89,8 @@
             android:text="@{provider.secondarySpeciality}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_secondary_speciality_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_main_speciality"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_secondary_speciality_title"
             tools:text="جميع التخصصات الطبية" />
 
@@ -98,7 +98,7 @@
             android:id="@+id/tv_address_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/address_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_secondary_speciality_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_secondary_speciality_title" />
@@ -111,8 +111,8 @@
             android:text="@{provider.address}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_address_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_secondary_speciality"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_address_title"
             tools:text="كورنيش المعادي" />
 
@@ -120,53 +120,59 @@
             android:id="@+id/tv_phone_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/phone_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_address_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_address_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_address" />
 
         <TextView
             android:id="@+id/tv_phone_number1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{provider.phoneNumber1}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
+            android:layoutDirection="rtl"
             android:visibility="@{!provider.phoneNumber1.empty? View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_phone_title"
-            app:layout_constraintEnd_toEndOf="@+id/tv_address"
+            app:layout_constraintStart_toStartOf="@+id/tv_address"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_phone_title"
             tools:text="0225256289" />
 
         <TextView
             android:id="@+id/tv_phone_number2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
             android:text="@{provider.phoneNumber2}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:visibility="@{!provider.phoneNumber2.empty? View.VISIBLE:View.GONE}"
-            app:layout_constraintEnd_toEndOf="@+id/tv_phone_number1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_address"
             app:layout_constraintTop_toBottomOf="@+id/tv_phone_number1"
             tools:text="01203925210" />
 
         <TextView
             android:id="@+id/tv_phone_number3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
             android:text="@{provider.phoneNumber3}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:visibility="@{!provider.phoneNumber3.empty? View.VISIBLE:View.GONE}"
-            app:layout_constraintEnd_toEndOf="@+id/tv_phone_number2"
+            android:visibility="@{!provider.phoneNumber3.empty? View.VISIBLE:View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_phone_number2"
+            app:layout_constraintStart_toStartOf="@+id/tv_address"
+            tools:layout_editor_absoluteX="16dp"
             tools:text="01099926026" />
 
         <TextView
             android:id="@+id/tv_hotline_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/hotline_title"
             app:layout_constraintEnd_toEndOf="@+id/tv_phone_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_phone_number3" />
@@ -179,9 +185,10 @@
             android:text="@{provider.hotline}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_hotline_title"
-            app:layout_constraintEnd_toEndOf="@+id/tv_phone_number3"
+            android:layoutDirection="rtl"
+            app:layout_constraintStart_toStartOf="@+id/tv_phone_number3"
             app:layout_constraintTop_toTopOf="@+id/tv_hotline_title"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="19668" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,7 @@
     <string name="مجمع_عيادات">مجمع عيادات</string>
     <string name="مراكز_اشعة">مراكز اشعة</string>
     <string name="مراكز_علاج_طبيعي">مراكز علاج طبيعي</string>
-    <string name="مراكز_متخصصه">مراكز متخصصه</string>
+    <string name="مراكز_متخصصة">مراكز متخصصة</string>
     <string name="مستشفيات">مستشفيات</string>
     <string name="معامل">معامل</string>
     <string name="main_speciality_title">التخصص الرئيسي:</string>
@@ -44,4 +44,7 @@
     <string name="phone_title">ارقام التليفون:</string>
     <string name="hotline_title">الخط الساخن:</string>
     <string name="city_governorate_text">%s، %s</string>
+    <string name="email_hint">john@example.com</string>
+    <string name="forgot_password_text">Forgot your password?</string>
+    <string name="dont_have_account_text">Don\'t have an account?</string>
 </resources>

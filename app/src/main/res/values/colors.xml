@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="purple_dark">#ff291f6c</color>
+    <color name="purple_light">#624AFF</color>
     <color name="disabled_button_color">#FFE0E0E0</color>
     <color name="status_bar_color">#ffe1f8f8</color>
     <color name="red">#ff0000</color>
@@ -18,7 +19,7 @@
     <color name="مجمع_عيادات">#6666FF</color>
     <color name="اسنان">#66B3FF</color>
     <color name="معامل">#66FFFF</color>
-    <color name="مراكز_متخصصه">#66FF66</color>
+    <color name="مراكز_متخصصة">#66FF66</color>
     <color name="مراكز_علاج_طبيعي">#FFFF66</color>
     <color name="مراكز_اشعة">#FFB366</color>
     <color name="مركز_بصريات">#FF6666</color>

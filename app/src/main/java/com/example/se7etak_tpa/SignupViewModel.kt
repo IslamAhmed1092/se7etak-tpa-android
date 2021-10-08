@@ -1,6 +1,7 @@
 package com.example.se7etak_tpa
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
@@ -21,6 +22,9 @@ const val TAG = "SignupViewModel"
 
 class SignupViewModel: ViewModel() {
 
+    private val _loginStatus = MutableLiveData(StatusObject.INITIAL)
+    val loginStatus: LiveData<StatusObject> get() = _loginStatus
+
     private val _signupStatus = MutableLiveData(StatusObject.INITIAL)
     val signupStatus: LiveData<StatusObject> get() = _signupStatus
 
@@ -30,6 +34,7 @@ class SignupViewModel: ViewModel() {
     private val _sendCodeStatus = MutableLiveData(StatusObject.INITIAL)
     val sendCodeStatus: LiveData<StatusObject> get() = _sendCodeStatus
 
+
     private var _errorMessage: String = ""
     val errorMessage: String get() = _errorMessage
 
@@ -38,7 +43,7 @@ class SignupViewModel: ViewModel() {
     /**
      * for debugging only
      */
-    private val _code = MutableLiveData<String>()
+    private var _code = MutableLiveData<String>()
     val code: LiveData<String> get() = _code
 
 
@@ -93,6 +98,46 @@ class SignupViewModel: ViewModel() {
 
     fun validateID(inputID: String?) = !inputID.isNullOrEmpty() && inputID.length == 6
 
+
+    fun login(email: String, password: String) {
+
+        val userParams = mapOf("email" to email, "password" to password)
+
+        val callResponse = Api.retrofitService.login(userParams)
+        _loginStatus.value = StatusObject.LOADING
+        callResponse.enqueue(object : Callback<JsonObject> {
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.code() == 200) {
+                    user.email = email
+                    user.token = response.body()?.get("token")?.asString
+                    _loginStatus.value = StatusObject.DONE
+                    Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
+                    _loginStatus.value = StatusObject.ERROR
+                } else {
+                    response.errorBody()?.let {
+                        val errorJson = JSONObject(it.string())
+                        _errorMessage = errorJson.optString("message")
+                        _code.value = _errorMessage.toIntOrNull()?.toString()
+                        if (_code.value != null) user.email = email
+                    }
+                    _loginStatus.value = StatusObject.ERROR
+                    Log.i("TAG", "onResponse ${response.code()}: $_errorMessage" )
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                _errorMessage = "Please check your internet connection and try again"
+                _loginStatus.value = StatusObject.ERROR
+                Log.i(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+
+    }
+
     fun signup(name: String, email: String, password: String, number: String, id: String) {
 
         val userParams = mapOf("se7etakID" to id, "name" to name, "email" to email,
@@ -112,8 +157,13 @@ class SignupViewModel: ViewModel() {
                     _code.value = response.body()?.get("code")?.asString
                     _signupStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
+                    _signupStatus.value = StatusObject.ERROR
                 } else {
-                    _errorMessage = JSONObject(response.errorBody()?.string() ?:"{}").optString("message")
+                    response.errorBody()?.let {
+                        _errorMessage = JSONObject(it.string()).optString("message")
+                    }
                     _signupStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${_errorMessage}" )
                 }
@@ -147,6 +197,9 @@ class SignupViewModel: ViewModel() {
                     user.token = response.body()?.get("token")?.asString
                     _verificationStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    _errorMessage = "There is a problem in the server, Please try again later."
+                    _verificationStatus.value = StatusObject.ERROR
                 } else {
                     _errorMessage = "Code isn't correct, Please try again."
                     _verificationStatus.value = StatusObject.ERROR
@@ -177,6 +230,7 @@ class SignupViewModel: ViewModel() {
                     _sendCodeStatus.value = StatusObject.DONE
                     Log.i(TAG, "onResponse ${response.code()}: ${response.message()}" )
                 } else {
+                    _sendCodeStatus.value = StatusObject.ERROR
                     Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
                 }
             }
@@ -193,6 +247,7 @@ class SignupViewModel: ViewModel() {
     }
 
     fun resetSignupData() {
+        _loginStatus.value = StatusObject.INITIAL
         _signupStatus.value = StatusObject.INITIAL
         _verificationStatus.value = StatusObject.INITIAL
         _sendCodeStatus.value = StatusObject.INITIAL
@@ -202,6 +257,7 @@ class SignupViewModel: ViewModel() {
         _timerSeconds.value = 0
         _timerFinished.value = false
         _hideSendAgainTimerFinished.value = false
+
     }
 
     companion object {
@@ -216,6 +272,11 @@ class SignupViewModel: ViewModel() {
             val emptyJson = "{\"email\":\"\",\"id\":\"\",\"name\":\"\",\"phoneNumber\":\"\",\"token\":\"\"}"
             val pref = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
             return Gson().fromJson(pref.getString("USER", emptyJson), User::class.java)
+        }
+
+        fun deleteUserData(context: Context) {
+            val pref = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
+            pref.edit().remove("USER").apply()
         }
     }
 }

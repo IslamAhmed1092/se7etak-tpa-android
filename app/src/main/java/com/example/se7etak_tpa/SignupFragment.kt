@@ -7,17 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class SignupFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupBinding
     private val signupViewModel: SignupViewModel by activityViewModels()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +38,10 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = signupViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        firebaseAnalytics = Firebase.analytics
+
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.status_bar_color)
+        WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = true
 
         signupViewModel.resetSignupData()
 
@@ -58,16 +69,19 @@ class SignupFragment : Fragment() {
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
-                    signupViewModel.signupStatus.observe(viewLifecycleOwner, {
-                    if (it == StatusObject.DONE) {
-                    Toast.makeText(context, "Account created successfully!", Toast.LENGTH_LONG).show()
-                    val action =
-                    SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
-                    findNavController().navigate(action)
 
-                    } else if (it == StatusObject.ERROR){
-                    errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
-                    if (signupViewModel.errorMessage.contains("email", true)) {
+        signupViewModel.signupStatus.observe(viewLifecycleOwner, {
+            if (it == StatusObject.DONE) {
+                firebaseAnalytics.logEvent("Signup") {}
+
+                Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
+                val action =
+                SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
+                findNavController().navigate(action)
+
+            } else if (it == StatusObject.ERROR) {
+                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                if (signupViewModel.errorMessage.contains("email", true)) {
                     binding.ilEmail.isErrorEnabled = true
                     binding.ilEmail.error = signupViewModel.errorMessage
                 } else if (signupViewModel.errorMessage.contains("PhoneNumber", true)) {

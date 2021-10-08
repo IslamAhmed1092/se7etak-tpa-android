@@ -1,7 +1,12 @@
 package com.example.se7etak_tpa.network
 
+import android.net.Uri
+import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.data.Provider
+import com.example.se7etak_tpa.data.ProviderNameWithId
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,30 +16,44 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @POST("Register")
-    fun register (
+    @POST("api/Account/login")
+    fun login(
         @Body user: Map<String, String>
     ): Call<JsonObject>
 
-    @POST("VerifyCode")
-    fun verifyCode (
+    @POST("api/Account/Register")
+    fun register(
+        @Body user: Map<String, String>
+    ): Call<JsonObject>
+
+    @POST("api/Account/VerifyCode")
+    fun verifyCode(
         @Body body: Map<String, String>
     ): Call<JsonObject>
 
-    @GET("SendCode")
-    fun sendCode (
+    @GET("api/Account/SendCode")
+    fun sendCode(
         @Query("email") email: String
     ): Call<JsonObject>
 
-    @GET("GetProviders")
+    @GET("api/Provider/GetProviders")
     fun getProviders(
-        @Query("tile") tile: Long
+        @Query("TileNumber") tile: Long
     ): Call<List<Provider>>
 
 
-    @GET("GetProviderType")
-    fun getProvidersType(): Call<List<String>>
+    @GET("/api/Provider/GetPatientRequests")
+    fun getPatientRequests(
+        @Header("Authorization") authHeader: String     //should send "Bearer" + token
+    ): Call<List<HomeRequest>>
 
+
+    @GET("/api/Provider/GetProviderType")
+    fun getProviderType(): Call<List<String>>
+
+
+    @GET("/api/Provider/GetProviderName")
+    fun getProviderName(@Query("providerType") providerType: String): Call<List<ProviderNameWithId>>
 
 
 

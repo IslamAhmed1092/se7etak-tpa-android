@@ -15,6 +15,12 @@
             app:destination="@id/signupFragment"
             app:popUpTo="@id/signupFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_mobileVerificationFragment"
+            app:destination="@id/mobileVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
