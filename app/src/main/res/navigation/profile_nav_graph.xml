@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_nav_graph"
+    app:startDestination="@id/viewProfile">
+
+    <activity
+        android:id="@+id/viewProfile"
+        android:name="com.example.se7etak_tpa.ViewProfile"
+        android:label="activity_view_profile"
+        tools:layout="@layout/activity_view_profile" />
+    <activity
+        android:id="@+id/updateProfile"
+        android:name="com.example.se7etak_tpa.UpdateProfile"
+        android:label="activity_update_profile"
+        tools:layout="@layout/activity_update_profile" />
+</navigation>

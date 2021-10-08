@@ -1,22 +1,22 @@
-package com.example.se7etak_tpa
+package com.example.se7etak_tpa.auth_ui.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.Utils.Utils.validateEmail
+import com.example.se7etak_tpa.Utils.Utils.validatePassword
+import com.example.se7etak_tpa.Utils.saveUserData
 import com.example.se7etak_tpa.databinding.FragmentLoginBinding
-import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -26,7 +26,7 @@ import com.google.firebase.ktx.Firebase
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    private val signupViewModel: SignupViewModel by activityViewModels()
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
@@ -39,11 +39,9 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = signupViewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         firebaseAnalytics = Firebase.analytics
-
-        signupViewModel.resetSignupData()
 
         binding.buttonForgotPassword.setOnClickListener {
             firebaseAnalytics.logEvent("Forgot Password"){}
@@ -91,22 +89,22 @@ class LoginFragment : Fragment() {
                 dialog.dismiss()
             }
 
-        signupViewModel.loginStatus.observe(viewLifecycleOwner, {
+        viewModel.loginStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
                 firebaseAnalytics.logEvent("Sign in"){}
                 Toast.makeText(context, "Logged in successfully!", Toast.LENGTH_SHORT).show()
-                SignupViewModel.saveUserData(requireContext(), signupViewModel.user)
+                saveUserData(requireContext(), viewModel.user)
                 val action =
                     LoginFragmentDirections.actionLoginFragmentToHomeActivity()
                 findNavController().navigate(action)
                 activity?.finish()
             } else if (it == StatusObject.ERROR) {
-                if (signupViewModel.code.value != null) {
+                if (!viewModel.code.value.isNullOrEmpty()) {
                     firebaseAnalytics.logEvent("Sign in"){}
-                    val action = LoginFragmentDirections.actionLoginFragmentToMobileVerificationFragment()
+                    val action = LoginFragmentDirections.actionLoginFragmentToMobileVerificationFragment(viewModel.user, viewModel.code.value!!)
                     findNavController().navigate(action)
                 } else {
-                    errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
+                    errorAlertDialogBuilder.setMessage(viewModel.errorMessage).show()
                 }
             }
         })
@@ -116,7 +114,7 @@ class LoginFragment : Fragment() {
             checkAllFields()
 
             if (!isAnyErrorExist()) {
-                signupViewModel.login(
+                viewModel.login(
                     binding.etEmail.text.toString(),
                     binding.etPassword.text.toString(),
                 )
@@ -131,7 +129,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun checkPassword() {
-        if (!signupViewModel.validatePassword(binding.etPassword.text?.toString())) {
+        if (!validatePassword(binding.etPassword.text?.toString())) {
             binding.ilPassword.isErrorEnabled = true
             binding.ilPassword.error = getString(R.string.password_rules)
         } else {
@@ -140,7 +138,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun checkEmail() {
-        if (!signupViewModel.validateEmail(binding.etEmail.text?.toString())) {
+        if (!validateEmail(binding.etEmail.text?.toString())) {
             binding.ilEmail.isErrorEnabled = true
             binding.ilEmail.error = "invalid email address"
         } else {
@@ -154,7 +152,9 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.purple_dark)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),
+            R.color.purple_dark
+        )
         WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = false
     }
 }

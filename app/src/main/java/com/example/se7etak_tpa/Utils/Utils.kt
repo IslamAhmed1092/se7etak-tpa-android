@@ -13,6 +13,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
+import android.util.Patterns
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -21,6 +22,8 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
+import com.example.se7etak_tpa.data.User
+import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import java.io.OutputStream
 import android.content.Intent
@@ -158,19 +161,44 @@ object Utils {
     }
 
 
-private fun Context.getCursorContent(uri: Uri): String? = try {
-    contentResolver.query(uri, null, null, null, null)?.let { cursor ->
-        cursor.run {
-            val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
-            if (moveToFirst()) mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri))
-            // case for get actual name of file
-            //if (moveToFirst()) getString(getColumnIndex(OpenableColumns.DISPLAY_NAME))
-            else null
-        }.also { cursor.close() }
+    private fun Context.getCursorContent(uri: Uri): String? = try {
+        contentResolver.query(uri, null, null, null, null)?.let { cursor ->
+            cursor.run {
+                val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
+                if (moveToFirst()) mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri))
+                // case for get actual name of file
+                //if (moveToFirst()) getString(getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                else null
+            }.also { cursor.close() }
+        }
+    } catch (e: Exception) {
+        null
     }
-} catch (e: Exception) {
-    null
-}
+
+    fun validateName(inputName: String?) = !inputName.isNullOrEmpty()
+
+    fun validateEmail(inputEmail: String?) =
+        !inputEmail.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(inputEmail).matches()
+
+    fun validatePhone(inputPhone: String?) =
+        !inputPhone.isNullOrEmpty() && inputPhone[0] == '0' && inputPhone.length == 11
+
+    fun validatePassword(inputPassword: String?): Boolean{
+        inputPassword?.let {
+            val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',?/*~\$^+=<>])(?=\\S+$).{8,}$"
+            val passwordMatcher = Regex(passwordPattern)
+
+
+            return passwordMatcher.find(inputPassword) != null
+        } ?: return false
+    }
+
+    fun validateConfirmPassword(inputPassword: String?, inputConfirmPassword: String?)
+            = !inputPassword.isNullOrEmpty() && !inputPassword.isNullOrEmpty()
+            && inputPassword == inputConfirmPassword
+
+    fun validateID(inputID: String?) = !inputID.isNullOrEmpty() && inputID.length == 6
+
 
 }
 

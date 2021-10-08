@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa
+package com.example.se7etak_tpa.auth_ui.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,8 +11,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.Utils.Utils.validateConfirmPassword
+import com.example.se7etak_tpa.Utils.Utils.validateEmail
+import com.example.se7etak_tpa.Utils.Utils.validateID
+import com.example.se7etak_tpa.Utils.Utils.validateName
+import com.example.se7etak_tpa.Utils.Utils.validatePassword
+import com.example.se7etak_tpa.Utils.Utils.validatePhone
 import com.example.se7etak_tpa.databinding.FragmentSignupBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -23,7 +30,7 @@ import com.google.firebase.ktx.Firebase
 class SignupFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupBinding
-    private val signupViewModel: SignupViewModel by activityViewModels()
+    private val viewModel: SignupViewModel by viewModels()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
@@ -36,14 +43,14 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = signupViewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         firebaseAnalytics = Firebase.analytics
 
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.status_bar_color)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),
+            R.color.status_bar_color
+        )
         WindowInsetsControllerCompat(activity?.window!!, activity?.window?.decorView!!).isAppearanceLightStatusBars = true
-
-        signupViewModel.resetSignupData()
 
         binding.btnLogin.setOnClickListener {
             val action = SignupFragmentDirections.actionSignupFragmentToLoginFragment()
@@ -54,7 +61,7 @@ class SignupFragment : Fragment() {
             checkAllFields()
 
             if (!isAnyErrorExist()) {
-                signupViewModel.signup(
+                viewModel.signup(
                     binding.etName.text.toString(),
                     binding.etEmail.text.toString(),
                     binding.etPassword.text.toString(),
@@ -70,26 +77,29 @@ class SignupFragment : Fragment() {
                 dialog.dismiss()
             }
 
-        signupViewModel.signupStatus.observe(viewLifecycleOwner, {
+        viewModel.signupStatus.observe(viewLifecycleOwner, {
             if (it == StatusObject.DONE) {
                 firebaseAnalytics.logEvent("Signup") {}
 
                 Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
                 val action =
-                SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment()
+                SignupFragmentDirections.actionSignupFragmentToMobileVerificationFragment(
+                    viewModel.user,
+                    viewModel.code.value!!
+                )
                 findNavController().navigate(action)
 
             } else if (it == StatusObject.ERROR) {
-                errorAlertDialogBuilder.setMessage(signupViewModel.errorMessage).show()
-                if (signupViewModel.errorMessage.contains("email", true)) {
+                errorAlertDialogBuilder.setMessage(viewModel.errorMessage).show()
+                if (viewModel.errorMessage.contains("email", true)) {
                     binding.ilEmail.isErrorEnabled = true
-                    binding.ilEmail.error = signupViewModel.errorMessage
-                } else if (signupViewModel.errorMessage.contains("PhoneNumber", true)) {
+                    binding.ilEmail.error = viewModel.errorMessage
+                } else if (viewModel.errorMessage.contains("PhoneNumber", true)) {
                     binding.ilMobile.isErrorEnabled = true
-                    binding.ilMobile.error = signupViewModel.errorMessage
-                } else if (signupViewModel.errorMessage.contains("id", true)) {
+                    binding.ilMobile.error = viewModel.errorMessage
+                } else if (viewModel.errorMessage.contains("id", true)) {
                     binding.ilId.isErrorEnabled = true
-                    binding.ilId.error = signupViewModel.errorMessage
+                    binding.ilId.error = viewModel.errorMessage
                 }
             }
         })
@@ -165,7 +175,7 @@ class SignupFragment : Fragment() {
     }
 
     private fun checkID() {
-        if (!signupViewModel.validateID(binding.etId.text?.toString())) {
+        if (!validateID(binding.etId.text?.toString())) {
             binding.ilId.isErrorEnabled = true
             binding.ilId.error = "membership id is required"
         } else {
@@ -174,7 +184,7 @@ class SignupFragment : Fragment() {
     }
 
     private fun checkMobileNumber() {
-        if (!signupViewModel.validatePhone(binding.etMobile.text?.toString())) {
+        if (!validatePhone(binding.etMobile.text?.toString())) {
             binding.ilMobile.isErrorEnabled = true
             binding.ilMobile.error = "invalid phone number"
         } else {
@@ -183,7 +193,7 @@ class SignupFragment : Fragment() {
     }
 
     private fun checkConfirmPassword() {
-        if (!signupViewModel.validateConfirmPassword(
+        if (!validateConfirmPassword(
                 binding.etPassword.text?.toString(), binding.etConfirmPassword.text?.toString()
             )
         ) {
@@ -195,7 +205,7 @@ class SignupFragment : Fragment() {
     }
 
     private fun checkPassword() {
-        if (!signupViewModel.validatePassword(binding.etPassword.text?.toString())) {
+        if (!validatePassword(binding.etPassword.text?.toString())) {
             binding.ilPassword.isErrorEnabled = true
             binding.ilPassword.error = getString(R.string.password_rules)
         } else {
@@ -204,7 +214,7 @@ class SignupFragment : Fragment() {
     }
 
     private fun checkEmail() {
-        if (!signupViewModel.validateEmail(binding.etEmail.text?.toString())) {
+        if (!validateEmail(binding.etEmail.text?.toString())) {
             binding.ilEmail.isErrorEnabled = true
             binding.ilEmail.error = "invalid email address"
         } else {
@@ -213,7 +223,7 @@ class SignupFragment : Fragment() {
     }
 
     private fun checkName() {
-        if (!signupViewModel.validateName(binding.etName.text?.toString())) {
+        if (!validateName(binding.etName.text?.toString())) {
             binding.ilName.isErrorEnabled = true
             binding.ilName.error = "Name is required"
         } else {

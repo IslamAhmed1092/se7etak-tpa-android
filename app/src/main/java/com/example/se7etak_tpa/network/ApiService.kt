@@ -56,6 +56,9 @@ interface ApiService {
     fun getProviderName(@Query("providerType") providerType: String): Call<List<ProviderNameWithId>>
 
 
-
+    @POST("/api/Account/ChangePhoneNumber")
+    fun changePhoneNumber(
+        @Body body: Map<String, String>
+    ): Call<JsonObject>
 }
 
