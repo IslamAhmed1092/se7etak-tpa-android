@@ -3,16 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profile_nav_graph"
-    app:startDestination="@id/viewProfile">
+    app:startDestination="@id/profileFragment">
 
-    <activity
-        android:id="@+id/viewProfile"
-        android:name="com.example.se7etak_tpa.ViewProfile"
-        android:label="activity_view_profile"
-        tools:layout="@layout/activity_view_profile" />
-    <activity
-        android:id="@+id/updateProfile"
-        android:name="com.example.se7etak_tpa.UpdateProfile"
-        android:label="activity_update_profile"
-        tools:layout="@layout/activity_update_profile" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.se7etak_tpa.profile_ui.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
 </navigation>

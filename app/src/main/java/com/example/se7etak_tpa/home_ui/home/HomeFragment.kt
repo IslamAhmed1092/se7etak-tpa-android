@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.se7etak_tpa.AuthActivity
+import com.example.se7etak_tpa.ProfileActivity
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.ViewProfile
 import com.example.se7etak_tpa.Utils.Utils.deleteUserData
@@ -52,9 +53,8 @@ class HomeFragment : Fragment() {
         }
         binding.ivProfile.setOnClickListener {
             firebaseAnalytics.logEvent("Profile"){}
-            val intent = Intent(context, ViewProfile::class.java)
+            val intent = Intent(context, ProfileActivity::class.java)
             startActivity(intent)
-            activity?.finish()
         }
 
         homeViewModel.status.observe(viewLifecycleOwner) {

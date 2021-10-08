@@ -20,6 +20,10 @@
         android:theme="@style/Theme.Se7etakTPA"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="true"
+            android:theme="@style/NoActionBar"/>
+        <activity
             android:name=".UpdateProfile"
             android:exported="true" />
         <activity

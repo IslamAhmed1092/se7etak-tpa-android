@@ -2,6 +2,7 @@ package com.example.se7etak_tpa.network
 
 import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.data.Provider
+import com.example.se7etak_tpa.data.User
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
@@ -46,5 +47,10 @@ interface ApiService {
     fun changePhoneNumber(
         @Body body: Map<String, String>
     ): Call<JsonObject>
+
+    @GET("/api/Account/GetUserInfo")
+    fun getUser(
+        @Header("Authorization") authHeader: String     //should send "Bearer" + token
+    ): Call<User>
 }
 
