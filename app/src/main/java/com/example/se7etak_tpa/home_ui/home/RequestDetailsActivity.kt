@@ -70,7 +70,7 @@ class RequestDetailsActivity : AppCompatActivity() {
 //        for(fileUrl in filesUrl){
 //            if(binding.attachment1TextView.visibility == View.GONE) setFileData(fileUrl,binding.attachment1TextView)
 //            else setFileData(fileUrl,binding.attachment2TextView)
-        }
+//        }
     }
 
 //    private fun setFileData(fileUrl: String, view: TextView) {
