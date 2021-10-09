@@ -29,9 +29,9 @@ class RequestDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRequestDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.attachment1TextView.visibility = View.GONE
-        binding.attachment2TextView.visibility = View.GONE
+//
+//        binding.attachment1TextView.visibility = View.GONE
+//        binding.attachment2TextView.visibility = View.GONE
 
         val id = intent?.extras?.getInt("id")
         Log.d("id", "$id")
@@ -66,19 +66,19 @@ class RequestDetailsActivity : AppCompatActivity() {
         binding.providerTypeTextView.text = requestDetailsItem.providerType
         binding.providerNameTextView.text = requestDetailsItem.providerName
 
-        val filesUrl = requestDetailsItem.listOfDocuments
-        for(fileUrl in filesUrl){
-            if(binding.attachment1TextView.visibility == View.GONE) setFileData(fileUrl,binding.attachment1TextView)
-            else setFileData(fileUrl,binding.attachment2TextView)
+//        val filesUrl = requestDetailsItem.listOfDocuments
+//        for(fileUrl in filesUrl){
+//            if(binding.attachment1TextView.visibility == View.GONE) setFileData(fileUrl,binding.attachment1TextView)
+//            else setFileData(fileUrl,binding.attachment2TextView)
         }
     }
 
-    private fun setFileData(fileUrl: String, view: TextView) {
-        view.visibility = View.VISIBLE
-        val encodedUrl = URLEncoder.encode(fileUrl, "UTF-8");
-        view.setOnClickListener(View.OnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://$fileUrl"))
-            startActivity(browserIntent)
-        })
-    }
+//    private fun setFileData(fileUrl: String, view: TextView) {
+//        view.visibility = View.VISIBLE
+//        val encodedUrl = URLEncoder.encode(fileUrl, "UTF-8");
+//        view.setOnClickListener(View.OnClickListener {
+//            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://$fileUrl"))
+//            startActivity(browserIntent)
+//        })
+//    }
 }

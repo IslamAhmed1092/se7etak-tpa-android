@@ -200,62 +200,62 @@
                 </com.google.android.material.card.MaterialCardView>
 
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+<!--                <com.google.android.material.card.MaterialCardView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:layout_marginBottom="16dp"-->
+<!--                    app:cardCornerRadius="12dp"-->
+<!--                    app:cardElevation="8dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/status_bar_color"
-                        android:orientation="vertical"
-                        android:padding="8dp">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@color/status_bar_color"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:padding="8dp">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
-                            android:text="Attachments"
-                            android:textColor="@color/purple_dark" />
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="sans-serif"-->
+<!--                            android:text="Attachments"-->
+<!--                            android:textColor="@color/purple_dark" />-->
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@color/black" />
+<!--                        <View-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="1dp"-->
+<!--                            android:layout_marginBottom="8dp"-->
+<!--                            android:background="@color/black" />-->
 
 
-                        <TextView
-                            android:id="@+id/attachment1_text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:textColor="#57a0d4"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:text="@string/underlined_attachment1"
-                            android:visibility="@{visibility}" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/attachment1_text_view"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginBottom="4dp"-->
+<!--                            android:textColor="#57a0d4"-->
+<!--                            android:clickable="true"-->
+<!--                            android:focusable="true"-->
+<!--                            android:text="@string/underlined_attachment1"-->
+<!--                            android:visibility="@{visibility}" />-->
 
-                        <TextView
-                            android:id="@+id/attachment2_text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#57a0d4"
-                            android:clickable="true"
-                            android:text="@string/underlined_attachment2"
-                            android:visibility="@{visibility}" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/attachment2_text_view"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="#57a0d4"-->
+<!--                            android:clickable="true"-->
+<!--                            android:text="@string/underlined_attachment2"-->
+<!--                            android:visibility="@{visibility}" />-->
 
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+<!--                    </LinearLayout>-->
+<!--                </com.google.android.material.card.MaterialCardView>-->
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
