@@ -60,6 +60,10 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.btnChangePassword.setOnClickListener {
+            Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+
         binding.backIcon.setOnClickListener {
             activity?.onBackPressed()
         }
