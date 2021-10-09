@@ -39,11 +39,10 @@
         </provider>
 
         <activity
-            android:name=".UpdateProfile"
-            android:exported="true" />
-        <activity
-            android:name=".ViewProfile"
-            android:exported="true" />
+            android:name=".ProfileActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"/>
         <activity android:name=".AuthActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -61,7 +60,10 @@
             android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
-            android:theme="@style/NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar">
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

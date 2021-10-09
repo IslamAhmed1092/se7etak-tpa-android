@@ -56,6 +56,11 @@
         <action
             android:id="@+id/action_mobileVerificationFragment_to_changePhoneNumberFragment"
             app:destination="@id/changePhoneNumberFragment" />
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="user"
             app:argType="com.example.se7etak_tpa.data.User" />

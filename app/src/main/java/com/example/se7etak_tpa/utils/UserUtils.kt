@@ -1,4 +1,4 @@
-package com.example.se7etak_tpa.Utils
+package com.example.se7etak_tpa.utils
 
 import android.content.Context
 import com.example.se7etak_tpa.data.User

@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.se7etak_tpa.Utils.GmailSender
-import com.example.se7etak_tpa.Utils.getPath
+import com.example.se7etak_tpa.utils.GmailSender
+import com.example.se7etak_tpa.utils.getPath
 import com.example.se7etak_tpa.data.ProviderNameWithId
 import com.example.se7etak_tpa.network.Api
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest

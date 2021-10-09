@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.Utils.Utils.validatePhone
+import com.example.se7etak_tpa.utils.Utils.validatePhone
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentChangePhoneNumberBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

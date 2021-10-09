@@ -4,6 +4,7 @@ import android.net.Uri
 import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.data.ProviderNameWithId
+import com.example.se7etak_tpa.data.User
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -17,22 +18,22 @@ import retrofit2.http.*
 interface ApiService {
 
     @POST("api/Account/login")
-    fun login(
+    fun login (
         @Body user: Map<String, String>
     ): Call<JsonObject>
 
     @POST("api/Account/Register")
-    fun register(
+    fun register (
         @Body user: Map<String, String>
     ): Call<JsonObject>
 
     @POST("api/Account/VerifyCode")
-    fun verifyCode(
+    fun verifyCode (
         @Body body: Map<String, String>
     ): Call<JsonObject>
 
     @GET("api/Account/SendCode")
-    fun sendCode(
+    fun sendCode (
         @Query("email") email: String
     ): Call<JsonObject>
 
@@ -63,7 +64,19 @@ interface ApiService {
 
 
     @GET("/api/Provider/GetRequestDetails")
-    fun getRequestDetails(@Query("id") requestId: Int): Call<JsonObject>
+    fun getRequestDetails(
+        @Header("Authorization") authHeader: String,     //should send "Bearer" + token
+        @Query("id") requestId: Int): Call<JsonObject>
 
+    @GET("/api/Account/GetUserInfo")
+    fun getUser(
+        @Header("Authorization") authHeader: String     //should send "Bearer" + token
+    ): Call<User>
+
+    @POST("/api/Account/UpdateUserInfo")
+    fun updateUser(
+        @Header("Authorization") authHeader: String,     //should send "Bearer" + token
+        @Body body: Map<String, String>
+    ): Call<JsonObject>
 }
 

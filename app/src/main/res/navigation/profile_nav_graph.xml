@@ -3,16 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profile_nav_graph"
-    app:startDestination="@id/viewProfile">
+    app:startDestination="@id/profileFragment">
 
-    <activity
-        android:id="@+id/viewProfile"
-        android:name="com.example.se7etak_tpa.ViewProfile"
-        android:label="activity_view_profile"
-        tools:layout="@layout/activity_view_profile" />
-    <activity
-        android:id="@+id/updateProfile"
-        android:name="com.example.se7etak_tpa.UpdateProfile"
-        android:label="activity_update_profile"
-        tools:layout="@layout/activity_update_profile" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.se7etak_tpa.profile_ui.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_changePhoneNumberFragment"
+            app:destination="@id/changePhoneNumberFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePhoneNumberFragment"
+        android:name="com.example.se7etak_tpa.auth_ui.change_phone.ChangePhoneNumberFragment"
+        android:label="ChangePhoneNumberFragment"
+        tools:layout="@layout/fragment_change_phone_number">
+        <argument
+            android:name="user"
+            app:argType="com.example.se7etak_tpa.data.User" />
+        <action
+            android:id="@+id/action_changePhoneNumberFragment_to_mobileVerificationFragment"
+            app:destination="@id/mobileVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mobileVerificationFragment"
+        android:name="com.example.se7etak_tpa.auth_ui.mobile_verification.MobileVerificationFragment"
+        android:label="fragment_mobile_verification"
+        tools:layout="@layout/fragment_mobile_verification" >
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_homeActivity"
+            app:destination="@id/homeActivity"
+            app:popUpTo="@id/homeActivity"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_changePhoneNumberFragment"
+            app:destination="@id/changePhoneNumberFragment" />
+        <action
+            android:id="@+id/action_mobileVerificationFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="user"
+            app:argType="com.example.se7etak_tpa.data.User" />
+        <argument
+            android:name="code"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
+
 </navigation>

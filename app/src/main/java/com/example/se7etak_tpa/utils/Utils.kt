@@ -1,37 +1,22 @@
-package com.example.se7etak_tpa.Utils
+package com.example.se7etak_tpa.utils
 
 import android.Manifest
-import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.util.Log
 import android.util.Patterns
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import java.io.ByteArrayOutputStream
 import java.io.File
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
-import com.example.se7etak_tpa.data.User
-import com.google.gson.Gson
-import com.theartofdev.edmodo.cropper.CropImage
-import java.io.OutputStream
 import android.content.Intent
-
-import androidx.core.app.ActivityCompat.startActivityForResult
-
-
-
 
 
 object Utils {
