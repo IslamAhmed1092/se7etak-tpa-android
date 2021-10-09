@@ -18,16 +18,26 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.se7etak_tpa.Utils.*
 import com.example.se7etak_tpa.databinding.FragmentRequestApprovalBinding
 import com.example.se7etak_tpa.showLoadingDialog
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.theartofdev.edmodo.cropper.CropImage
 
 
-abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApprovalAbstractClassViewModel) : Fragment() {
+abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApprovalAbstractClassViewModel) :
+    Fragment() {
     private var requestApprovalAbstractClassViewModel: RequestApprovalAbstractClassViewModel
+
     init {
         this.requestApprovalAbstractClassViewModel = requestApprovalViewModel
     }
 
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     private var _binding: FragmentRequestApprovalBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -44,6 +54,10 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
 
         _binding = FragmentRequestApprovalBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+        firebaseAnalytics = Firebase.analytics
+
 
         binding.requestApprovalAttachment1View.visibility = View.GONE
         binding.requestApprovalAttachment2View.visibility = View.GONE
@@ -72,8 +86,8 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
 
 
 
-        requestApprovalAbstractClassViewModel.attachment2Exists.observe(viewLifecycleOwner,{
-            if(it) binding.requestApprovalAttachment2View.visibility = View.VISIBLE
+        requestApprovalAbstractClassViewModel.attachment2Exists.observe(viewLifecycleOwner, {
+            if (it) binding.requestApprovalAttachment2View.visibility = View.VISIBLE
             else binding.requestApprovalAttachment2View.visibility = View.GONE
         })
         requestApprovalAbstractClassViewModel.attachment2Name.observe(viewLifecycleOwner, {
@@ -110,16 +124,24 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
                 val user = loadUserData(requireContext())
                 user.let {
                     showLoadingDialog()
+                    firebaseAnalytics.logEvent("Submit Request"){}
                     Thread {
                         requestApprovalAbstractClassViewModel.submitRequest(
                             it.token,
                             requireContext()
                         )
                         requestApprovalAbstractClassViewModel.sendEmail(it.id, requireContext())
+                        requireActivity().runOnUiThread {
+                           emptyView()
+                        }
                     }.start()
                 }
             }
         }
+
+
+        binding.requestApprovalProviderNameSpinner.isEnabled = false
+
 
         val providerTypeSpinner = binding.requestApprovalProviderTypeSpinner
         providerTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -129,6 +151,8 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
                 position: Int,
                 id: Long
             ) {
+                firebaseAnalytics.logEvent("Provider Type Selected: ${requestApprovalAbstractClassViewModel.providerTypeList.value?.get(position)}"){}
+
                 requestApprovalAbstractClassViewModel.providerTypeSelectedPosition.value = position
                 requestApprovalAbstractClassViewModel.providerTypeList.value?.get(position)
                     ?.let { requestApprovalAbstractClassViewModel.getProviderName(it) }
@@ -152,6 +176,8 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
                 position: Int,
                 id: Long
             ) {
+                firebaseAnalytics.logEvent("Provider Name Selected: ${requestApprovalAbstractClassViewModel.providerNameWithIdList.value?.get(position)?.providerName}"){}
+
                 requestApprovalAbstractClassViewModel.providerNameSelectedPosition.value = position
             }
 
@@ -159,13 +185,15 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
             }
         }
 
+
+
         requestApprovalAbstractClassViewModel.providerNameSelectedPosition.observe(
             viewLifecycleOwner,
             {
                 providerNameSpinner.setSelection(it)
             })
 
-        binding.requestApprovalCommentEditText.setText(requestApprovalAbstractClassViewModel.comment)
+//        binding.requestApprovalCommentEditText.setText(requestApprovalAbstractClassViewModel.comment)
 
         binding.requestApprovalCommentEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -179,18 +207,22 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
             }
         })
 
-
         requestApprovalAbstractClassViewModel.providerTypeList.observe(viewLifecycleOwner, {
-            it?.let { binding.requestApprovalProviderTypeSpinner.item = it }
+            it?.let{
+                binding.requestApprovalProviderTypeSpinner.item = it
+            }
         })
 
         requestApprovalAbstractClassViewModel.providerNameWithIdList.observe(viewLifecycleOwner, {
-            it?.let {
+            if(it != null) {
+                binding.requestApprovalProviderNameSpinner.isEnabled = true
                 val providerNameList = ArrayList<String>()
                 for (providerNameWithId in it) {
                     providerNameList.add(providerNameWithId.providerName)
                 }
                 binding.requestApprovalProviderNameSpinner.item = providerNameList as List<Any>?
+            }else{
+                binding.requestApprovalProviderNameSpinner.isEnabled = false
             }
         })
 
@@ -198,9 +230,29 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
         return root
     }
 
+    private fun emptyView(){
+        requestApprovalAbstractClassViewModel.attachment1Exists.value = false
+        requestApprovalAbstractClassViewModel.attachment2Exists.value = false
+        requestApprovalAbstractClassViewModel.providerTypeList.value = listOf()
+        requestApprovalAbstractClassViewModel.providerNameWithIdList.value =
+            listOf()
+        requestApprovalAbstractClassViewModel.comment = ""
+        binding.requestApprovalCommentEditText.setText("")
+    }
+
     override fun onDestroyView() {
-        if(requestApprovalAbstractClassViewModel.attachment1Exists.value!!) deleteFile(getPath(requireContext(),requestApprovalAbstractClassViewModel.attachment1Name.value!!))
-        if(requestApprovalAbstractClassViewModel.attachment2Exists.value!!) deleteFile(getPath(requireContext(),requestApprovalAbstractClassViewModel.attachment2Name.value!!))
+        if (requestApprovalAbstractClassViewModel.attachment1Exists.value!!) deleteFile(
+            getPath(
+                requireContext(),
+                requestApprovalAbstractClassViewModel.attachment1Name.value!!
+            )
+        )
+        if (requestApprovalAbstractClassViewModel.attachment2Exists.value!!) deleteFile(
+            getPath(
+                requireContext(),
+                requestApprovalAbstractClassViewModel.attachment2Name.value!!
+            )
+        )
         deleteAllImages(requireContext())
         super.onDestroyView()
 
@@ -247,6 +299,7 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
                 CropImage.activity(uri)
                     .start(requireContext(), this)
             } else if (requestCode == Utils.RC_PDF_PICKER) { // pdf file
+                firebaseAnalytics.logEvent("Pdf File uploaded"){}
                 data?.data?.also { uri ->
                     copyDirectoryOneLocationToAnotherLocation(
                         uri,
@@ -267,19 +320,26 @@ abstract class RequestApprovalAbstractClass(requestApprovalViewModel: RequestApp
                     }
                 }
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                firebaseAnalytics.logEvent("Image uploaded"){}
                 val result = CropImage.getActivityResult(data)
                 val resultUri = result.uri
                 if (!requestApprovalAbstractClassViewModel.attachment1Exists.value!!) {
                     copyDirectoryOneLocationToAnotherLocation(
                         resultUri!!,
-                        getPath(requireContext(),requestApprovalAbstractClassViewModel.attachment1Name.value!!),
+                        getPath(
+                            requireContext(),
+                            requestApprovalAbstractClassViewModel.attachment1Name.value!!
+                        ),
                         requireActivity()
                     )
                     requestApprovalAbstractClassViewModel.attachment1Exists.value = true
                 } else {
                     copyDirectoryOneLocationToAnotherLocation(
                         resultUri!!,
-                        getPath(requireContext(),requestApprovalAbstractClassViewModel.attachment2Name.value!!),
+                        getPath(
+                            requireContext(),
+                            requestApprovalAbstractClassViewModel.attachment2Name.value!!
+                        ),
                         requireActivity()
                     )
                     requestApprovalAbstractClassViewModel.attachment2Exists.value = true

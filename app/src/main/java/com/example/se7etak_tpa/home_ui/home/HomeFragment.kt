@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +20,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), RequestItemClickListener {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
@@ -42,7 +41,7 @@ class HomeFragment : Fragment() {
         firebaseAnalytics = Firebase.analytics
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = homeViewModel
-        binding.rvRequests.adapter = RequestsAdapter()
+        binding.rvRequests.adapter = RequestsAdapter(this)
 
         binding.ivLogout.setOnClickListener {
             deleteUserData(requireContext())
@@ -86,6 +85,13 @@ class HomeFragment : Fragment() {
         binding.btnTryAgain.setOnClickListener {
             homeViewModel.getPatientsRequests()
         }
+
+
     }
 
+    override fun onClickListener(id: Int) {
+        val intent = Intent (activity, RequestDetailsActivity::class.java)
+        intent.putExtra("id",id)
+        requireActivity().startActivity(intent)
+    }
 }

@@ -81,14 +81,14 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_requests"
-                android:visibility="@{(viewModel.status == RequestsApiStatus.DONE)?View.VISIBLE:View.GONE}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
                 android:padding="8dp"
+                android:visibility="@{(viewModel.status == RequestsApiStatus.DONE)?View.VISIBLE:View.GONE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:listData="@{viewModel.requests}"
                 tools:itemCount="5"
-                android:clipToPadding="false"
                 tools:listitem="@layout/home_request_item" />
 
             <androidx.constraintlayout.widget.ConstraintLayout

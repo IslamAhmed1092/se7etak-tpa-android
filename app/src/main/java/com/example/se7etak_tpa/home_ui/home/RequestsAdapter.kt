@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.databinding.HomeRequestItemBinding
 
-class RequestsAdapter : ListAdapter<HomeRequest, RequestsAdapter.RequestsViewHolder>(DiffCallback) {
+class RequestsAdapter(private val listener: RequestItemClickListener): ListAdapter<HomeRequest, RequestsAdapter.RequestsViewHolder>(DiffCallback) {
 
     class RequestsViewHolder(private var binding: HomeRequestItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -32,6 +32,7 @@ class RequestsAdapter : ListAdapter<HomeRequest, RequestsAdapter.RequestsViewHol
 
     override fun onBindViewHolder(holder: RequestsViewHolder, position: Int) {
         val request = getItem(position)
+        holder.itemView.setOnClickListener{listener.onClickListener(request.id)}
         holder.bind(request)
     }
 

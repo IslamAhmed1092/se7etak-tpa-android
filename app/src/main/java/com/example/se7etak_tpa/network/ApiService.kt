@@ -60,5 +60,10 @@ interface ApiService {
     fun changePhoneNumber(
         @Body body: Map<String, String>
     ): Call<JsonObject>
+
+
+    @GET("/api/Provider/GetRequestDetails")
+    fun getRequestDetails(@Query("id") requestId: Int): Call<JsonObject>
+
 }
 
