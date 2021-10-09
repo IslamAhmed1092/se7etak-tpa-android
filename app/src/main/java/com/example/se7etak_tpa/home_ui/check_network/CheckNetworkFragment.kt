@@ -2,28 +2,36 @@ package com.example.se7etak_tpa.home_ui.check_network
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.LocationManager
 
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.se7etak_tpa.HomeActivity
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.data.Provider
 import com.example.se7etak_tpa.databinding.BottomSheetProviderBinding
 import com.example.se7etak_tpa.databinding.FragmentCheckNetworkBinding
+import com.example.se7etak_tpa.utils.DEFAULTS
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -37,10 +45,11 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
+import java.lang.Exception
 
 class CheckNetworkFragment : Fragment() {
 
-    private val viewModel: CheckNetworkViewModel by viewModels()
+    private val viewModel: CheckNetworkViewModel by activityViewModels()
 
     private var previousTile: Long = -1
 
@@ -50,6 +59,7 @@ class CheckNetworkFragment : Fragment() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private lateinit var mMap: GoogleMap
+    private lateinit var locationManager: LocationManager
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -277,6 +287,13 @@ class CheckNetworkFragment : Fragment() {
             }
         }
 
+        viewModel.isGPSOpened.observe(viewLifecycleOwner) {
+            if(it && viewModel.status.value == CheckNetworkStatus.NOT_GRANTED) {
+                viewModel.setStatus(CheckNetworkStatus.LOADING_MAP)
+                val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                mapFragment?.getMapAsync(callback)
+            }
+        }
         binding.btnTryAgain.setOnClickListener {
             viewModel.updateProviders(viewModel.currentTile.value!!)
         }
@@ -297,29 +314,61 @@ class CheckNetworkFragment : Fragment() {
 
     }
 
-    private val permReqLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
-        if (it) {
-            viewModel.setStatus(CheckNetworkStatus.LOADING_MAP)
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-            mapFragment?.getMapAsync(callback)
-        } else {
-            viewModel.setStatus(CheckNetworkStatus.NOT_GRANTED)
+    private val permReqLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val granted = permissions.entries.all {
+                it.value == true
+            }
+
+            if (granted) {
+                if(viewModel.isGPSOpened.value!!) {
+                    viewModel.setStatus(CheckNetworkStatus.LOADING_MAP)
+                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                    mapFragment?.getMapAsync(callback)
+                } else {
+                    checkPermission()
+                }
+            } else {
+                viewModel.setStatus(CheckNetworkStatus.NOT_GRANTED)
+            }
         }
-    }
+
+//    private val permReqLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+//        if (it) {
+//            viewModel.setStatus(CheckNetworkStatus.LOADING_MAP)
+//            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+//            mapFragment?.getMapAsync(callback)
+//        } else {
+//            viewModel.setStatus(CheckNetworkStatus.NOT_GRANTED)
+//        }
+//    }
 
     private fun checkPermission() {
-        if (ContextCompat.checkSelfPermission(
+        locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if ((ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
+            ) == PackageManager.PERMISSION_DENIED) || (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED)
         ) {
             permReqLauncher.launch(
-                Manifest.permission.ACCESS_FINE_LOCATION
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
             )
+        } else if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            viewModel.setStatus(CheckNetworkStatus.NOT_GRANTED)
+            (activity as HomeActivity).turnOnGPS()
+
         } else {
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-            mapFragment?.getMapAsync(callback)
+                val mapFragment =
+                    childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                mapFragment?.getMapAsync(callback)
         }
+
     }
 
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
@@ -329,6 +378,11 @@ class CheckNetworkFragment : Fragment() {
             draw(Canvas(bitmap))
             BitmapDescriptorFactory.fromBitmap(bitmap)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.isGPSOpened.value = false
     }
 
 }
