@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.se7etak_tpa.Utils.Utils.loadUserData
+import com.example.se7etak_tpa.Utils.loadUserData
 import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.network.Api
 import org.json.JSONObject

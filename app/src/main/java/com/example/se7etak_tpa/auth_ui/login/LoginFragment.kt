@@ -13,9 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.Utils.Utils.saveUserData
 import com.example.se7etak_tpa.Utils.Utils.validateEmail
 import com.example.se7etak_tpa.Utils.Utils.validatePassword
+import com.example.se7etak_tpa.Utils.saveUserData
 import com.example.se7etak_tpa.databinding.FragmentLoginBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics

@@ -13,7 +13,7 @@ import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.ProfileActivity
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.ViewProfile
-import com.example.se7etak_tpa.Utils.Utils.deleteUserData
+import com.example.se7etak_tpa.Utils.deleteUserData
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

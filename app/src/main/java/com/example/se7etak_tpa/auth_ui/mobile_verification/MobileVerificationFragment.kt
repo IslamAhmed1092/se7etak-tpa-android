@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.Utils.Utils.saveUserData
+import com.example.se7etak_tpa.Utils.saveUserData
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

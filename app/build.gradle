@@ -86,4 +86,8 @@ dependencies {
 
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // upload server file
+    implementation "net.gotev:uploadservice:4.6.0"
+
 }

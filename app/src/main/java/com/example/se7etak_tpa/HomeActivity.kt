@@ -1,5 +1,6 @@
 package com.example.se7etak_tpa
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +44,7 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
+        buildLoadingDialog(this)
     }
 
 
