@@ -1,10 +1,7 @@
 package com.example.se7etak_tpa.network
 
 import android.net.Uri
-import com.example.se7etak_tpa.data.HomeRequest
-import com.example.se7etak_tpa.data.Provider
-import com.example.se7etak_tpa.data.ProviderNameWithId
-import com.example.se7etak_tpa.data.User
+import com.example.se7etak_tpa.data.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -66,7 +63,7 @@ interface ApiService {
     @GET("/api/Provider/GetRequestDetails")
     fun getRequestDetails(
         @Header("Authorization") authHeader: String,     //should send "Bearer" + token
-        @Query("id") requestId: Int): Call<JsonObject>
+        @Query("id") requestId: Int): Call<RequestDetailsItem>
 
     @GET("/api/Account/GetUserInfo")
     fun getUser(

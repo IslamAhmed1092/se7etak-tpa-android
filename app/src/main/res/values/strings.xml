@@ -56,4 +56,8 @@
     <string name="change_phone_number">Change Phone Number</string>
     <string name="text_continue">Continue</string>
     <string name="text_edit_title">Edit %s</string>
+
+    <string name="underlined_attachment1"> <u>File1</u></string>
+    <string name="underlined_attachment2"> <u>File2</u></string>
+
 </resources>
