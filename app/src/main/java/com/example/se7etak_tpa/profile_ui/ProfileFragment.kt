@@ -7,10 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
+import com.example.se7etak_tpa.auth_ui.mobile_verification.MobileVerificationFragmentDirections
 import com.example.se7etak_tpa.databinding.FragmentProfileBinding
 import com.example.se7etak_tpa.utils.deleteUserData
 import com.example.se7etak_tpa.utils.saveUserData
@@ -25,6 +28,29 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Warning!")
+            .setMessage("Do you want to return without saving updates?")
+            .setPositiveButton("RETURN") { _, _ ->
+                activity?.finish()
+            }
+            .setNegativeButton("CANCEL") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(binding.btnSave.isEnabled) {
+                    dialogBuilder.show()
+                } else {
+                    activity?.finish()
+                }
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
     }
@@ -34,6 +60,9 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.backIcon.setOnClickListener {
+            activity?.onBackPressed()
+        }
         binding.editEmail.setOnClickListener {
             val bottomSheet = BottomSheetEdit(BottomSheetEdit.EMAIL, viewModel.user.value!!.email!!) {
                 viewModel.setUserEmail(it)
