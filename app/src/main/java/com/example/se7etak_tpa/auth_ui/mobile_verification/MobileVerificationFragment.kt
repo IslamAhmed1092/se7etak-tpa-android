@@ -1,5 +1,6 @@
 package com.example.se7etak_tpa.auth_ui.mobile_verification
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -12,10 +13,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.se7etak_tpa.AuthActivity
+import com.example.se7etak_tpa.ProfileActivity
 import com.example.se7etak_tpa.R
 import com.example.se7etak_tpa.utils.saveUserData
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentMobileVerificationBinding
+import com.example.se7etak_tpa.utils.deleteUserData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -46,12 +50,25 @@ class MobileVerificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBuilderLogin = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Warning!")
             .setMessage("Do you want to return before verifying your phone number?")
             .setPositiveButton("RETURN") { _, _ ->
-                val action = MobileVerificationFragmentDirections.actionMobileVerificationFragmentToLoginFragment()
+                val action =
+                    MobileVerificationFragmentDirections.actionMobileVerificationFragmentToLoginFragment()
                 findNavController().navigate(action)
+            }
+            .setNegativeButton("CANCEL") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        val dialogBuilderProfile = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Warning!")
+            .setMessage("If you close before verifying you will need to sign in again to verify number")
+            .setPositiveButton("RETURN") { _, _ ->
+                val intent = Intent(activity, AuthActivity::class.java)
+                startActivity(intent)
+                activity?.finishAffinity()
             }
             .setNegativeButton("CANCEL") { dialog, _ ->
                 dialog.dismiss()
@@ -59,7 +76,10 @@ class MobileVerificationFragment : Fragment() {
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                    dialogBuilder.show()
+                if(activity is AuthActivity)
+                    dialogBuilderLogin.show()
+                else if(activity is ProfileActivity)
+                    dialogBuilderProfile.show()
             }
         }
 
@@ -67,7 +87,7 @@ class MobileVerificationFragment : Fragment() {
 
         viewModel.user = user
         viewModel.setCode(code)
-
+        deleteUserData(requireContext())
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_mobile_verification, container, false)
         return binding.root
@@ -133,10 +153,17 @@ class MobileVerificationFragment : Fragment() {
                 firebaseAnalytics.logEvent("Signup-OTP"){}
                 Toast.makeText(context, "Code verified successfully!", Toast.LENGTH_SHORT).show()
                 saveUserData(requireContext(), viewModel.user)
-                val action =
-                    MobileVerificationFragmentDirections.actionMobileVerificationFragmentToHomeActivity()
-                findNavController().navigate(action)
-                activity?.finish()
+
+                if(activity is AuthActivity) {
+                    val action =
+                        MobileVerificationFragmentDirections.actionMobileVerificationFragmentToHomeActivity()
+                    findNavController().navigate(action)
+                    activity?.finish()
+                } else if (activity is ProfileActivity) {
+                    val action =
+                        MobileVerificationFragmentDirections.actionMobileVerificationFragmentToProfileFragment()
+                    findNavController().navigate(action)
+                }
             } else if (it == StatusObject.ERROR){
                 failedAlertDialog.setMessage(viewModel.errorMessage).show()
             }

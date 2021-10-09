@@ -162,5 +162,9 @@ class ProfileFragment : Fragment() {
                 viewModel.updateUser()
         }
 
+        binding.editPhone.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToChangePhoneNumberFragment(viewModel.user.value!!)
+            findNavController().navigate(action)
+        }
     }
 }
