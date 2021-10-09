@@ -78,7 +78,7 @@ object Utils {
     fun chooseAttachment(fragment: Fragment) {
 
 
-        val options = arrayOf("Choose Pdf File", "Open Gallery", "Open Camera")
+        val options = arrayOf("Choose PDF File", "Open Gallery", "Open Camera")
         val builder = AlertDialog.Builder(fragment.requireContext())
         builder.setTitle("Choose an option")
         builder.setItems(options) { dialog, which ->

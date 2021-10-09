@@ -70,6 +70,8 @@ class CheckNetworkViewModel(application: Application) : AndroidViewModel(applica
     private val _providersMap = MutableLiveData<Map<String, List<Provider>>>()
     val providersMap: LiveData<Map<String, List<Provider>>> get() = _providersMap
 
+    val isGPSOpened = MutableLiveData(false)
+
     var selectedLocationMarker =  MutableLiveData<Marker>()
     var pinnedLocationMarker = MutableLiveData<Marker>()
 
