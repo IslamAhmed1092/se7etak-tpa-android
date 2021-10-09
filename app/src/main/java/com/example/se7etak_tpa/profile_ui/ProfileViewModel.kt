@@ -5,12 +5,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.se7etak_tpa.Utils.Utils
-import com.example.se7etak_tpa.data.HomeRequest
 import com.example.se7etak_tpa.data.User
-import com.example.se7etak_tpa.home_ui.home.RequestsApiStatus
 import com.example.se7etak_tpa.network.Api
+import com.example.se7etak_tpa.utils.loadUserData
+import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,31 +17,49 @@ import retrofit2.Response
 enum class ProfileStatus { INITIAL, LOADING, NO_CONNECTION, UNAUTHORIZED, DONE, ERROR}
 
 class ProfileViewModel(application: Application): AndroidViewModel(application) {
+
+    var oldUser = User()
+
     private val _user = MutableLiveData(User())
     val user: LiveData<User> get() = _user
 
     private val _status = MutableLiveData(ProfileStatus.INITIAL)
     val status: LiveData<ProfileStatus> get() = _status
 
-    private val _isUpdated = MutableLiveData(false)
-    val isUpdated: LiveData<Boolean> get() = _isUpdated
+    private val _updateDataStatus = MutableLiveData(ProfileStatus.INITIAL)
+    val updateDataStatus: LiveData<ProfileStatus> get() = _updateDataStatus
+
+    val isNameUpdated = MutableLiveData(false)
+    val isEmailUpdated =  MutableLiveData(false)
+    val isIdUpdated = MutableLiveData(false)
 
     var errorMessage = ""
 
     private var userToken:String? = ""
 
     private fun getToken(): String? {
-        return Utils.loadUserData(getApplication<Application>().applicationContext).token
+        return loadUserData(getApplication<Application>().applicationContext).token
     }
 
-    fun setUpdated(isUpdated: Boolean) {
-        _isUpdated.value = isUpdated
+    fun setUserEmail(email: String) {
+        _user.value = _user.value?.copy(email = email)
+    }
+
+    fun setUserName(name: String) {
+        _user.value = _user.value?.copy(name = name)
+    }
+
+    fun setUserID(id: String) {
+        _user.value = _user.value?.copy(id = id)
     }
 
     init {
         userToken = getToken()
         if(!userToken.isNullOrEmpty())
             getUserData()
+//        _user.value = User("566893", "", "Islam", "eslam1092@hotmail.com", "01118300285")
+//        oldUser = user.value!!
+//        _status.value = ProfileStatus.DONE
     }
 
     fun getUserData() {
@@ -57,6 +73,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
             ) {
                 if(response.code() == 200) {
                     _user.value = response.body()
+                    oldUser = response.body()!!
                     _user.value!!.token = userToken
                     _status.value = ProfileStatus.DONE
                     Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
@@ -85,6 +102,63 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
             }
 
         })
+    }
+
+    fun updateUser() {
+        val body: MutableMap<String, String> = mutableMapOf()
+        if(isNameUpdated.value!!)
+            body["name"] = user.value!!.name!!
+
+        if(isEmailUpdated.value!!)
+            body["email"] = user.value!!.email!!
+
+        if(isIdUpdated.value!!)
+            body["Se7etakID"] = user.value!!.id!!
+
+        val callResponse = Api.retrofitService.updateUser("Bearer $userToken", body)
+
+        _updateDataStatus.value = ProfileStatus.LOADING
+        callResponse.enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.code() == 200) {
+                    response.body()?.let {
+                        _user.value?.token = it.get("token")?.asString
+                        userToken = user.value?.token
+                    }
+                    oldUser = user.value!!
+                    isEmailUpdated.value = false
+                    isNameUpdated.value = false
+                    isIdUpdated.value = false
+
+                    _updateDataStatus.value = ProfileStatus.DONE
+                    Log.i("TAG", "onResponse ${response.code()}: ${response.message()}" )
+                } else if(response.code() == 500) {
+                    errorMessage = "There is a problem in the server, Please try again later."
+                    _updateDataStatus.value = ProfileStatus.ERROR
+                } else {
+                    try {
+                        errorMessage = JSONObject(response.errorBody()?.string()!!).optString("message")
+                        _user.value = oldUser
+                        isEmailUpdated.value = false
+                        isNameUpdated.value = false
+                        isIdUpdated.value = false
+                        _updateDataStatus.value = ProfileStatus.ERROR
+                    } catch (e: Exception) {
+                        errorMessage = response.message()
+                        if (errorMessage == "Unauthorized")
+                            _status.value = ProfileStatus.UNAUTHORIZED
+                    }
+                    Log.i("TAG", "onResponse ${response.code()}: ${errorMessage}" )
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                errorMessage = "Please check your internet connection and try again"
+                _updateDataStatus.value = ProfileStatus.NO_CONNECTION
+                Log.i("TAG", "onFailure: ${t.message}")
+            }
+        })
+
     }
 
 }

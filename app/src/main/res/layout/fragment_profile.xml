@@ -76,9 +76,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="@{(viewModel.status == ProfileStatus.DONE)? View.VISIBLE:View.GONE}"
-                    tools:visibility="visible"
-                    >
+                    android:visibility="@{((viewModel.status == ProfileStatus.DONE) &amp;&amp; (viewModel.updateDataStatus != ProfileStatus.NO_CONNECTION))? View.VISIBLE:View.GONE}"
+                    tools:visibility="visible">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/materialCardView2"
@@ -131,13 +130,15 @@
 
                                 <TextView
                                     android:id="@+id/text_name"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginStart="24dp"
+                                    android:layout_marginEnd="16dp"
                                     android:text="@{viewModel.user.name}"
                                     android:textAppearance="?android:textAppearanceMedium"
                                     android:textColor="@android:color/black"
+                                    app:layout_constraintEnd_toStartOf="@+id/imageView"
                                     app:layout_constraintStart_toEndOf="@+id/imageView31"
                                     app:layout_constraintTop_toBottomOf="@+id/textView61"
                                     tools:text="Islam Ahmed" />
@@ -200,13 +201,15 @@
 
                                 <TextView
                                     android:id="@+id/text_email"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginStart="24dp"
+                                    android:layout_marginEnd="16dp"
                                     android:text="@{viewModel.user.email}"
                                     android:textAppearance="?android:textAppearanceMedium"
                                     android:textColor="@android:color/black"
+                                    app:layout_constraintEnd_toStartOf="@+id/imageView4"
                                     app:layout_constraintStart_toEndOf="@+id/imageView3"
                                     app:layout_constraintTop_toBottomOf="@+id/textView6"
                                     tools:text="eslam1092@hotmail.com" />
@@ -270,13 +273,15 @@
 
                                 <TextView
                                     android:id="@+id/text_id"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginStart="24dp"
+                                    android:layout_marginEnd="16dp"
                                     android:text="@{viewModel.user.id}"
                                     android:textAppearance="?android:textAppearanceMedium"
                                     android:textColor="@android:color/black"
+                                    app:layout_constraintEnd_toStartOf="@+id/imageView42"
                                     app:layout_constraintStart_toEndOf="@+id/imageView32"
                                     app:layout_constraintTop_toBottomOf="@+id/textView62"
                                     tools:text="823489" />
@@ -339,13 +344,15 @@
 
                                 <TextView
                                     android:id="@+id/text_phone"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginStart="24dp"
+                                    android:layout_marginEnd="16dp"
                                     android:text="@{viewModel.user.phoneNumber}"
                                     android:textAppearance="?android:textAppearanceMedium"
                                     android:textColor="@android:color/black"
+                                    app:layout_constraintEnd_toStartOf="@+id/imageView40"
                                     app:layout_constraintStart_toEndOf="@+id/imageView30"
                                     app:layout_constraintTop_toBottomOf="@+id/textView60"
                                     tools:text="01113586932" />
@@ -397,9 +404,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
                         android:background="@drawable/less_curved_button"
-                        android:enabled="@{viewModel.isUpdated}"
+                        android:enabled="@{viewModel.isIdUpdated() || viewModel.isNameUpdated() || viewModel.isEmailUpdated()}"
                         android:text="Save Changes"
-                        android:textDirection="rtl"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
@@ -409,7 +415,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_no_connection"
-                    android:visibility="@{(viewModel.status == ProfileStatus.NO_CONNECTION)?View.VISIBLE:View.GONE}"
+                    android:visibility="@{((viewModel.status == ProfileStatus.NO_CONNECTION) || (viewModel.updateDataStatus == ProfileStatus.NO_CONNECTION))?View.VISIBLE:View.GONE}"
                     tools:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -447,7 +453,7 @@
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:padding="16dp"
-                    android:visibility="@{(viewModel.status == ProfileStatus.LOADING)?View.VISIBLE:View.GONE}"
+                    android:visibility="@{((viewModel.status == ProfileStatus.LOADING) || (viewModel.updateDataStatus == ProfileStatus.LOADING))?View.VISIBLE:View.GONE}"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="8dp"
                     app:contentPadding="8dp"

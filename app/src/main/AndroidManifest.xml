@@ -36,6 +36,7 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
         <activity
             android:name=".UpdateProfile"

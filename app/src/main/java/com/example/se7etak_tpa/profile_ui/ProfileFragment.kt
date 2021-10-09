@@ -9,19 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.Utils.Utils
-import com.example.se7etak_tpa.Utils.Utils.saveUserData
-import com.example.se7etak_tpa.auth_ui.mobile_verification.MobileVerificationFragmentDirections
-import com.example.se7etak_tpa.auth_ui.mobile_verification.StatusObject
-import com.example.se7etak_tpa.databinding.FragmentHomeBinding
 import com.example.se7etak_tpa.databinding.FragmentProfileBinding
-import com.example.se7etak_tpa.home_ui.home.HomeViewModel
-import com.example.se7etak_tpa.home_ui.home.RequestsApiStatus
+import com.example.se7etak_tpa.utils.deleteUserData
+import com.example.se7etak_tpa.utils.saveUserData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.analytics.ktx.logEvent
 
 class ProfileFragment : Fragment() {
 
@@ -43,8 +36,8 @@ class ProfileFragment : Fragment() {
 
         binding.editEmail.setOnClickListener {
             val bottomSheet = BottomSheetEdit(BottomSheetEdit.EMAIL, viewModel.user.value!!.email!!) {
-                viewModel.setUpdated(true)
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                viewModel.setUserEmail(it)
+                viewModel.isEmailUpdated.value = (viewModel.oldUser.email != viewModel.user.value!!.email)
             }
             activity?.let {
                 bottomSheet.show(it.supportFragmentManager, "BottomSheetEditEmail")
@@ -53,8 +46,8 @@ class ProfileFragment : Fragment() {
 
         binding.editId.setOnClickListener {
             val bottomSheet = BottomSheetEdit(BottomSheetEdit.ID, viewModel.user.value!!.id!!) {
-                viewModel.setUpdated(true)
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                viewModel.setUserID(it)
+                viewModel.isIdUpdated.value = (viewModel.oldUser.id != viewModel.user.value!!.id)
             }
             activity?.let {
                 bottomSheet.show(it.supportFragmentManager, "BottomSheetEditID")
@@ -63,8 +56,8 @@ class ProfileFragment : Fragment() {
 
         binding.editName.setOnClickListener {
             val bottomSheet = BottomSheetEdit(BottomSheetEdit.NAME, viewModel.user.value!!.name!!) {
-                viewModel.setUpdated(true)
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                viewModel.setUserName(it)
+                viewModel.isNameUpdated.value = (viewModel.oldUser.name != viewModel.user.value!!.name)
             }
             activity?.let {
                 bottomSheet.show(it.supportFragmentManager, "BottomSheetEditName")
@@ -82,10 +75,10 @@ class ProfileFragment : Fragment() {
                         dialog.dismiss()
                     }
                     .setOnDismissListener {
-                        Utils.deleteUserData(requireContext())
+                        deleteUserData(requireContext())
                         val intent = Intent(activity, AuthActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent)
+                        activity?.finishAffinity()
                     }
                     .show()
             } else if (it == ProfileStatus.ERROR) {
@@ -99,8 +92,45 @@ class ProfileFragment : Fragment() {
             }
         }
 
+
+        viewModel.updateDataStatus.observe(viewLifecycleOwner) {
+            if (it == ProfileStatus.DONE) {
+                Toast.makeText(context, "Profile updated successfully", Toast.LENGTH_SHORT).show()
+                saveUserData(requireContext(), viewModel.user.value!!)
+            } else if(it == ProfileStatus.UNAUTHORIZED) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Session Expired")
+                    .setMessage("Your session has expired. Please log in again.")
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .setOnDismissListener {
+                        deleteUserData(requireContext())
+                        val intent = Intent(activity, AuthActivity::class.java)
+                        startActivity(intent)
+                        activity?.finishAffinity()
+                    }
+                    .show()
+            } else if (it == ProfileStatus.ERROR) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("ERROR!")
+                    .setMessage(viewModel.errorMessage)
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+        }
+
+        binding.btnSave.setOnClickListener {
+            viewModel.updateUser()
+        }
+
         binding.btnTryAgain.setOnClickListener {
-            viewModel.getUserData()
+            if(viewModel.status.value == ProfileStatus.NO_CONNECTION)
+                viewModel.getUserData()
+            else
+                viewModel.updateUser()
         }
 
     }

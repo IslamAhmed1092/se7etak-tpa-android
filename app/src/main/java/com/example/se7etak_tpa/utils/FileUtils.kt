@@ -1,13 +1,9 @@
-package com.example.se7etak_tpa.Utils
+package com.example.se7etak_tpa.utils
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
-import android.widget.Toast
-import androidx.core.content.FileProvider
 import java.io.*
 
 fun copyDirectoryOneLocationToAnotherLocation(

@@ -66,5 +66,11 @@ interface ApiService {
     fun getUser(
         @Header("Authorization") authHeader: String     //should send "Bearer" + token
     ): Call<User>
+
+    @POST("/api/Account/UpdateUserInfo")
+    fun updateUser(
+        @Header("Authorization") authHeader: String,     //should send "Bearer" + token
+        @Body body: Map<String, String>
+    ): Call<JsonObject>
 }
 

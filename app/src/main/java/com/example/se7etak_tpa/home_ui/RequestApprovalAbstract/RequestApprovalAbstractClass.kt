@@ -15,7 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.se7etak_tpa.Utils.*
+import com.example.se7etak_tpa.utils.*
 import com.example.se7etak_tpa.databinding.FragmentRequestApprovalBinding
 import com.example.se7etak_tpa.showLoadingDialog
 import com.theartofdev.edmodo.cropper.CropImage

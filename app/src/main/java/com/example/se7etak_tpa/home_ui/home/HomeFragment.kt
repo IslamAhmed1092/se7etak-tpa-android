@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.se7etak_tpa.AuthActivity
 import com.example.se7etak_tpa.ProfileActivity
 import com.example.se7etak_tpa.R
-import com.example.se7etak_tpa.ViewProfile
-import com.example.se7etak_tpa.Utils.deleteUserData
+import com.example.se7etak_tpa.utils.deleteUserData
 import com.example.se7etak_tpa.data.User
 import com.example.se7etak_tpa.databinding.FragmentHomeBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
