@@ -84,7 +84,7 @@
                         style="@style/MaterialCardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="64dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -398,12 +398,12 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_save"
+                        style="@style/ContainedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:background="@drawable/less_curved_button"
                         android:enabled="@{viewModel.isIdUpdated() || viewModel.isNameUpdated() || viewModel.isEmailUpdated()}"
                         android:text="Save Changes"
                         app:layout_constraintEnd_toEndOf="parent"
